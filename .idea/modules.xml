@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Baseera.iml" filepath="$PROJECT_DIR$/.idea/Baseera.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Baseera/Baseera.iml" filepath="$PROJECT_DIR$/Baseera/Baseera.iml" />
     </modules>
   </component>
 </project>

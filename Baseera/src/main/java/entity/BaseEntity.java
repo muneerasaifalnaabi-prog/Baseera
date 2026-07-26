@@ -4,14 +4,12 @@ package entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
 @NoArgsConstructor
-@SuperBuilder
+
 public abstract class BaseEntity {
 
     @Id

@@ -28,6 +28,6 @@ public class Plan extends BaseEntity {
     @Column(nullable = false)
     private Integer maxAgeMonths;
 
-    @OneToMany(mappedBy = "plan", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "plan")
     private List<Child> children = new ArrayList<>();
 }

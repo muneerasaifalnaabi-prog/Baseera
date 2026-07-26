@@ -1,4 +1,4 @@
-package entity;
+package com.example.Baseera.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -2,6 +2,7 @@ package com.example.Baseera.dto.request;
 
 import com.example.Baseera.entity.Center;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,11 @@ public class CenterRequestDTO {
 
     @NotBlank(message = "Phone number is required")
     private String phone;
+    @NotNull(message = "Latitude is required")
+    private Double latitude;
+
+    @NotNull(message = "Longitude is required")
+    private Double longitude;
 
     public Center toEntity() {
 
@@ -28,6 +34,8 @@ public class CenterRequestDTO {
         center.setCity(city);
         center.setSpecialty(specialty);
         center.setPhone(phone);
+        center.setLatitude(latitude);
+        center.setLongitude(longitude);
 
         return center;
     }
@@ -38,5 +46,7 @@ public class CenterRequestDTO {
         center.setCity(city);
         center.setSpecialty(specialty);
         center.setPhone(phone);
+        center.setLatitude(latitude);
+        center.setLongitude(longitude);
     }
 }

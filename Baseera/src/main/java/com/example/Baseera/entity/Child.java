@@ -11,12 +11,21 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Child {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Child extends BaseEntity {
+    @Column(nullable = false)
     private String fullName;
+
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
+
+    @Column(nullable = false)
     private String gender;
-    private boolean isActive;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id", nullable = false)
+    private Account parent;
+
+    @ManyToOne
+    @JoinColumn(name = "plan_id")
+    private Plan plan;
 }

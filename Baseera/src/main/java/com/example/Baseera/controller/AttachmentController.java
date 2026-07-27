@@ -30,5 +30,9 @@ public class AttachmentController {
         return service.updateAttachment(attachmentId,updatedDTO);
     }
 
+    @DeleteMapping("{attachmentId}")
+    public String deleteAttachment(@PathVariable Long attachmentId){
+        return service.deleteAttachment(attachmentId);
+    }
 
 }

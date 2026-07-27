@@ -1,6 +1,7 @@
 package com.example.Baseera.entity;
 
 
+import com.example.Baseera.enums.ConditionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +27,5 @@ public class Activity extends BaseEntity {
     private Integer maxAge;
 
     @Column(nullable = false)
-    private String targetCondition; // "ASD" or "ADHD" - which condition this activity targets
+    private ConditionType targetCondition; // "ASD" or "ADHD" - which condition this activity targets
 }

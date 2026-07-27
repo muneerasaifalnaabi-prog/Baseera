@@ -1,6 +1,7 @@
 package com.example.Baseera.dto.response;
 
 import com.example.Baseera.entity.Activity;
+import com.example.Baseera.enums.ConditionType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,7 @@ public class ActivityResponseDTO {
     private String description;
     private Integer minAge;
     private Integer maxAge;
-    private String targetCondition;
+    private ConditionType targetCondition;
 
     public static ActivityResponseDTO fromEntity(Activity entity) {
 

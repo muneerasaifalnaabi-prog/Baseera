@@ -1,6 +1,7 @@
 package com.example.Baseera.dto.response;
 
 import com.example.Baseera.entity.Account;
+import com.example.Baseera.enums.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,7 @@ public class AccountResponseDTO {
     private Long id;
     private String email;
     private String fullName;
-    private String role;
+    private Roles role;
 
     public static AccountResponseDTO fromEntity(Account entity) {
 

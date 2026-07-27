@@ -16,7 +16,6 @@ public class ChildResponseDTO {
     private LocalDate dateOfBirth;
     private String gender;
     private Long parentId;
-    private Long planId;
 
     public static ChildResponseDTO fromEntity(Child entity) {
 
@@ -31,9 +30,6 @@ public class ChildResponseDTO {
             dto.setParentId(entity.getParent().getId());
         }
 
-        if (entity.getPlans() != null) {
-            dto.setPlanId(entity.getPlans().getId());
-        }
 
         return dto;
     }

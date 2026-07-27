@@ -2,6 +2,7 @@ package com.example.Baseera.dto.request;
 
 
 import com.example.Baseera.entity.Activity;
+import com.example.Baseera.enums.ConditionType;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -31,8 +32,7 @@ public class ActivityRequestDTO {
     private Integer maxAge;
 
     @NotBlank(message = "Target condition is required")
-    @Pattern(regexp = "ASD|ADHD", message = "Target condition must be ASD or ADHD")
-    private String targetCondition;
+    private ConditionType targetCondition;
 
     public Activity toEntity() {
         Activity activity = new Activity();

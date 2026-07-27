@@ -25,7 +25,5 @@ public class Child extends BaseEntity {
     @JoinColumn(name = "parent_id", nullable = false)
     private Account parent;
 
-    @ManyToOne
-    @JoinColumn(name = "plans_id")
-    private Plans plans;
+
 }

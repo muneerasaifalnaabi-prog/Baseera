@@ -1,7 +1,7 @@
 package com.example.Baseera.dto.response;
 
 
-import com.example.Baseera.entity.Plan;
+import com.example.Baseera.entity.Plans;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,26 +19,26 @@ public class PlanResponseDTO {
     private Integer minAgeMonths;
     private Integer maxAgeMonths;
 
-    public static PlanResponseDTO fromEntity(Plan entity) {
+    public static PlanResponseDTO fromEntity(Plans entity) {
 
         PlanResponseDTO dto = new PlanResponseDTO();
 
         dto.setId(entity.getId());
         dto.setDescription(entity.getDescription());
         dto.setCategory(entity.getCategory());
-        dto.setCondition(entity.getCondition());
+        dto.setCondition(entity.getConditions());
         dto.setMinAgeMonths(entity.getMinAgeMonths());
         dto.setMaxAgeMonths(entity.getMaxAgeMonths());
 
         return dto;
     }
 
-    public static List<PlanResponseDTO> fromEntity(List<Plan> entities) {
+    public static List<PlanResponseDTO> fromEntity(List<Plans> entities) {
 
         List<PlanResponseDTO> dtos = new ArrayList<>();
 
         if (entities != null) {
-            for (Plan entity : entities) {
+            for (Plans entity : entities) {
                 dtos.add(fromEntity(entity));
             }
         }

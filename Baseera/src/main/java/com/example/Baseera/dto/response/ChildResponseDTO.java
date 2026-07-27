@@ -31,8 +31,8 @@ public class ChildResponseDTO {
             dto.setParentId(entity.getParent().getId());
         }
 
-        if (entity.getPlan() != null) {
-            dto.setPlanId(entity.getPlan().getId());
+        if (entity.getPlans() != null) {
+            dto.setPlanId(entity.getPlans().getId());
         }
 
         return dto;

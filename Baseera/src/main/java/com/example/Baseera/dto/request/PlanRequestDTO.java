@@ -1,7 +1,7 @@
 package com.example.Baseera.dto.request;
 
 
-import com.example.Baseera.entity.Plan;
+import com.example.Baseera.entity.Plans;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -23,7 +23,7 @@ public class PlanRequestDTO {
 
     @NotBlank(message = "Condition is required")
     @Pattern(regexp = "ASD|ADHD", message = "Condition must be ASD or ADHD")
-    private String condition;
+    private String conditions;
 
     @NotNull(message = "Minimum age (months) is required")
     @Min(value = 0, message = "Minimum age cannot be negative")
@@ -35,23 +35,23 @@ public class PlanRequestDTO {
     @Max(value = 216, message = "Maximum age is out of range")
     private Integer maxAgeMonths;
 
-    public Plan toEntity() {
-        Plan plan = new Plan();
+    public Plans toEntity() {
+        Plans plans = new Plans();
 
-        plan.setDescription(description);
-        plan.setCategory(category);
-        plan.setCondition(condition);
-        plan.setMinAgeMonths(minAgeMonths);
-        plan.setMaxAgeMonths(maxAgeMonths);
+        plans.setDescription(description);
+        plans.setCategory(category);
+        plans.setConditions(conditions);
+        plans.setMinAgeMonths(minAgeMonths);
+        plans.setMaxAgeMonths(maxAgeMonths);
 
-        return plan;
+        return plans;
     }
 
-    public void applyTo(Plan plan) {
-        plan.setDescription(description);
-        plan.setCategory(category);
-        plan.setCondition(condition);
-        plan.setMinAgeMonths(minAgeMonths);
-        plan.setMaxAgeMonths(maxAgeMonths);
+    public void applyTo(Plans plans) {
+        plans.setDescription(description);
+        plans.setCategory(category);
+        plans.setConditions(conditions);
+        plans.setMinAgeMonths(minAgeMonths);
+        plans.setMaxAgeMonths(maxAgeMonths);
     }
 }

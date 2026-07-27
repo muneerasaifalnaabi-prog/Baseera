@@ -16,6 +16,8 @@ public class CenterResponseDTO {
     private String city;
     private String specialty;
     private String phone;
+    private Double latitude;
+    private Double longitude;
 
     public static CenterResponseDTO fromEntity(Center entity) {
 
@@ -26,6 +28,8 @@ public class CenterResponseDTO {
         dto.setCity(entity.getCity());
         dto.setSpecialty(entity.getSpecialty());
         dto.setPhone(entity.getPhone());
+        dto.setLatitude(entity.getLatitude());
+        dto.setLongitude(entity.getLongitude());
 
         return dto;
     }

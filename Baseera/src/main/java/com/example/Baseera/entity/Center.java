@@ -23,4 +23,10 @@ public class Center extends BaseEntity{
     @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
+
 }

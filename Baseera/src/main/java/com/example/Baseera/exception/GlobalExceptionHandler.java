@@ -102,14 +102,30 @@ public class GlobalExceptionHandler {
     }
 
     // 500 — fallback safety net, never leak a stack trace
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
+//        ErrorResponse errorResponse = new ErrorResponse(
+//                HttpStatus.INTERNAL_SERVER_ERROR,
+//                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+//                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+//                "An unexpected error occurred on the server.",
+//                request.getDescription(false).replace("uri=", ""));
+//
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+//    }
+//
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
+
+        ex.printStackTrace();
+
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "An unexpected error occurred on the server.",
-                request.getDescription(false).replace("uri=", ""));
+                request.getDescription(false).replace("uri=", "")
+        );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

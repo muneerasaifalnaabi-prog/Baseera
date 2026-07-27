@@ -2,7 +2,6 @@ package com.example.Baseera.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@SuperBuilder
 public class Plan extends BaseEntity {
 
     @Column(nullable = false, length = 2000)

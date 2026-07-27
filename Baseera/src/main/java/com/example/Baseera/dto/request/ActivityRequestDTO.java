@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ActivityRequestDTO {
 
     @NotBlank(message = "Name is required")

@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class Plan extends BaseEntity {
+public class Plans extends BaseEntity {
 
     @Column(nullable = false, length = 2000)
     private String description;
@@ -18,7 +18,7 @@ public class Plan extends BaseEntity {
     private String category;
 
     @Column(nullable = false)
-    private String condition; // "ASD" or "ADHD"
+    private String conditions; // "ASD" or "ADHD"
 
     @Column(nullable = false)
     private Integer minAgeMonths;
@@ -26,6 +26,6 @@ public class Plan extends BaseEntity {
     @Column(nullable = false)
     private Integer maxAgeMonths;
 
-    @OneToMany(mappedBy = "plan")
+    @OneToMany(mappedBy = "plans")
     private List<Child> children = new ArrayList<>();
 }

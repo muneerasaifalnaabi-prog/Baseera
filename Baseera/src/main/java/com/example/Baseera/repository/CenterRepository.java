@@ -8,6 +8,6 @@ import java.util.List;
 public interface CenterRepository extends JpaRepository<Center, Long> {
 
     List<Center> findByCityIgnoreCase(String city);
-
     List<Center> findBySpecialtyIgnoreCase(String specialty);
+    List<Center> findByIsActiveTrue();
 }

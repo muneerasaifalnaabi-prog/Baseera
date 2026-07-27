@@ -2,10 +2,8 @@ package com.example.Baseera.controller;
 
 import com.example.Baseera.dto.request.AttachmentRequestDTO;
 import com.example.Baseera.dto.response.AttachmentResponseDTO;
-import com.example.Baseera.entity.Child;
 import com.example.Baseera.service.AttachmentService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,5 +28,9 @@ public class AttachmentController {
         return service.updateAttachment(attachmentId,updatedDTO);
     }
 
+    @DeleteMapping("{attachmentId}")
+    public String deleteAttachment(@PathVariable Long attachmentId){
+        return service.deleteAttachment(attachmentId);
+    }
 
 }

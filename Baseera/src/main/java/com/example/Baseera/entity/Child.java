@@ -11,12 +11,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Child {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Child extends BaseEntity {
     private String fullName;
     private LocalDate dateOfBirth;
     private String gender;
-    private boolean isActive;
+
 }

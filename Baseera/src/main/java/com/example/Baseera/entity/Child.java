@@ -12,8 +12,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Child extends BaseEntity {
+    @Column(nullable = false)
     private String fullName;
-    private LocalDate dateOfBirth;
-    private String gender;
 
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
+
+    @Column(nullable = false)
+    private String gender;
 }

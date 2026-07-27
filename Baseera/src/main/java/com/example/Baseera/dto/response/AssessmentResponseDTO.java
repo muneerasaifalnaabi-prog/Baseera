@@ -1,5 +1,6 @@
 package com.example.Baseera.dto.response;
 import com.example.Baseera.entity.Assessment;
+import com.example.Baseera.enums.RiskLevel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class AssessmentResponseDTO {
 
     private String parentDescription;
 
-    private String riskLevel;
+    private RiskLevel riskLevel;
 
     private String suggestedCondition;
 

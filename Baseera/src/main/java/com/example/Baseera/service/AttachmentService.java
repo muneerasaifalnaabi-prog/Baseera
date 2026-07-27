@@ -22,7 +22,7 @@ public class AttachmentService {
     public AttachmentResponseDTO addAttachment(AttachmentRequestDTO dto){
 
         Child child = childRepository.findById(dto.getChildId())
-                .orElseThrow(() -> new ResourceNotFoundException("Child not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Child not found"));
 
        Attachment attachment = dto.toEntity(child);
        repository.save(attachment);
@@ -33,17 +33,17 @@ public class AttachmentService {
     public AttachmentResponseDTO getAttachmentById(Long attachmentId){
 
         Attachment attachment = repository.findById(attachmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Attachment not find"));
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found"));
         return AttachmentResponseDTO.fromEntity(attachment);
     }
 
     //update Attachment
     public AttachmentResponseDTO updateAttachment(Long attachmentId , AttachmentRequestDTO updatedDTO){
         Attachment attachment = repository.findById(attachmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Attachment not find"));
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found"));
 
         Child child = childRepository.findById(updatedDTO.getChildId())
-                .orElseThrow(() -> new ResourceNotFoundException("Child not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Child not found"));
 
         attachment.setOriginalFileName(updatedDTO.getOriginalFileName());
         attachment.setType(updatedDTO.getType());
@@ -52,6 +52,21 @@ public class AttachmentService {
 
         repository.save(attachment);
         return AttachmentResponseDTO.fromEntity(attachment);
+    }
+
+    //soft delete Attachment
+    public  String deleteAttachment(Long attachmentId){
+        Attachment attachment = repository.findById(attachmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found"));
+
+        if(!attachment.getIsActive()){
+            return "Attachment not found";
+        }
+
+        attachment.setIsActive(false);
+        repository.save(attachment);
+        return "Attachment deleted successfully";
+
     }
 
 

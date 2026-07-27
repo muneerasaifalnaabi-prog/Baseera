@@ -36,23 +36,23 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- Spring Security -->
+		<!--<&lt;!&ndash;!&#45;&#45; Spring Security &ndash;&gt;
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-		<!-- Thymeleaf -->
+		&lt;!&ndash; Thymeleaf &ndash;&gt;
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-		<!-- Thymeleaf Security -->
+		&lt;!&ndash; Thymeleaf Security &ndash;&gt;
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<!-- MySQL -->
 		<dependency>
@@ -75,11 +75,11 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
+	<!--	<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

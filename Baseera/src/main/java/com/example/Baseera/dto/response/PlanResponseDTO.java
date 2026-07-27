@@ -1,7 +1,6 @@
 package com.example.Baseera.dto.response;
 
 
-import com.example.Baseera.entity.Plans;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

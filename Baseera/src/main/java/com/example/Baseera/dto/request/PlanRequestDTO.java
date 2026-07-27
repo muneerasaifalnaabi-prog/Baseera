@@ -1,7 +1,6 @@
 package com.example.Baseera.dto.request;
 
 
-import com.example.Baseera.entity.Plans;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

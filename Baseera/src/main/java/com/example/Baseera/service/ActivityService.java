@@ -1,77 +1,82 @@
 package com.example.Baseera.service;
 
+
 import com.example.Baseera.dto.request.ActivityRequestDTO;
 import com.example.Baseera.dto.response.ActivityResponseDTO;
 import com.example.Baseera.entity.Activity;
 import com.example.Baseera.exception.ResourceNotFoundException;
 import com.example.Baseera.repository.ActivityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ActivityService {
-        private ActivityRepository activityRepository;
-//        private final AssessmentRepository assessmentRepository;
-//        private final ChildService childService; // for ownership check + calculateAgeInMonths()
 
-        // General catalog browse — no child context, optional condition filter
-        public List<ActivityResponseDTO> browse(String targetCondition) {
-            List<Activity> activities = (targetCondition != null && !targetCondition.isBlank())
-                    ? activityRepository.findByTargetConditionAndIsActiveTrue(targetCondition)
-                    : activityRepository.findByIsActiveTrue();
+    @Autowired
+    private ActivityRepository activityRepository;
 
-            return ActivityResponseDTO.fromEntity(activities);
-        }
+    //****========
+    // admin: create a new activity in the catalog
+    //==========****
+    public ActivityResponseDTO createActivity(ActivityRequestDTO dto) {
+        Activity activity = dto.toEntity();
+        Activity saved = activityRepository.save(activity);
+        return ActivityResponseDTO.fromEntity(saved);
+    }
 
-        // Matched to a specific child — age computed from dateOfBirth, condition pulled from latest assessment
-//        public List<ActivityResponseDTO> browseForChild(Long childId, Long parentId) {
-//            Child child = childService.getChildOwnedByParent(childId, parentId);
-//
-//            int ageMonths = childService.calculateAgeInMonths(child.getDateOfBirth());
-//            String condition = getLatestSuggestedCondition(childId);
-//
-//            List<Activity> activities = activityRepository
-//                    .findByTargetConditionAndMinAgeLessThanEqualAndMaxAgeGreaterThanEqualAndIsActiveTrue(
-//                            condition, ageMonths, ageMonths);
-//
-//            return ActivityResponseDTO.fromEntity(activities);
-//        }
-//
-//        private String getLatestSuggestedCondition(Long childId) {
-//            List<Assessment> history = assessmentRepository.findByChildIdAndIsActiveTrueOrderByCreatedAtDesc(childId);
-//
-//            if (history.isEmpty()) {
-//                throw new ResourceNotFoundException(
-//                        "No assessment found yet for child " + childId + " — cannot determine matching activities");
-//            }
-//
-//            return history.get(0).getSuggestedCondition();
-//        }
+    //****========
+    // admin: update an existing activity's fields
+    //==========****
+    public ActivityResponseDTO updateActivity(Long activityId, ActivityRequestDTO dto) {
+        Activity activity = activityRepository.findActivityById(activityId)
+                .orElseThrow(() -> new ResourceNotFoundException("Activity not found: " + activityId));
 
-        // ---- Admin CRUD ----
+        dto.applyTo(activity);
+        Activity updated = activityRepository.save(activity);
+        return ActivityResponseDTO.fromEntity(updated);
+    }
 
-        public ActivityResponseDTO createActivity(ActivityRequestDTO dto) {
-            Activity activity = dto.toEntity();
-            Activity saved = activityRepository.save(activity);
-            return ActivityResponseDTO.fromEntity(saved);
-        }
+    //****========
+    // admin: deactivate the activity (soft delete, never removed from the database)
+    //==========****
+    public String deleteActivity(Long activityId) {
+        Activity activity = activityRepository.findActivityById(activityId)
+                .orElseThrow(() -> new ResourceNotFoundException("Activity not found: " + activityId));
 
-        public ActivityResponseDTO updateActivity(Long activityId, ActivityRequestDTO dto) {
-            Activity activity = activityRepository.findById(activityId)
-                    .filter(Activity::getIsActive)
-                    .orElseThrow(() -> new ResourceNotFoundException("Activity not found: " + activityId));
-
-            dto.applyTo(activity);
-            Activity saved = activityRepository.save(activity);
-            return ActivityResponseDTO.fromEntity(saved);
-        }
-
-        public void deleteActivity(Long activityId) {
-            Activity activity = activityRepository.findById(activityId)
-                    .filter(Activity::getIsActive)
-                    .orElseThrow(() -> new ResourceNotFoundException("Activity not found: " + activityId));
-
-            activity.setIsActive(false); // soft delete
+        if (activity.getIsActive()) {
+            activity.setIsActive(false);
             activityRepository.save(activity);
+            return "DELETED";
+        } else {
+            return "NOT FOUND";
         }
     }
 
+    //****========
+    // parent/admin: get one activity by id
+    //==========****
+    public ActivityResponseDTO getActivityById(Long activityId) {
+        Activity activity = activityRepository.findActivityById(activityId)
+                .orElseThrow(() -> new ResourceNotFoundException("Activity not found: " + activityId));
+
+        return ActivityResponseDTO.fromEntity(activity);
+    }
+
+    //****========
+    // parent/admin: get the full active catalog, no filters
+    //==========****
+    public List<ActivityResponseDTO> getAllActivities() {
+        List<Activity> activities = activityRepository.findAllActiveActivities();
+        return ActivityResponseDTO.fromEntity(activities);
+    }
+
+    //****========
+    // parent/admin: filter by name, condition (ASD/ADHD), and/or age — all optional, pass null to skip
+    //==========****
+    public List<ActivityResponseDTO> searchActivities(String name, String targetCondition, Integer age) {
+        List<Activity> activities = activityRepository.searchActivities(name, targetCondition, age);
+        return ActivityResponseDTO.fromEntity(activities);
+    }
+}

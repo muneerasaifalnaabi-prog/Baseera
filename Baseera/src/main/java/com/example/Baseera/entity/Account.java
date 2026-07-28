@@ -1,9 +1,7 @@
 package com.example.Baseera.entity;
 
 import com.example.Baseera.enums.Roles;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +22,13 @@ public class Account  extends BaseEntity {
 
     @Column(nullable = false)
     private String fullName;
-
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Roles role;
 
     @OneToMany(mappedBy = "parent")
     private List<Child> children;
+
+
 }
 

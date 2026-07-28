@@ -26,6 +26,7 @@ public class Activity extends BaseEntity {
     @Column(nullable = false)
     private Integer maxAge;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ConditionType targetCondition; // "ASD" or "ADHD" - which condition this activity targets
+    private ConditionType targetCondition;// "ASD" or "ADHD" - which condition this activity targets
 }

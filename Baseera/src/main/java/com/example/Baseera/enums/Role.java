@@ -1,6 +1,6 @@
 package com.example.Baseera.enums;
 
-public enum Roles {
+public enum Role {
     ADMIN,
     PARENT
 }

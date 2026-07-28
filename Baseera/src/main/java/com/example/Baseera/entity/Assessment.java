@@ -1,4 +1,5 @@
 package com.example.Baseera.entity;
+import com.example.Baseera.enums.ConditionType;
 import com.example.Baseera.enums.RiskLevel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,11 +18,13 @@ public class Assessment extends BaseEntity{
     @Lob
     private String parentDescription;
 
+    @Enumerated(EnumType.STRING)
     private RiskLevel riskLevel;
 
-    private String suggestedCondition;
-
-    @Lob
-    private String aiNarrative;
+    /**
+     * Returned by Gemini. Drives center and activity recommendation.
+     */
+    @Enumerated(EnumType.STRING)
+    private ConditionType suggestedCondition;
 
 }

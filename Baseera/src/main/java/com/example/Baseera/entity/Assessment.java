@@ -15,9 +15,17 @@ public class Assessment extends BaseEntity{
     @JoinColumn(name = "child_id", nullable = false)
     private Child child;
 
+    /**
+     * Free-text description of behaviors submitted by the parent,
+     * sent to Gemini for structured analysis.
+     */
     @Lob
-    private String parentDescription;
+    @Column(nullable = false)
+    private String description;
 
+    /**
+     * Returned by Gemini. Null until the AI call completes successfully.
+     */
     @Enumerated(EnumType.STRING)
     private RiskLevel riskLevel;
 

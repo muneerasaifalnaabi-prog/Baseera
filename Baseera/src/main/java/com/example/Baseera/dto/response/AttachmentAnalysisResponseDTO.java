@@ -1,32 +1,20 @@
 package com.example.Baseera.dto.response;
-import com.example.Baseera.entity.AttachmentAnalysis;
-import lombok.Builder;
-import lombok.Data;
 
-@Data
-@Builder
-public class AttachmentAnalysisResponseDTO {
-    private Long id;
 
-    private Long attachmentId;
+import java.time.LocalDateTime;
+import java.util.List;
 
-    private String improvementSigns;
-
-    private String progressSummary;
-
-    private String suggestedGoalTags;
-
-    private Boolean isActive;
-
-    public static AttachmentAnalysisResponseDTO fromEntity(AttachmentAnalysis analysis) {
-
-        return AttachmentAnalysisResponseDTO.builder()
-                .id(analysis.getId())
-                .attachmentId(analysis.getAttachment().getId())
-                .improvementSigns(analysis.getImprovementSigns())
-                .progressSummary(analysis.getProgressSummary())
-                .suggestedGoalTags(analysis.getSuggestedGoalTags())
-                .isActive(analysis.getIsActive())
-                .build();
-    }
+/**
+ * This IS the "current plan" the parent sees at
+ * GET /api/children/{childId}/current-plan — the most recent
+ * AttachmentAnalysis across all of the child's uploaded reports.
+ */
+public record AttachmentAnalysisResponseDTO (
+        Long id,
+        Long attachmentId,
+        String improvementSigns,
+        String progressSummary,
+        List<String> suggestedGoalTags,
+        LocalDateTime createdAt
+) {
 }

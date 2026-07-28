@@ -1,25 +1,16 @@
 package com.example.Baseera.dto.request;
-import com.example.Baseera.entity.Attachment;
-import com.example.Baseera.entity.Child;
-import lombok.Data;
 
-@Data
-public class AttachmentRequestDTO {
+import com.example.Baseera.enums.DocumentType;
+import jakarta.validation.constraints.NotNull;
 
-    private Long childId;
+/**
+ * Metadata that travels alongside the uploaded file in the multipart
+ * request. The MultipartFile itself is bound as a separate controller
+ * parameter, not through this DTO.
+ */
+public record AttachmentRequestDTO (
 
-    private String originalFileName;
-
-    private String storedFilePath;
-
-    private String type;
-
-    public Attachment toEntity(Child child) {
-        return Attachment.builder()
-                .child(child)
-                .originalFileName(originalFileName)
-                .storedFilePath(storedFilePath)
-                .type(type)
-                .build();
-    }
+        @NotNull(message = "Document type is required")
+        DocumentType documentType
+) {
 }

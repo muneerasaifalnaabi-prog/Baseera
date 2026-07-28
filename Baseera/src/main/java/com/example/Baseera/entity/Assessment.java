@@ -3,6 +3,12 @@ import com.example.Baseera.enums.ConditionType;
 import com.example.Baseera.enums.RiskLevel;
 import jakarta.persistence.*;
 import lombok.*;
+/**
+ * A single behavior assessment for a child. A child can have MANY
+ * assessments over time (reassessment) — each one is timestamped via
+ * BaseEntity.createdAt. The most recent one drives condition-based
+ * matching (centers, activities).
+ */
 
 @Entity
 @Table(name = "assessment")

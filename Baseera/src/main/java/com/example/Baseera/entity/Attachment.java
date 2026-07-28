@@ -34,14 +34,14 @@ public class Attachment extends BaseEntity {
     private Child child;
 
     @Column(nullable = false)
-    private String fileName;
+    private String originalFileName;
 
     /**
      * Storage location (disk path, S3 key, etc.) — never exposed directly
      * to the client; only fileName/id are returned in responses.
      */
     @Column(nullable = false)
-    private String filePath;
+    private String storedFilePath;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -1,9 +1,5 @@
 package com.example.Baseera.service;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 import com.example.Baseera.dto.request.AttachmentRequestDTO;
 import com.example.Baseera.dto.response.AttachmentResponseDTO;
 import com.example.Baseera.entity.Attachment;
@@ -12,98 +8,74 @@ import com.example.Baseera.exception.ResourceNotFoundException;
 import com.example.Baseera.repository.AttachmentRepository;
 import com.example.Baseera.repository.ChildRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class AttachmentService {
 
-    private final AttachmentRepository repository;
-    private final ChildRepository childRepository;
-    private final String UPLOAD_DIR = "uploads/";
+    @Autowired
+    private AttachmentRepository attachmentRepository;
 
-    //create Attachment
-   /* public AttachmentResponseDTO addAttachment(AttachmentRequestDTO dto) {
+    @Autowired
+    private ChildService childService;
 
-        Child child = childRepository.findById(dto.getChildId())
-                .orElseThrow(() -> new ResourceNotFoundException("Child not found"));
+    @Autowired
+    private FileStorageService fileStorageService;
 
-        try {
+    //****========
+    // parent: upload the specialist's report as a file, tagged with a DocumentType.
+    // Ownership-checked the same way as every other child-linked write.
+    //==========****
 
-            MultipartFile file = dto.getFile();
+    public AttachmentResponseDTO uploadAttachment(Long childId, AttachmentRequestDTO dto, MultipartFile file, Long parentId) {
+        Child child = childService.getChildOwnedByParent(childId, parentId);
 
-            if (file.isEmpty()) {
-                throw new RuntimeException("File is empty");
-            }
+        String originalFileName = fileStorageService.extractOriginalFileName(file);
+        String storedFilePath = fileStorageService.store(file);
 
-            // Allow only PDF file
-            if (!file.getContentType().equals("application/pdf")) {
-                throw new RuntimeException("Only PDF files are allowed");
-            }
+        Attachment attachment = dto.toEntity(child, originalFileName, storedFilePath);
+        Attachment saved = attachmentRepository.save(attachment);
 
-            Files.createDirectories(Paths.get(UPLOAD_DIR));
-
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-            Path path = Paths.get(UPLOAD_DIR, fileName);
-
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-            Attachment attachment = Attachment.builder()
-                    .child(child)
-                    .originalFileName(file.getOriginalFilename())
-                    .storedFilePath(path.toString())
-                    .type(file.getContentType())
-                    .build();
-
-            repository.save(attachment);
-
-            return AttachmentResponseDTO.fromEntity(attachment);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload file");
-        }
-    }*/
-
-    //read Attachment
-    public AttachmentResponseDTO getAttachmentById(Long attachmentId){
-
-        Attachment attachment = repository.findById(attachmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found"));
-        return AttachmentResponseDTO.fromEntity(attachment);
+        return AttachmentResponseDTO.fromEntity(saved);
     }
 
-    /*//update Attachment
-    public AttachmentResponseDTO updateAttachment(Long attachmentId , AttachmentRequestDTO updatedDTO){
-        Attachment attachment = repository.findById(attachmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found"));
+    //****========
+    // parent: list all reports uploaded for a child
+    //==========****
+    public List<AttachmentResponseDTO> getAttachmentsForChild(Long childId, Long parentId) {
+        childService.getChildOwnedByParent(childId, parentId);
+        List<Attachment> attachments = attachmentRepository.findAllByChildId(childId);
+        return AttachmentResponseDTO.fromEntity(attachments);
+    }
 
-        Child child = childRepository.findById(updatedDTO.getChildId())
-                .orElseThrow(() -> new ResourceNotFoundException("Child not found"));
+    //****========
+    // parent: soft-delete an uploaded report (also removes the file from disk)
+    //==========****
+    public String deleteAttachment(Long attachmentId, Long parentId) {
+        Attachment attachment = getAttachmentOwnedByParent(attachmentId, parentId);
+        attachment.setIsActive(false);
+        attachmentRepository.save(attachment);
+        fileStorageService.delete(attachment.getStoredFilePath());
+        return "DELETED";
+    }
 
-        attachment.setOriginalFileName(updatedDTO.getOriginalFileName());
-        attachment.setType(updatedDTO.getType());
-        attachment.setChild(child);
-        attachment.setStoredFilePath(updatedDTO.getStoredFilePath());
+    //****========
+    // shared helper — used by AttachmentAnalysisService.analyze(...) too
+    //==========****
+    public Attachment getAttachmentOwnedByParent(Long attachmentId, Long parentId) {
+        Attachment attachment = attachmentRepository.findAttachmentById(attachmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found: " + attachmentId));
 
-        repository.save(attachment);
-        return AttachmentResponseDTO.fromEntity(attachment);
-    }*/
-
-    //soft delete Attachment
-    public  String deleteAttachment(Long attachmentId){
-        Attachment attachment = repository.findById(attachmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Attachment not found"));
-
-        if(!attachment.getIsActive()){
-            return "Attachment not found";
+        if (!attachment.getChild().getParent().getId().equals(parentId)) {
+            throw new ResourceNotFoundException("Attachment not found: " + attachmentId);
         }
 
-        attachment.setIsActive(false);
-        repository.save(attachment);
-        return "Attachment deleted successfully";
-
+        return attachment;
     }
 
 

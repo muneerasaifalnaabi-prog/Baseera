@@ -1,6 +1,5 @@
 package com.example.Baseera.service;
 
-
 import com.example.Baseera.dto.request.ActivityRequestDTO;
 import com.example.Baseera.dto.response.ActivityResponseDTO;
 import com.example.Baseera.entity.Activity;

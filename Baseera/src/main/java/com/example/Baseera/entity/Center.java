@@ -1,7 +1,10 @@
 package com.example.Baseera.entity;
 
+import com.example.Baseera.enums.ConditionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +20,9 @@ public class Center extends BaseEntity{
     @Column(nullable = false)
     private String city;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String specialty;
+    private ConditionType specialty;
 
     @Column(nullable = false)
     private String phone;

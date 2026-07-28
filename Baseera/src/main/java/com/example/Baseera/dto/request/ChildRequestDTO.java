@@ -22,9 +22,6 @@ public class ChildRequestDTO {
     @NotNull(message = "Parent ID is required")
     private Long parentId;
 
-    @NotNull(message = "Plan ID is required")
-    private Long planId;
-
     public Child toEntity() {
 
         Child child = new Child();

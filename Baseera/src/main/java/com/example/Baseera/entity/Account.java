@@ -1,6 +1,6 @@
 package com.example.Baseera.entity;
 
-import com.example.Baseera.enums.Role;
+import com.example.Baseera.enums.Roles;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -26,7 +26,7 @@ public class Account  extends BaseEntity {
     private String fullName;
 
     @Column(nullable = false)
-    private Role role;
+    private Roles role;
 
     @OneToMany(mappedBy = "parent")
     private List<Child> children;

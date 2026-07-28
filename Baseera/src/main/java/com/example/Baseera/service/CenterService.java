@@ -2,90 +2,90 @@ package com.example.Baseera.service;
 
 import com.example.Baseera.dto.request.CenterRequestDTO;
 import com.example.Baseera.dto.response.CenterResponseDTO;
+import com.example.Baseera.entity.Assessment;
 import com.example.Baseera.entity.Center;
+import com.example.Baseera.entity.Child;
+import com.example.Baseera.enums.ConditionType;
 import com.example.Baseera.exception.ResourceNotFoundException;
+import com.example.Baseera.repository.AssessmentRepository;
 import com.example.Baseera.repository.CenterRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class CenterService {
-    private final CenterRepository centerRepository;
 
-    // Create a new center
-    public CenterResponseDTO createCenter(CenterRequestDTO request) {
-        Center center = request.toEntity();
-        Center savedCenter = centerRepository.save(center);
-        return CenterResponseDTO.fromEntity(savedCenter);
+    @Autowired
+    private CenterRepository centerRepository;
+
+    @Autowired
+    private AssessmentRepository assessmentRepository;
+
+    @Autowired
+    private ChildService childService;
+
+    // admin: create a new center in the catalog
+    public CenterResponseDTO createCenter(CenterRequestDTO dto) {
+        Center center = dto.toEntity();
+        Center saved = centerRepository.save(center);
+        return CenterResponseDTO.fromEntity(saved);
     }
-    // Retrieve all active centers
-    public List<CenterResponseDTO> getAllCenters() {
 
-        // Fetch only active centers
-        List<Center> centers = centerRepository.findByIsActiveTrue();
+    // admin: update an existing center's fields
+    public CenterResponseDTO updateCenter(Long centerId, CenterRequestDTO dto) {
+        Center center = centerRepository.findCenterById(centerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Center not found: " + centerId));
 
-        // Convert the entities into response DTOs
-        return CenterResponseDTO.fromEntity(centers);
+        dto.applyTo(center);
+        Center updated = centerRepository.save(center);
+        return CenterResponseDTO.fromEntity(updated);
     }
 
-    // Retrieve a center by its ID
-    public CenterResponseDTO getCenterById(Long id) {
+    // admin: deactivate the center (soft delete)
+    public String deleteCenter(Long centerId) {
+        Center center = centerRepository.findCenterById(centerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Center not found: " + centerId));
 
-        // Find the center or throw an exception if it does not exist
-        Center center = centerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Center not found."));
+        center.setIsActive(false);
+        centerRepository.save(center);
+        return "DELETED";
+    }
 
-        // Ensure the center is active
-        if (!center.getIsActive()) {
-            throw new ResourceNotFoundException("Center not found.");
-        }
 
-        // Return the center details
+    // parent/admin: get one center by id
+
+    public CenterResponseDTO getCenterById(Long centerId) {
+        Center center = centerRepository.findCenterById(centerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Center not found: " + centerId));
         return CenterResponseDTO.fromEntity(center);
     }
 
-    // Update an existing center
-    public CenterResponseDTO updateCenter(Long id, CenterRequestDTO request) {
 
-        // Find the center by its ID
-        Center center = centerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Center not found."));
+    // parent/admin: browse the full active directory, optionally filtered by city/specialty
 
-        // Ensure the center is active
-        if (!center.getIsActive()) {
-            throw new ResourceNotFoundException("Center not found.");
-        }
-
-        // Update the center fields
-        request.applyTo(center);
-
-        // Save the updated center
-        Center updatedCenter = centerRepository.save(center);
-
-        // Return the updated center
-        return CenterResponseDTO.fromEntity(updatedCenter);
+    public List<CenterResponseDTO> searchCenters(String city, ConditionType specialty) {
+        List<Center> centers = centerRepository.searchCenters(city, specialty);
+        return CenterResponseDTO.fromEntity(centers);
     }
 
-    // Soft delete a center
-    public void deleteCenter(Long id) {
+    // parent: automatic recommendation once the child has a suggestedCondition.
+    // No manual filtering needed — pulls centers matching ASD/ADHD/BOTH,
+    // sorted nearest-first if the child's centers have coordinates.
+    public List<CenterResponseDTO> recommendForChild(Long childId, Long parentId) {
+        Child child = childService.getChildOwnedByParent(childId, parentId);
 
-        // Find the center
-        Center center = centerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Center not found."));
+        Assessment latest = assessmentRepository.findLatestByChildId(childId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No assessment yet for this child — submit one to get a recommendation"));
 
-        // Ensure the center is active
-        if (!center.getIsActive()) {
-            throw new ResourceNotFoundException("Center not found.");
-        }
+        List<Center> matches = centerRepository.findBySpecialtyMatching(latest.getSuggestedCondition());
 
-        // Mark the center as inactive
-        center.setIsActive(false);
-
-        // Save the updated status
-        centerRepository.save(center);
+        // NOTE: nearest-first sorting needs a reference point (e.g. the parent's
+        // own location) which Baseera doesn't collect yet — Child has no
+        // coordinates. Once that exists, compute a haversine distance here per
+        // center and sort by it; for now, matches are returned unsorted.
+        return CenterResponseDTO.fromEntity(matches);
     }
-
 }

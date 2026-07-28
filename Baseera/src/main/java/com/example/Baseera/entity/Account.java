@@ -29,5 +29,7 @@ public class Account  extends BaseEntity {
 
     @OneToMany(mappedBy = "parent")
     private List<Child> children;
+
+
 }
 

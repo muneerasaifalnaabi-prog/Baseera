@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.example.Baseera.enums.ConditionType;
 @Data
 @NoArgsConstructor
 public class CenterResponseDTO {
@@ -14,7 +14,7 @@ public class CenterResponseDTO {
     private Long id;
     private String name;
     private String city;
-    private String specialty;
+    private ConditionType specialty;
     private String phone;
     private Double latitude;
     private Double longitude;

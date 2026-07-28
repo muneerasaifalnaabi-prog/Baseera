@@ -1,7 +1,7 @@
 package com.example.Baseera.dto.request;
 
 import com.example.Baseera.entity.Account;
-import com.example.Baseera.enums.Roles;
+import com.example.Baseera.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class AccountRequestDTO {
     @NotBlank(message = "Full name is required")
     private String fullName;
 
-    private Roles role;
+    private Role role;
 
     public Account toEntity() {
 

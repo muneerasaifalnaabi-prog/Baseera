@@ -5,18 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class ChildResponseDTO {
+
     private Long id;
     private String fullName;
     private LocalDate dateOfBirth;
+    private Integer age;
     private String gender;
-    private Long parentId;
 
+    /** age is computed server-side from dateOfBirth — never stored, never client-supplied. */
     public static ChildResponseDTO fromEntity(Child entity) {
 
         ChildResponseDTO dto = new ChildResponseDTO();
@@ -24,12 +27,8 @@ public class ChildResponseDTO {
         dto.setId(entity.getId());
         dto.setFullName(entity.getFullName());
         dto.setDateOfBirth(entity.getDateOfBirth());
+        dto.setAge(Period.between(entity.getDateOfBirth(), LocalDate.now()).getYears());
         dto.setGender(entity.getGender());
-
-        if (entity.getParent() != null) {
-            dto.setParentId(entity.getParent().getId());
-        }
-
 
         return dto;
     }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.Baseera.enums.ConditionType;
 
 @Data
 @NoArgsConstructor
@@ -15,8 +16,8 @@ public class CenterRequestDTO {
     @NotBlank(message = "City is required")
     private String city;
 
-    @NotBlank(message = "Specialty is required")
-    private String specialty;
+    @NotNull(message = "Specialty is required")
+    private ConditionType specialty;
 
     @NotBlank(message = "Phone number is required")
     private String phone;

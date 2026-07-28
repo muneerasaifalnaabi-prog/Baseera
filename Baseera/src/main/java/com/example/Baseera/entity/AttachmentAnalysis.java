@@ -2,6 +2,15 @@ package com.example.Baseera.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The AI's analysis of one uploaded Attachment (specialist report).
+ * There is no separate admin-authored plan catalog — the most recent
+ * AttachmentAnalysis across all of a child's reports IS the child's
+ * "current plan" (see AttachmentAnalysisService.getCurrentPlan(childId)).
+ */
 @Entity
 @Table(name = "attachment_analysis")
 @Data
@@ -15,11 +24,24 @@ public class AttachmentAnalysis extends BaseEntity{
     private Attachment attachment;
 
     @Lob
+    @Column(nullable = false)
     private String improvementSigns;
 
     @Lob
+    @Column(nullable = false)
     private String progressSummary;
 
-    private String suggestedGoalTags;
+    /**
+     * Matched against Activity.targetCondition in the service layer to
+     * decide which activities get surfaced next for this child.
+     */
+    @ElementCollection
+    @CollectionTable(
+            name = "attachment_analysis_goal_tags",
+            joinColumns = @JoinColumn(name = "attachment_analysis_id")
+    )
+    @Column(name = "goal_tag", nullable = false)
+    @Builder.Default
+    private List<String> suggestedGoalTags = new ArrayList<>();
 
 }

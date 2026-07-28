@@ -21,7 +21,7 @@ public class Child extends BaseEntity {
     @Column(nullable = false)
     private String gender;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", nullable = false)
     private Account parent;
 

@@ -1,36 +1,50 @@
 package com.example.Baseera.dto.response;
 import com.example.Baseera.entity.Assessment;
+import com.example.Baseera.enums.ConditionType;
 import com.example.Baseera.enums.RiskLevel;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@Builder
+@NoArgsConstructor
+
 public class AssessmentResponseDTO {
     private Long id;
-
     private Long childId;
-
-    private String parentDescription;
-
+    private String description;
     private RiskLevel riskLevel;
+    private ConditionType suggestedCondition;
+    private LocalDateTime createdAt;
 
-    private String suggestedCondition;
+    public static AssessmentResponseDTO fromEntity(Assessment entity) {
 
-    private String aiNarrative;
+        AssessmentResponseDTO dto = new AssessmentResponseDTO();
 
-    private Boolean isActive;
+        dto.setId(entity.getId());
+        dto.setChildId(entity.getChild().getId());
+        dto.setDescription(entity.getDescription());
+        dto.setRiskLevel(entity.getRiskLevel());
+        dto.setSuggestedCondition(entity.getSuggestedCondition());
+        dto.setCreatedAt(entity.getCreatedAt());
 
-    public static AssessmentResponseDTO fromEntity(Assessment assessment) {
+        return dto;
+    }
 
-        return AssessmentResponseDTO.builder()
-                .id(assessment.getId())
-                .childId(assessment.getChild().getId())
-                .parentDescription(assessment.getParentDescription())
-                .riskLevel(assessment.getRiskLevel())
-                .suggestedCondition(assessment.getSuggestedCondition())
-                .aiNarrative(assessment.getAiNarrative())
-                .isActive(assessment.getIsActive())
-                .build();
+    public static List<AssessmentResponseDTO> fromEntity(List<Assessment> entities) {
+
+        List<AssessmentResponseDTO> dtos = new ArrayList<>();
+
+        if (entities != null) {
+            for (Assessment entity : entities) {
+                dtos.add(fromEntity(entity));
+            }
+        }
+
+        return dtos;
     }
 }

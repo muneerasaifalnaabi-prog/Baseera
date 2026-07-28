@@ -1,30 +1,30 @@
 package com.example.Baseera.dto.request;
+
 import com.example.Baseera.entity.Assessment;
 import com.example.Baseera.entity.Child;
-import com.example.Baseera.enums.RiskLevel;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * Note: no riskLevel or suggestedCondition fields — those are never
+ * client-supplied, they're filled in by Gemini after toEntity() is saved.
+ */
 
 @Data
+@NoArgsConstructor
 public class AssessmentRequestDTO {
+        @NotBlank(message = "Description is required")
+        @Size(min = 10, message = "Please provide a more detailed description")
+        private String description;
 
-    private Long childId;
+        public Assessment toEntity(Child child) {
+                Assessment assessment = new Assessment();
 
-    private String parentDescription;
+                assessment.setChild(child);
+                assessment.setDescription(description);
 
-    private RiskLevel riskLevel;
-
-    private String suggestedCondition;
-
-    private String aiNarrative;
-
-    public Assessment toEntity(Child child) {
-
-        return Assessment.builder()
-                .child(child)
-                .parentDescription(parentDescription)
-                .riskLevel(riskLevel)
-                .suggestedCondition(suggestedCondition)
-                .aiNarrative(aiNarrative)
-                .build();
-    }
+                return assessment;
+        }
 }

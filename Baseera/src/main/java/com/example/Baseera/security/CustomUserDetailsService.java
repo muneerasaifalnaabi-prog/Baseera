@@ -1,4 +1,5 @@
 package com.example.Baseera.security;
+import com.example.Baseera.entity.Account;
 import com.example.Baseera.repository.AccountRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,16 +16,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = accountRepository.findByEmail(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found: " + username));
+    public UserDetails loadUserByUsername(String email) {
+        Account account = accountRepository.findByEmail(email).orElseThrow(() ->
+                        new UsernameNotFoundException("User not found: " + email));
 
         // Convert our user into the format Spring Security understands
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .authorities(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
+                .withUsername(account.getEmail())
+                .password(account.getPassword())
+                .authorities(new SimpleGrantedAuthority("ROLE_" + account.getRole().name()))
                 .build();
     }
 }

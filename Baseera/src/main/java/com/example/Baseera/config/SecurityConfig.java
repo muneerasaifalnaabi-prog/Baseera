@@ -3,6 +3,7 @@ package com.example.Baseera.config;
 import com.example.Baseera.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,11 +29,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 // Decide who can access what
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // public
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/activities/**", "/api/centers/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/parent/**").hasAnyRole("PARENT", "ADMIN")
-                        .anyRequest().authenticated() // everything else needs login
-
+                        .anyRequest().authenticated()
                 )
                 // No sessions: every request is judged by its token alone
                 .sessionManagement(session ->

@@ -1,6 +1,6 @@
 package com.example.Baseera.service;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +21,7 @@ import java.util.UUID;
  */
 @Service
 public class FileStorageService {
+
     private final Path root;
 
     public FileStorageService(@Value("${app.upload.dir:uploads}") String uploadDir) {

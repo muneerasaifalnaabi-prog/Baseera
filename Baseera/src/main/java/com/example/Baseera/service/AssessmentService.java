@@ -1,6 +1,5 @@
 package com.example.Baseera.service;
 
-
 import com.example.Baseera.dto.request.AssessmentRequestDTO;
 import com.example.Baseera.dto.response.AssessmentResponseDTO;
 import com.example.Baseera.entity.Assessment;
@@ -9,23 +8,40 @@ import com.example.Baseera.enums.ConditionType;
 import com.example.Baseera.enums.RiskLevel;
 import com.example.Baseera.exception.AiServiceException;
 import com.example.Baseera.repository.AssessmentRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class AssessmentService {
+
     @Autowired
     private AssessmentRepository assessmentRepository;
 
     @Autowired
     private ChildService childService;
 
-    @Autowired
-    private ChatClient chatClient;
+    private final ChatClient chatClient;
+
+    // Scoped system instruction for THIS screening task only — separate from
+    // GeminiController's free-chat instruction, since this call must always
+    // return strict JSON, never conversational text.
+    private static final String SYSTEM_INSTRUCTION = """
+            You are a clinical screening assistant for an Autism Support App.
+            You read a parent's free-text description of their child's behavior
+            and return a structured risk screening. You are NOT a diagnostic tool
+            and must never claim to diagnose — only flag risk level and suggest
+            which condition (ASD or ADHD) warrants professional evaluation.
+            Respond ONLY with JSON, no other text.
+            """;
+
+    public AssessmentService(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder
+                .defaultSystem(SYSTEM_INSTRUCTION)
+                .build();
+    }
 
     //****========
     // parent: submit a free-text behavior description for a child.
@@ -55,7 +71,6 @@ public class AssessmentService {
 
     private AiAssessmentResult analyzeWithGemini(String description) {
         String prompt = """
-                You are screening a free-text behavior description for a child.
                 Respond ONLY with JSON in this exact shape:
                 {
                   "riskLevel": "LOW" | "MEDIUM" | "HIGH",
@@ -79,6 +94,4 @@ public class AssessmentService {
 
     private record AiAssessmentResult(RiskLevel riskLevel, ConditionType suggestedCondition) {
     }
-
-
 }

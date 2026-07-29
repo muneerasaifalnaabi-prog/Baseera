@@ -31,7 +31,7 @@ public class ActivityRequestDTO {
     @Max(value = 18, message = "Maximum age is out of range")
     private Integer maxAge;
 
-    @NotBlank(message = "Target condition is required")
+    @NotNull(message = "Target condition is required")
     private ConditionType targetCondition;
 
     public Activity toEntity() {

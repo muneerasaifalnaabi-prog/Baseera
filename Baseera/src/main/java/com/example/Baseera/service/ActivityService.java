@@ -3,6 +3,7 @@ package com.example.Baseera.service;
 import com.example.Baseera.dto.request.ActivityRequestDTO;
 import com.example.Baseera.dto.response.ActivityResponseDTO;
 import com.example.Baseera.entity.Activity;
+import com.example.Baseera.enums.ConditionType;
 import com.example.Baseera.exception.ResourceNotFoundException;
 import com.example.Baseera.repository.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,10 +73,22 @@ public class ActivityService {
     }
 
     //****========
-    // parent/admin: filter by name, condition (ASD/ADHD), and/or age — all optional, pass null to skip
+    // parent/admin: filter by name, condition (ASD/ADHD), and/or age — all optional, pass null to skip.
+    // targetCondition arrives as a raw query-param string and is converted to the
+    // real enum HERE, before it ever reaches the repository — Hibernate refuses to
+    // bind a String against an enum-typed column, so the repository takes ConditionType.
     //==========****
     public List<ActivityResponseDTO> searchActivities(String name, String targetCondition, Integer age) {
-        List<Activity> activities = activityRepository.searchActivities(name, targetCondition, age);
+        ConditionType condition = null;
+        if (targetCondition != null && !targetCondition.isBlank()) {
+            try {
+                condition = ConditionType.valueOf(targetCondition.trim().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(
+                        "targetCondition must be one of ASD, ADHD, BOTH — got: " + targetCondition);
+            }
+        }
+        List<Activity> activities = activityRepository.searchActivities(name, condition, age);
         return ActivityResponseDTO.fromEntity(activities);
     }
 }

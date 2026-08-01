@@ -26,7 +26,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "attachments")
 public class Attachment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

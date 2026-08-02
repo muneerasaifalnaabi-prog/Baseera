@@ -1,37 +1,77 @@
-<h2>Activities</h2>
-
-<div>
-  <input type="text" [(ngModel)]="nameFilter" placeholder="Search by name" />
-
-  <select [(ngModel)]="conditionFilter">
-    <option value="">All conditions</option>
-    <option value="ASD">ASD</option>
-    <option value="ADHD">ADHD</option>
-    <option value="BOTH">Both</option>
-  </select>
-
-  <input type="number" [(ngModel)]="ageFilter" placeholder="Age" min="0" max="18" />
-
-  <button type="button" (click)="applyFilters()">Search</button>
-  <button type="button" (click)="clearFilters()">Clear</button>
-</div>
-
-@if (loading()) {
-  <p>Loading...</p>
-}
-
-@if (errorMessage()) {
-  <p>{{ errorMessage() }}</p>
-}
-
-@for (activity of activities(); track activity.id) {
-  <div>
-    <h3>{{ activity.name }}</h3>
-    <p>{{ activity.description }}</p>
-    <p>Ages {{ activity.minAge }}–{{ activity.maxAge }} · {{ activity.targetCondition }}</p>
+<div class="page" [class.lang-ar]="lang() === 'ar'" [attr.dir]="lang() === 'ar' ? 'rtl' : 'ltr'">
+  <div class="header">
+    <div>
+      <h1 class="title">{{ t[lang()].title }}</h1>
+      <p class="subtitle">{{ t[lang()].subtitle }}</p>
+    </div>
+    <button type="button" class="lang-toggle" (click)="toggleLang()">{{ t[lang()].langLabel }}</button>
   </div>
-}
 
-@if (!loading() && activities().length === 0) {
-  <p>No activities match your search.</p>
-}
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        [(ngModel)]="nameFilter"
+        [placeholder]="t[lang()].searchPlaceholder"
+        (keyup.enter)="applyFilters()"
+      />
+    </div>
+
+    <div class="chip-row">
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === ''" (click)="selectCondition('')">{{ t[lang()].all }}</button>
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'ASD'" (click)="selectCondition('ASD')">{{ conditionLabel('ASD') }}</button>
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'ADHD'" (click)="selectCondition('ADHD')">{{ conditionLabel('ADHD') }}</button>
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'BOTH'" (click)="selectCondition('BOTH')">{{ conditionLabel('BOTH') }}</button>
+    </div>
+
+    <input
+      type="number"
+      class="age-input"
+      [(ngModel)]="ageFilter"
+      [placeholder]="t[lang()].agePlaceholder"
+      min="0" max="18"
+      (change)="applyFilters()"
+    />
+
+    <button type="button" class="clear-button" (click)="clearFilters()">{{ t[lang()].clear }}</button>
+  </div>
+
+  @if (loading()) {
+    <div class="skeleton-grid">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="skeleton-card"></div>
+      }
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <p class="error-text">{{ errorMessage() }}</p>
+  }
+
+  @if (!loading() && !errorMessage()) {
+    @if (activities().length > 0) {
+      <div class="grid">
+        @for (activity of activities(); track activity.id) {
+          <div class="card">
+            <img class="card-image" [src]="getActivityImage(activity)" alt="" />
+            <div class="card-body">
+              <span class="badge">{{ conditionLabel(activity.targetCondition) }}</span>
+              <h3>{{ activity.name }}</h3>
+              <p>{{ activity.description }}</p>
+              <span class="ages">{{ t[lang()].agesLabel }} {{ activity.minAge }}–{{ activity.maxAge }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <h3>{{ t[lang()].emptyTitle }}</h3>
+        <p>{{ t[lang()].emptyText }}</p>
+      </div>
+    }
+  }
+</div>

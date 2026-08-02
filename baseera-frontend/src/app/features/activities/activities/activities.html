@@ -1,0 +1,37 @@
+<h2>Activities</h2>
+
+<div>
+  <input type="text" [(ngModel)]="nameFilter" placeholder="Search by name" />
+
+  <select [(ngModel)]="conditionFilter">
+    <option value="">All conditions</option>
+    <option value="ASD">ASD</option>
+    <option value="ADHD">ADHD</option>
+    <option value="BOTH">Both</option>
+  </select>
+
+  <input type="number" [(ngModel)]="ageFilter" placeholder="Age" min="0" max="18" />
+
+  <button type="button" (click)="applyFilters()">Search</button>
+  <button type="button" (click)="clearFilters()">Clear</button>
+</div>
+
+@if (loading()) {
+  <p>Loading...</p>
+}
+
+@if (errorMessage()) {
+  <p>{{ errorMessage() }}</p>
+}
+
+@for (activity of activities(); track activity.id) {
+  <div>
+    <h3>{{ activity.name }}</h3>
+    <p>{{ activity.description }}</p>
+    <p>Ages {{ activity.minAge }}–{{ activity.maxAge }} · {{ activity.targetCondition }}</p>
+  </div>
+}
+
+@if (!loading() && activities().length === 0) {
+  <p>No activities match your search.</p>
+}

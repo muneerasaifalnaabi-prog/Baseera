@@ -4,6 +4,7 @@ import { Home } from './features/home/home/home';
 import { Login } from './features/auth/login/login';
 import { authGuard } from './shared/guards/auth-guard';
 import { OauthCallback } from './features/auth/oauth-callback/oauth-callback';
+import { Activities } from './features/activities/activities/activities';
 
 export const routes: Routes = [
   {
@@ -22,5 +23,9 @@ export const routes: Routes = [
 {
   path: 'oauth-callback',
   component: OauthCallback
+},
+{
+  path: 'activities',
+  component: Activities
 }
 ];

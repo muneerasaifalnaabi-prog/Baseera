@@ -1,17 +1,25 @@
 <h2>Specialized Centers</h2>
 
-<div *ngFor="let center of centers" class="center-card">
+@for (center of centers; track center.id) {
 
-  <h3>{{ center.name }}</h3>
+  <div class="center-card">
 
-  <p><strong>City:</strong> {{ center.city }}</p>
+    <h3>{{ center.name }}</h3>
 
-  <p><strong>Specialty:</strong> {{ center.specialty }}</p>
+    <p><strong>City:</strong> {{ center.city }}</p>
 
-  <p><strong>Phone:</strong> {{ center.phone }}</p>
+    <p><strong>Specialty:</strong> {{ center.specialty }}</p>
 
-  <button>Get Directions</button>
+    <p><strong>Phone:</strong> {{ center.phone }}</p>
 
-  <hr>
+    <button (click)="openMap(center)">
+      Get Directions
+    </button>
 
-</div>
+    <hr>
+
+  </div>
+
+}
+
+<div id="map"></div>

@@ -5,6 +5,13 @@ import * as L from 'leaflet';
 import { Center } from './models/center.model';
 import { CenterService } from './services/center.service';
 
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+});
 @Component({
   selector: 'app-center',
   standalone: true,
@@ -26,7 +33,6 @@ export class CenterComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.centers = data;
 
-        // إذا كانت الخريطة جاهزة، نضيف الماركرات
         if (this.map) {
           this.addMarkers();
         }
@@ -42,9 +48,17 @@ export class CenterComponent implements OnInit, AfterViewInit {
 
     this.map = L.map('map').setView([23.5880, 58.3829], 7);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(this.map);
+    L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '&copy; OpenStreetMap contributors'
+      }
+    ).addTo(this.map);
+
+  
+    setTimeout(() => {
+      this.map.invalidateSize();
+    }, 100);
 
     if (this.centers.length > 0) {
       this.addMarkers();
@@ -70,8 +84,7 @@ export class CenterComponent implements OnInit, AfterViewInit {
 
   openMap(center: Center): void {
 
-    const url =
-      `https://www.google.com/maps?q=${center.latitude},${center.longitude}`;
+    const url = `https://www.google.com/maps?q=${center.latitude},${center.longitude}`;
 
     window.open(url, '_blank');
 

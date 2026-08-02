@@ -17,5 +17,14 @@ export const routes: Routes = [
   {
   path: 'login',
   component: Login
-}
+},{
+    path: 'vault/:childId',
+
+    loadComponent: () =>
+      import(
+        './features/vault/components/child-vault/child-vault'
+        ).then(
+        m => m.ChildVaultComponent
+      )
+  }
 ];

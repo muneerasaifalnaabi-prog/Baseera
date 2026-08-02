@@ -1,3 +1,17 @@
-<h1 style="color:red">
-CENTER PAGE WORKS
-</h1>
+<h2>Specialized Centers</h2>
+
+<div *ngFor="let center of centers" class="center-card">
+
+  <h3>{{ center.name }}</h3>
+
+  <p><strong>City:</strong> {{ center.city }}</p>
+
+  <p><strong>Specialty:</strong> {{ center.specialty }}</p>
+
+  <p><strong>Phone:</strong> {{ center.phone }}</p>
+
+  <button>Get Directions</button>
+
+  <hr>
+
+</div>

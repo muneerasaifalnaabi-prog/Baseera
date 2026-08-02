@@ -19,13 +19,17 @@ export class CenterComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log("Center Component Loaded");
+
     this.centerService.getCenters().subscribe({
       next: (data) => {
+        console.log("DATA:", data);
         this.centers = data;
-        console.log(data);
+        console.log("Centers array:", this.centers);
+        console.log("Length:", this.centers.length);
       },
       error: (err) => {
-        console.error(err);
+        console.error("ERROR:", err);
       }
     });
 

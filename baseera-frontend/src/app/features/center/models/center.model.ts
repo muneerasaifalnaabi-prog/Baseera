@@ -5,5 +5,6 @@ export interface Center {
   specialty: string;
   phone: string;
   latitude: number;
-  longitude: number
+  longitude: number;
+  distance?: number;
 }

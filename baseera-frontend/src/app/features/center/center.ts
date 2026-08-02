@@ -1,87 +1,255 @@
 import * as L from 'leaflet';
-import { AfterViewInit } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CenterService } from './services/center.service';
 import { Center } from './models/center.model';
 
+// ==========================================
+// Component
+// ==========================================
+
 @Component({
   selector: 'app-center',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    FormsModule
   ],
   templateUrl: './center.html',
   styleUrl: './center.css'
 })
+
 export class CenterComponent implements OnInit, AfterViewInit {
+
+  // ==========================================
+  // Properties
+  // ==========================================
+
+  // All centers from backend
   centers: Center[] = [];
 
+  // Centers after filtering
   filteredCenters: Center[] = [];
 
+  // Selected center
   selectedCenter?: Center;
-
+  // Search & Filter
   searchText = '';
-
   selectedSpecialty = 'ALL';
-  private map!: L.Map;
-  ngAfterViewInit(): void {
-  this.initMap();
-}
 
-private initMap(): void {
-   console.log('Map initialization started');
-
-  this.map = L.map('map').setView([20.5, 57.5], 6);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(this.map);
-
-}
-
+  // Loading state
   loading = false;
 
+  // Leaflet Map
+  private map!: L.Map;
 
-  constructor(private centerService: CenterService) {}
+  // Store all markers
+  private markers: L.Marker[] = [];
+
+  // User Coordinates
+  userLat!: number;
+  userLng!: number;
+
+  // ==========================================
+  // Constructor
+  // ==========================================
+
+  constructor(
+    private centerService: CenterService
+  ) {}
+
+  // ==========================================
+  // Lifecycle Hooks
+  // ==========================================
 
   ngOnInit(): void {
+
+    // Load centers from backend
+
     this.loadCenters();
+
   }
+
+  ngAfterViewInit(): void {
+
+    // Initialize map
+
+    this.initMap();
+
+    // Get user location
+
+    this.getUserLocation();
+
+  }
+
+  // ==========================================
+  // Map Functions
+  // ==========================================
+
+  private initMap(): void {
+
+    this.map = L.map('map').setView([20.5,57.5],6);
+
+    L.tileLayer(
+
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+      {
+
+        attribution:'© OpenStreetMap Contributors'
+
+      }
+
+    ).addTo(this.map);
+
+  }
+
+  //////////////////////////////////////////////////
+
+  private getUserLocation(): void {
+
+    if(!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(position=>{
+
+      this.userLat=position.coords.latitude;
+
+      this.userLng=position.coords.longitude;
+
+      // User Location
+
+      L.circleMarker(
+
+        [this.userLat,this.userLng],
+
+        {
+
+          radius:8,
+
+          color:'#2563eb',
+
+          fillColor:'#3b82f6',
+
+          fillOpacity:1,
+
+          weight:3
+
+        }
+
+      )
+
+      .addTo(this.map)
+
+      .bindPopup('📍 Your Location')
+
+      .openPopup();
+
+      // Accuracy Circle
+
+      L.circle(
+
+        [this.userLat,this.userLng],
+
+        {
+
+          radius:20,
+
+          color:'#60a5fa',
+
+          fillColor:'#60a5fa',
+
+          fillOpacity:0.15,
+
+          weight:1
+
+        }
+
+      ).addTo(this.map);
+
+      this.map.setView(
+
+        [this.userLat,this.userLng],
+
+        8
+
+      );
+
+      if(this.centers.length>0){
+
+        this.calculateDistances();
+
+      }
+
+    });
+
+  }
+
+  // ==========================================
+  // Data Functions
+  // ==========================================
 
   loadCenters(): void {
 
     this.loading = true;
 
     this.centerService.getCenters().subscribe({
+
       next: (data) => {
 
-  this.centers = data;
-  this.filteredCenters = data;
+        this.centers = data;
 
-  data.forEach(center => {
+        this.filteredCenters = [...data];
 
-    L.marker([center.latitude, center.longitude])
-      .addTo(this.map)
-      .bindPopup(`
-        <b>${center.name}</b><br>
-        ${center.city}<br>
-        ${center.specialty}
-      `);
+        // Remove old markers
 
-  });
+        this.markers.forEach(marker => {
 
-  this.loading = false;
+          this.map.removeLayer(marker);
 
-},
+        });
 
-    
+        this.markers = [];
+
+        // Add new markers
+
+        this.centers.forEach(center => {
+
+          const marker = L.marker(
+
+            [center.latitude, center.longitude])
+
+          .addTo(this.map)
+
+          .bindPopup(`
+
+            <b>${center.name}</b><br>
+
+            📍 ${center.city}<br>
+
+            🧩 ${center.specialty}
+
+          `);
+
+          this.markers.push(marker);
+
+        });
+
+        if (this.userLat) {
+
+          this.calculateDistances();
+
+        }
+
+        this.loading = false;
+
+      },
+
       error: (err) => {
 
         console.error(err);
+
         this.loading = false;
 
       }
@@ -90,16 +258,22 @@ private initMap(): void {
 
   }
 
+  //////////////////////////////////////////////////
+
   filterCenters(): void {
 
     this.filteredCenters = this.centers.filter(center => {
 
       const matchesSearch =
+
         center.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+
         center.city.toLowerCase().includes(this.searchText.toLowerCase());
 
       const matchesSpecialty =
+
         this.selectedSpecialty === 'ALL' ||
+
         center.specialty === this.selectedSpecialty;
 
       return matchesSearch && matchesSpecialty;
@@ -107,45 +281,179 @@ private initMap(): void {
     });
 
   }
+
+// ==========================================
+// GIS Functions
+// ==========================================
+
+// Calculate the distance between the user's
+// location and every center using the
+// Haversine Formula.
+
+  private calculateDistances(): void {
+
+    this.centers.forEach(center => {
+
+      center.distance = this.getDistance(
+
+        this.userLat,
+
+        this.userLng,
+
+        center.latitude,
+
+        center.longitude
+
+      );
+
+    });
+
+    // Sort by nearest center
+
+    this.centers.sort(
+
+      (a,b)=>(a.distance ?? 0)-(b.distance ?? 0)
+      
+
+    );
+
+  // Update filtered list after sorting
+
+  this.filteredCenters = [...this.centers];
+
+
+  }
+
+  //////////////////////////////////////////////////
+
+  private getDistance(
+
+    lat1:number,
+
+    lon1:number,
+
+    lat2:number,
+
+    lon2:number
+
+  ):number{
+
+    const R = 6371;
+
+    const dLat = this.toRadians(lat2-lat1);
+
+    const dLon = this.toRadians(lon2-lon1);
+
+    const a =
+
+      Math.sin(dLat/2)*Math.sin(dLat/2)+
+
+      Math.cos(this.toRadians(lat1))*
+
+      Math.cos(this.toRadians(lat2))*
+
+      Math.sin(dLon/2)*
+
+      Math.sin(dLon/2);
+
+    const c =
+
+      2*Math.atan2(
+
+        Math.sqrt(a),
+
+        Math.sqrt(1-a)
+
+      );
+
+    return Number((R*c).toFixed(1));
+
+  }
+
+// Convert degrees to radians
+  private toRadians(value:number):number{
+
+    return value * Math.PI / 180;
+
+  }
+
+  // ==========================================
+  // User Actions
+  // ==========================================
+
   selectCenter(center: Center): void {
 
-  this.selectedCenter = center;
-   this.map.setView(
-    [center.latitude, center.longitude],
-    12
-  );
+    this.selectedCenter = center;
 
-}
+    this.map.setView(
+
+      [center.latitude, center.longitude],
+
+      12
+
+    );
+
+    // Open popup automatically
+
+    this.markers.forEach(marker => {
+
+      const location = marker.getLatLng();
+
+      if (
+
+        location.lat === center.latitude &&
+
+        location.lng === center.longitude
+
+      ) {
+
+        marker.openPopup();
+
+      }
+
+    });
+
+  }
+
 
   openDirections(center: Center): void {
 
     window.open(
+
       `https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}`,
+
       '_blank'
+
     );
-    
 
   }
-getImage(center: Center): string {
 
-  switch (center.city.toLowerCase()) {
+  // ==========================================
+  // Helper Functions
+  // ==========================================
 
-    case 'muscat':
-      return 'center/muscat.jpg';
+  getImage(center: Center): string {
 
-    case 'sohar':
-      return 'center/sohar.jpg';
+    switch(center.city.toLowerCase()){
 
-    case 'salalah':
-      return 'center/salalah.jpg';
+      case 'muscat':
+        return 'center/muscat.jpg';
 
-    case 'sur':
-      return 'center/sur.jpg';
+      case 'sohar':
+        return 'center/sohar.jpg';
 
-    default:
-      return 'center/muscat.jpg';
+      case 'salalah':
+        return 'center/salalah.jpg';
+
+      case 'sur':
+        return 'center/sur.jpg';
+
+      default:
+        return 'center/muscat.jpg';
+
+    }
+
   }
 
 }
 
-}

@@ -1,93 +1,151 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
+import { AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { Center } from './models/center.model';
 import { CenterService } from './services/center.service';
+import { Center } from './models/center.model';
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
-});
 @Component({
   selector: 'app-center',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+  ],
   templateUrl: './center.html',
   styleUrl: './center.css'
 })
 export class CenterComponent implements OnInit, AfterViewInit {
-
-  private centerService = inject(CenterService);
-
   centers: Center[] = [];
 
+  filteredCenters: Center[] = [];
+
+  selectedCenter?: Center;
+
+  searchText = '';
+
+  selectedSpecialty = 'ALL';
   private map!: L.Map;
+  ngAfterViewInit(): void {
+  this.initMap();
+}
+
+private initMap(): void {
+   console.log('Map initialization started');
+
+  this.map = L.map('map').setView([20.5, 57.5], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(this.map);
+
+}
+
+  loading = false;
+
+
+  constructor(private centerService: CenterService) {}
 
   ngOnInit(): void {
+    this.loadCenters();
+  }
+
+  loadCenters(): void {
+
+    this.loading = true;
 
     this.centerService.getCenters().subscribe({
       next: (data) => {
-        this.centers = data;
 
-        if (this.map) {
-          this.addMarkers();
-        }
-      },
+  this.centers = data;
+  this.filteredCenters = data;
+
+  data.forEach(center => {
+
+    L.marker([center.latitude, center.longitude])
+      .addTo(this.map)
+      .bindPopup(`
+        <b>${center.name}</b><br>
+        ${center.city}<br>
+        ${center.specialty}
+      `);
+
+  });
+
+  this.loading = false;
+
+},
+
+    
       error: (err) => {
+
         console.error(err);
+        this.loading = false;
+
       }
-    });
-
-  }
-
-  ngAfterViewInit(): void {
-
-    this.map = L.map('map').setView([23.5880, 58.3829], 7);
-
-    L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        attribution: '&copy; OpenStreetMap contributors'
-      }
-    ).addTo(this.map);
-
-  
-    setTimeout(() => {
-      this.map.invalidateSize();
-    }, 100);
-
-    if (this.centers.length > 0) {
-      this.addMarkers();
-    }
-
-  }
-
-  addMarkers(): void {
-
-    this.centers.forEach(center => {
-
-      L.marker([center.latitude, center.longitude])
-        .addTo(this.map)
-        .bindPopup(`
-          <b>${center.name}</b><br>
-          ${center.city}<br>
-          ${center.phone}
-        `);
 
     });
 
   }
 
-  openMap(center: Center): void {
+  filterCenters(): void {
 
-    const url = `https://www.google.com/maps?q=${center.latitude},${center.longitude}`;
+    this.filteredCenters = this.centers.filter(center => {
 
-    window.open(url, '_blank');
+      const matchesSearch =
+        center.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        center.city.toLowerCase().includes(this.searchText.toLowerCase());
+
+      const matchesSpecialty =
+        this.selectedSpecialty === 'ALL' ||
+        center.specialty === this.selectedSpecialty;
+
+      return matchesSearch && matchesSpecialty;
+
+    });
 
   }
+  selectCenter(center: Center): void {
+
+  this.selectedCenter = center;
+   this.map.setView(
+    [center.latitude, center.longitude],
+    12
+  );
+
+}
+
+  openDirections(center: Center): void {
+
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}`,
+      '_blank'
+    );
+    
+
+  }
+getImage(center: Center): string {
+
+  switch (center.city.toLowerCase()) {
+
+    case 'muscat':
+      return 'center/muscat.jpg';
+
+    case 'sohar':
+      return 'center/sohar.jpg';
+
+    case 'salalah':
+      return 'center/salalah.jpg';
+
+    case 'sur':
+      return 'center/sur.jpg';
+
+    default:
+      return 'center/muscat.jpg';
+  }
+
+}
 
 }

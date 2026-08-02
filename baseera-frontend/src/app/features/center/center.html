@@ -1,25 +1,129 @@
-<h2>Specialized Centers</h2>
+<div class="page">
 
-@for (center of centers; track center.id) {
+  <!-- Sidebar -->
+  <aside class="sidebar">
 
-  <div class="center-card">
+    <h1 class="logo">Baseera</h1>
 
-    <h3>{{ center.name }}</h3>
+    <nav>
+      <a href="#">🏠 Dashboard</a>
+      <a class="active" href="#">📍 Explore Centers</a>
+      <a href="#">🤖 AI Assistant</a>
+      <a href="#">👨‍👩‍👧 Support Groups</a>
+      <a href="#">⚙️ Settings</a>
+      <a href="#">🚪 Logout</a>
+    </nav>
 
-    <p><strong>City:</strong> {{ center.city }}</p>
+  </aside>
 
-    <p><strong>Specialty:</strong> {{ center.specialty }}</p>
+  <!-- Main Content -->
+  <main class="content">
 
-    <p><strong>Phone:</strong> {{ center.phone }}</p>
+    <div class="header">
+      <h2>Specialized Centers</h2>
+    </div>
 
-    <button (click)="openMap(center)">
-      Get Directions
-    </button>
+    <!-- Search -->
+    <div class="search-box">
 
-    <hr>
+      <input
+        type="text"
+        placeholder="Search by center name or city..."
+        [(ngModel)]="searchText"
+        (input)="filterCenters()">
 
-  </div>
+    </div>
 
-}
+    <!-- Filters -->
+    <div class="filters">
 
-<div id="map"></div>
+      <button
+        [class.active]="selectedSpecialty=='ALL'"
+        (click)="selectedSpecialty='ALL'; filterCenters()">
+        All
+      </button>
+
+      <button
+        [class.active]="selectedSpecialty=='ASD'"
+        (click)="selectedSpecialty='ASD'; filterCenters()">
+        ASD
+      </button>
+
+      <button
+        [class.active]="selectedSpecialty=='ADHD'"
+        (click)="selectedSpecialty='ADHD'; filterCenters()">
+        ADHD
+      </button>
+
+      <button
+        [class.active]="selectedSpecialty=='BOTH'"
+        (click)="selectedSpecialty='BOTH'; filterCenters()">
+        BOTH
+      </button>
+
+    </div>
+
+    <!-- Main Body -->
+    <div class="body">
+
+      <!-- Cards -->
+      <section class="cards">
+
+        <div
+          class="card"
+          *ngFor="let center of filteredCenters"
+          (click)="selectCenter(center)">
+
+          <!-- Center Image -->
+          <img
+            [src]="getImage(center)"
+            [alt]="center.name">
+
+          <div class="info">
+
+            <div class="top">
+              <h3>{{ center.name }}</h3>
+
+              <span class="badge">
+                {{ center.specialty }}
+              </span>
+            </div>
+
+            <p>📍 {{ center.city }}</p>
+
+            <p>📞 {{ center.phone }}</p>
+
+            <div class="buttons">
+
+              <button
+                class="view"
+                (click)="selectCenter(center); $event.stopPropagation()">
+                View on Map
+              </button>
+
+              <button
+                class="direction"
+                (click)="openDirections(center); $event.stopPropagation()">
+                Get Directions
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Map -->
+      <section class="map">
+
+        <div id="map"></div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>

@@ -10,20 +10,51 @@
   border-inline-end: 1px solid #E5E7EB;
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 20px 16px;
   box-sizing: border-box;
   position: sticky;
   top: 0;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #4F46E5;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.brand-name {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #1E1B4B;
+}
+
 .profile {
   text-align: center;
-  margin-bottom: 32px;
+  padding: 16px 0;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .avatar {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 16px;
   background: #4F46E5;
   color: #ffffff;
@@ -32,14 +63,14 @@
   justify-content: center;
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
-  font-size: 24px;
-  margin: 0 auto 10px;
+  font-size: 22px;
+  margin: 0 auto 8px;
 }
 
 .profile-name {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   color: #1E1B4B;
   margin: 0;
 }
@@ -47,15 +78,27 @@
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   flex: 1;
+  overflow-y: auto;
 }
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9CA3AF;
+  margin: 14px 10px 4px;
+}
+
+.nav-label:first-child { margin-top: 0; }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
+  padding: 10px 12px;
   border-radius: 16px;
   color: #6B7280;
   font-size: 13px;
@@ -75,7 +118,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
+  padding: 10px 12px;
   border-radius: 16px;
   border: none;
   background: transparent;
@@ -83,7 +126,28 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  margin-top: 4px;
 }
 
-.logout:hover { background: #F8FAFC; }
+.logout:hover { background: #F0FDFA; }
+
+.lang-toggle {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 16px;
+  border: 1.5px solid #E5E7EB;
+  background: transparent;
+  color: #4F46E5;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.lang-toggle:hover { background: #F8FAFC; }
+
+.sidebar.lang-ar,
+.sidebar.lang-ar * {
+  font-family: 'Tajawal', sans-serif !important;
+}

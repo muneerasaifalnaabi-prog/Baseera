@@ -1,6 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { Language } from '../../services/language';
+import { translations } from '../../i18n/translations';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,7 +16,9 @@ export class Sidebar implements OnInit {
   isAdmin = signal(false);
   selectedChildId = signal<string | null>(null);
 
-  constructor(private router: Router) {}
+  t = translations.sidebar;
+
+  constructor(public lang: Language, private router: Router) {}
 
   ngOnInit(): void {
     this.fullName = localStorage.getItem('fullName') ?? 'there';

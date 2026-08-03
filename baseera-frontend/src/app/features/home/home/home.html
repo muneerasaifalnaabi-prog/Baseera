@@ -1,2 +1,109 @@
-<h1>Hello, {{ fullName }}</h1>
-<p>Welcome to your Baseera home page.</p>
+<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+
+  <header class="header">
+    <div>
+      <h1 class="greeting">{{ t[lang.current()].greeting }}, {{ fullName }}</h1>
+      <p class="subtitle">{{ t[lang.current()].subtitle }}</p>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="stat-row">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  }
+
+  @if (!loading() && children().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">👶</div>
+      <h2>{{ t[lang.current()].noChildTitle }}</h2>
+      <p>{{ t[lang.current()].noChildText }}</p>
+      <a routerLink="/select-child" class="primary-button">{{ t[lang.current()].addChild }}</a>
+    </div>
+  }
+
+  @if (!loading() && children().length > 0) {
+
+    <!-- Stat row -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <span class="stat-label">{{ t[lang.current()].statChildren }}</span>
+        <span class="stat-value">{{ children().length }}</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-label">{{ t[lang.current()].statCheckins }}</span>
+        <span class="stat-value">{{ assessments().length }}</span>
+      </div>
+
+      <div class="stat-card stat-card--wide">
+        <span class="stat-label">{{ t[lang.current()].statLatest }}</span>
+        @if (latestAssessment(); as latest) {
+          <span class="stat-risk" [class]="riskClass(latest.riskLevel)">
+            {{ riskLabel(latest.riskLevel) }}
+          </span>
+          <span class="stat-meta">{{ latest.suggestedCondition }} · {{ latest.createdAt | slice:0:10 }}</span>
+        } @else {
+          <span class="stat-risk risk-none">{{ t[lang.current()].noAssessment }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <h2 class="section-title">{{ t[lang.current()].quickTitle }}</h2>
+    <div class="action-grid">
+      <a routerLink="/assessment" class="action-card">
+        <div class="action-icon action-icon--primary">✦</div>
+        <div>
+          <h3>{{ t[lang.current()].quickCheckin }}</h3>
+          <p>{{ t[lang.current()].quickCheckinText }}</p>
+        </div>
+      </a>
+
+      <a routerLink="/activities" class="action-card">
+        <div class="action-icon action-icon--teal">◆</div>
+        <div>
+          <h3>{{ t[lang.current()].quickActivities }}</h3>
+          <p>{{ t[lang.current()].quickActivitiesText }}</p>
+        </div>
+      </a>
+
+      <a routerLink="/centers" class="action-card">
+        <div class="action-icon action-icon--amber">◉</div>
+        <div>
+          <h3>{{ t[lang.current()].quickCenters }}</h3>
+          <p>{{ t[lang.current()].quickCentersText }}</p>
+        </div>
+      </a>
+
+      <a [routerLink]="vaultLink()" class="action-card">
+        <div class="action-icon action-icon--slate">▤</div>
+        <div>
+          <h3>{{ t[lang.current()].quickReports }}</h3>
+          <p>{{ t[lang.current()].quickReportsText }}</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Recent check-ins -->
+    @if (assessments().length > 0) {
+      <h2 class="section-title">{{ t[lang.current()].historyTitle }}</h2>
+      <div class="history-list">
+        @for (item of assessments().slice(0, 5); track item.id) {
+          <div class="history-row">
+            <span class="history-dot" [class]="riskClass(item.riskLevel)"></span>
+            <span class="history-risk">{{ riskLabel(item.riskLevel) }}</span>
+            <span class="history-condition">{{ item.suggestedCondition }}</span>
+            <span class="history-date">{{ item.createdAt | slice:0:10 }}</span>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

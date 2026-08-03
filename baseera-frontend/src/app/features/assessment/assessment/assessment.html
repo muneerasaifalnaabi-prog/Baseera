@@ -1,0 +1,81 @@
+<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+
+  @if (stage() === 'form') {
+    <div class="chat-card">
+      <div class="chat-header">
+        <div class="ai-avatar">✦</div>
+        <div>
+          <h1 class="title">{{ t[lang.current()].title }}</h1>
+          <p class="subtitle">{{ t[lang.current()].subtitle }}</p>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <div class="input-area">
+        <textarea
+          [(ngModel)]="description"
+          [placeholder]="t[lang.current()].placeholder"
+          rows="5"
+        ></textarea>
+        <p class="hint">{{ t[lang.current()].minLengthHint }}</p>
+        <button type="button" class="send-button" [disabled]="description.trim().length < 10" (click)="submit()">
+          {{ t[lang.current()].send }}
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (stage() === 'thinking') {
+    <div class="thinking-card">
+      <div class="orb">
+        <div class="orb-dot orb-dot-1"></div>
+        <div class="orb-dot orb-dot-2"></div>
+        <div class="orb-core">✦</div>
+      </div>
+      <p class="thinking-text">{{ t[lang.current()].thinking }}</p>
+    </div>
+  }
+
+  @if (stage() === 'result' && latestResult()) {
+    <div class="result-card">
+      <span class="ai-label">{{ t[lang.current()].resultTitle }}</span>
+      <h2 class="risk-headline">{{ riskLabel(latestResult()!.riskLevel) }}</h2>
+
+      <div class="confidence-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#E5E7EB" stroke-width="8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#4F46E5" stroke-width="8"
+                  stroke-linecap="round"
+                  [attr.stroke-dasharray]="264"
+                  [attr.stroke-dashoffset]="latestResult()!.riskLevel === 'HIGH' ? 40 : latestResult()!.riskLevel === 'MEDIUM' ? 100 : 180"
+                  transform="rotate(-90 50 50)"/>
+        </svg>
+        <span class="ring-label">{{ latestResult()!.suggestedCondition }}</span>
+      </div>
+
+      <p class="guidance-note">{{ t[lang.current()].guidanceNote }}</p>
+
+      <button type="button" class="secondary-button" (click)="startNew()">
+        {{ t[lang.current()].newAssessment }}
+      </button>
+    </div>
+  }
+
+  @if (history().length > 0) {
+    <div class="history-section">
+      <h3 class="history-title">{{ t[lang.current()].historyTitle }}</h3>
+      <div class="history-list">
+        @for (item of history(); track item.id) {
+          <div class="history-row">
+            <span class="history-condition">{{ item.suggestedCondition }}</span>
+            <span class="history-risk">{{ riskLabel(item.riskLevel) }}</span>
+            <span class="history-date">{{ item.createdAt | slice:0:10 }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

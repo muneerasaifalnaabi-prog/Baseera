@@ -5,6 +5,7 @@ import { Login } from './features/auth/login/login';
 import { authGuard } from './shared/guards/auth-guard';
 import { CenterComponent } from './features/center/center';
 import { OauthCallback } from './features/auth/oauth-callback/oauth-callback';
+import { Activities } from './features/activities/activities/activities';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,14 @@ export const routes: Routes = [
   component: Login
 },
 {
+  path: 'oauth-callback',
+  component: OauthCallback
+},
+{
+  path: 'activities',
+  component: Activities
+}
+];
     path: 'centers',
     component: CenterComponent
   }

@@ -207,7 +207,7 @@
   0% { background-position: 100% 0; }
   100% { background-position: -100% 0; }
 }
-
+/* for test */
 .error-text { color: #8B2E22; font-size: 14px; }
 
 .empty-state {

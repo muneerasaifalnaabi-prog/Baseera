@@ -1,0 +1,497 @@
+<div class="vault-page">
+
+  <!-- Header -->
+  <header class="vault-header">
+
+    <div>
+      <div class="eyebrow">
+        Child Care
+      </div>
+
+      <h1>
+        Child Vault
+      </h1>
+
+      <p>
+        Securely store and manage your child's documents.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      ⓘ
+    </div>
+
+  </header>
+
+
+  <!-- Messages -->
+
+  @if (successMessage) {
+
+  <div class="alert success">
+    <span>✓</span>
+    {{ successMessage }}
+  </div>
+
+  }
+
+  @if (errorMessage) {
+
+  <div class="alert error">
+    <span>!</span>
+    {{ errorMessage }}
+  </div>
+
+  }
+
+
+  <!-- Upload Section -->
+
+  <section class="upload-section">
+
+    <div
+      class="upload-box"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+    >
+
+      <div class="upload-icon">
+        ☁
+      </div>
+
+      <h2>
+        Upload New Document
+      </h2>
+
+      <p>
+        Drag and drop your file here or browse from your device
+      </p>
+
+      <label class="browse-button">
+
+        Browse Files
+
+        <input
+          type="file"
+          hidden
+          accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+          (change)="onFileSelected($event)"
+        />
+
+      </label>
+
+      <small>
+        PDF, JPG, PNG or Word · Max 10 MB
+      </small>
+
+    </div>
+
+
+    <!-- Selected file -->
+
+    @if (selectedFile) {
+
+    <div class="selected-file">
+
+      <div class="file-icon">
+        {{ getFileExtension(selectedFile.name) }}
+      </div>
+
+      <div class="selected-file-info">
+
+        <strong>
+          {{ selectedFile.name }}
+        </strong>
+
+        <span>
+{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
+</span>
+
+      </div>
+
+      <button
+        type="button"
+        class="remove-file"
+        (click)="removeSelectedFile()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="upload-options">
+
+      <div class="field">
+
+        <label>
+          Document Type
+        </label>
+
+        <select
+          [(ngModel)]="selectedDocumentType"
+        >
+
+          @for (type of documentTypes; track type.value) {
+
+          <option [value]="type.value">
+            {{ type.label }}
+          </option>
+
+          }
+
+        </select>
+
+      </div>
+
+      <button
+        type="button"
+        class="upload-button"
+        [disabled]="uploading"
+        (click)="uploadFile()"
+      >
+
+        @if (uploading) {
+        Uploading...
+        } @else {
+        Upload Document
+        }
+
+      </button>
+
+    </div>
+
+    }
+
+  </section>
+
+
+  <!-- Search -->
+
+  <section class="documents-section">
+
+    <div class="section-heading">
+
+      <div>
+        <h2>
+          Recent Documents
+        </h2>
+
+        <p>
+          {{ filteredAttachments.length }} documents
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="search-wrapper">
+
+<span class="search-icon">
+⌕
+</span>
+
+      <input
+        type="text"
+        placeholder="Search documents..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+      />
+
+    </div>
+
+
+    <!-- Filters -->
+
+    <div class="filters">
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'ALL'"
+        (click)="onFilterChange('ALL')">
+        All
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'SPECIALIST_REPORT'"
+        (click)="onFilterChange('SPECIALIST_REPORT')">
+        Specialist Reports
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'MEDICAL_RECORD'"
+        (click)="onFilterChange('MEDICAL_RECORD')">
+        Medical Records
+      </button>
+
+      <button
+        type="button"
+        [class.active]="selectedFilter === 'OTHER'"
+        (click)="onFilterChange('OTHER')">
+        Other
+      </button>
+
+    </div>
+
+
+
+    <!-- Loading -->
+
+    @if (loading) {
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading documents...
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- Empty -->
+
+    @if (!loading && filteredAttachments.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        📁
+      </div>
+
+      <h3>
+        No documents found
+      </h3>
+
+      <p>
+        Upload your child's first document to get started.
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- Documents -->
+
+    @if (!loading && filteredAttachments.length > 0) {
+
+    <div class="documents-grid">
+
+      @for (
+      attachment of filteredAttachments;
+      track attachment.id
+      ) {
+
+      <article class="document-card">
+
+        <div class="document-icon">
+
+          {{ getFileExtension(attachment.originalFileName) }}
+
+        </div>
+
+
+        <div class="document-content">
+
+          <h3
+            [title]="attachment.originalFileName"
+          >
+            {{ attachment.originalFileName }}
+          </h3>
+
+          <div class="document-meta">
+
+<span
+  class="type-badge"
+  [class.specialist]="attachment.documentType === 'SPECIALIST_REPORT'"
+  [class.medical]="attachment.documentType === 'MEDICAL_RECORD'"
+  [class.other]="attachment.documentType === 'OTHER'"
+>
+{{ getDocumentTypeLabel(attachment.documentType) }}
+</span>
+
+            @if (attachment.createdAt) {
+
+            <span>
+{{ formatDate(attachment.createdAt) }}
+</span>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="document-actions">
+
+          <button
+            type="button"
+            class="action-button"
+            title="Analyze with AI"
+            [disabled]="analyzingId === attachment.id"
+            (click)="analyzeAttachment(attachment)"
+          >
+
+            @if (analyzingId === attachment.id) {
+            ...
+            } @else {
+            ✨
+            }
+
+          </button>
+
+
+          <button
+            type="button"
+            class="action-button delete"
+            title="Delete"
+            [disabled]="deletingId === attachment.id"
+            (click)="deleteAttachment(attachment)"
+          >
+
+            @if (deletingId === attachment.id) {
+            ...
+            } @else {
+            ⋮
+            }
+
+          </button>
+
+        </div>
+
+      </article>
+
+      }
+
+    </div>
+
+    }
+
+  </section>
+
+</div>
+
+
+<!-- AI Analysis Modal -->
+
+@if (selectedAnalysis) {
+
+<div
+  class="modal-backdrop"
+  (click)="closeAnalysis()"
+>
+
+  <div
+    class="analysis-modal"
+    (click)="$event.stopPropagation()"
+  >
+
+    <div class="modal-header">
+
+      <div>
+
+<span class="modal-label">
+AI ASSISTED ANALYSIS
+</span>
+
+        <h2>
+          Progress Analysis
+        </h2>
+
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeAnalysis()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    @if (selectedAnalysis.improvementSigns) {
+
+    <div class="analysis-block">
+
+      <h3>
+        Improvement Signs
+      </h3>
+
+      <p>
+        {{ selectedAnalysis.improvementSigns }}
+      </p>
+
+    </div>
+
+    }
+
+
+    @if (selectedAnalysis.progressSummary) {
+
+    <div class="analysis-block">
+
+      <h3>
+        Progress Summary
+      </h3>
+
+      <p>
+        {{ selectedAnalysis.progressSummary }}
+      </p>
+
+    </div>
+
+    }
+
+
+    @if (
+    selectedAnalysis.suggestedGoalTags &&
+    selectedAnalysis.suggestedGoalTags.length > 0
+    ) {
+
+    <div class="analysis-block">
+
+      <h3>
+        Suggested Goals
+      </h3>
+
+      <div class="goal-tags">
+
+        @for (
+        tag of selectedAnalysis.suggestedGoalTags;
+        track tag
+        ) {
+
+        <span>
+{{ tag }}
+</span>
+
+        }
+
+      </div>
+
+    </div>
+
+    }
+
+
+    <div class="ai-disclaimer">
+
+      AI-generated assistance only. This analysis does not
+      replace professional medical advice.
+
+    </div>
+
+  </div>
+
+</div>
+
+}

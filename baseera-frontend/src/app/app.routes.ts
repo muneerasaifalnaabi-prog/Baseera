@@ -18,9 +18,14 @@ export const routes: Routes = [
   {
   path: 'login',
   component: Login
-},
-{
-  path: 'oauth-callback',
-  component: OauthCallback
-}
+},{
+    path: 'children/:childId/vault',
+
+    loadComponent: () =>
+      import(
+        './features/vault/components/child-vault/child-vault'
+        ).then(
+        m => m.ChildVaultComponent
+      )
+  }
 ];

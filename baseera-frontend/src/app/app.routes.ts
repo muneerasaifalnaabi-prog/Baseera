@@ -18,7 +18,7 @@ export const routes: Routes = [
   path: 'login',
   component: Login
 },{
-    path: 'vault/:childId',
+    path: 'children/:childId/vault',
 
     loadComponent: () =>
       import(

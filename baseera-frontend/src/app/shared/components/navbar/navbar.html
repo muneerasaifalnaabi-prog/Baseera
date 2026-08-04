@@ -1,0 +1,55 @@
+<nav class="navbar" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+  <div class="navbar__inner">
+
+    <a routerLink="/home" class="brand" (click)="closeMenu()">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="15" stroke="url(#brandGrad)" stroke-width="2"/>
+          <path d="M9 17.5c1.8 2.6 4.2 3.9 7 3.9s5.2-1.3 7-3.9" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12.5" cy="12.5" r="1.6" fill="#FF9466"/>
+          <circle cx="19.5" cy="12.5" r="1.6" fill="#3562E9"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="1" y1="1" x2="31" y2="31" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#3562E9"/>
+              <stop offset="1" stop-color="#FF9466"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span class="brand__word">{{ t[lang.current()].brandName }}</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a routerLink="/home" routerLinkActive="is-active">{{ t[lang.current()].dashboard }}</a></li>
+      <li><a routerLink="/activities" routerLinkActive="is-active">{{ t[lang.current()].activities }}</a></li>
+      <li><a routerLink="/centers" routerLinkActive="is-active">{{ t[lang.current()].centers }}</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button type="button" class="lang-toggle" (click)="switchLanguage()" [attr.aria-label]="t[lang.current()].langSwitch">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M3 12h18M12 3c2.4 2.5 3.6 5.6 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.6-3.6-9S9.6 5.5 12 3Z" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span>{{ lang.current() === 'en' ? 'العربية' : 'English' }}</span>
+      </button>
+
+      <button type="button" class="avatar" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen">
+        <span>{{ initials }}</span>
+      </button>
+
+      @if (menuOpen) {
+        <div class="menu">
+          <div class="menu__name">{{ fullName || t[lang.current()].guest }}</div>
+          <button type="button" class="menu__logout" (click)="logout()">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 17l5-5-5-5M20 12H9M13 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ t[lang.current()].logout }}
+          </button>
+        </div>
+      }
+    </div>
+
+  </div>
+</nav>

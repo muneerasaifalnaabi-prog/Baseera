@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar';
+import { Navbar } from "../navbar/navbar";
 
 /**
  * The shared shell — sidebar on one side, whatever page is currently
@@ -11,7 +12,7 @@ import { Sidebar } from '../sidebar/sidebar';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, Sidebar],
+  imports: [RouterOutlet, Sidebar, Navbar],
   templateUrl: './layout.html',
   styleUrl: './layout.css'
 })

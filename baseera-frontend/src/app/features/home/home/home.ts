@@ -7,16 +7,18 @@ import { Child, ChildItem } from '../../../shared/services/child';
 import { Assessment as AssessmentService, AssessmentItem } from '../../../shared/services/assessment';
 import { Language } from '../../../shared/services/language';
 import { translations } from '../../../shared/i18n/translations';
+import { Navbar } from '../../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, Navbar],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home implements OnInit {
   t = translations.dashboard;
+  tSidebar = translations.sidebar;
 
   fullName = '';
   loading = signal(true);
@@ -69,6 +71,15 @@ export class Home implements OnInit {
     });
   }
 
+  // First name only, so the hero greeting doesn't wrap awkwardly on mobile
+  get firstName(): string {
+    return this.fullName.trim().split(/\s+/)[0] ?? '';
+  }
+
+  hasChildren(): boolean {
+    return this.children().length > 0;
+  }
+
   latestAssessment(): AssessmentItem | null {
     const list = this.assessments();
     return list.length > 0 ? list[0] : null;
@@ -86,5 +97,9 @@ export class Home implements OnInit {
   vaultLink(): string[] {
     const child = this.selectedChild();
     return child ? ['/children', String(child.id), 'vault'] : ['/select-child'];
+  }
+
+  continueLink(): string[] {
+    return this.hasChildren() ? this.vaultLink() : ['/select-child'];
   }
 }

@@ -1,17 +1,13 @@
-<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+<app-navbar></app-navbar>
 
-  <header class="header">
-    <div>
-      <h1 class="greeting">{{ t[lang.current()].greeting }}, {{ fullName }}</h1>
-      <p class="subtitle">{{ t[lang.current()].subtitle }}</p>
-    </div>
-  </header>
+<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
 
   @if (errorMessage()) {
     <div class="error-banner">{{ errorMessage() }}</div>
   }
 
   @if (loading()) {
+    <div class="hero-skeleton"></div>
     <div class="stat-row">
       <div class="skeleton-card"></div>
       <div class="skeleton-card"></div>
@@ -19,79 +15,180 @@
     </div>
   }
 
-  @if (!loading() && children().length === 0) {
-    <div class="empty-state">
-      <div class="empty-icon">👶</div>
-      <h2>{{ t[lang.current()].noChildTitle }}</h2>
-      <p>{{ t[lang.current()].noChildText }}</p>
-      <a routerLink="/select-child" class="primary-button">{{ t[lang.current()].addChild }}</a>
-    </div>
-  }
+  @if (!loading()) {
 
-  @if (!loading() && children().length > 0) {
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero__text">
+        <span class="badge">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2.5l1.9 4.4 4.6.4-3.5 3.1 1.1 4.5L10 12.6l-4.1 2.3 1.1-4.5-3.5-3.1 4.6-.4L10 2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+          {{ t[lang.current()].heroBadge }}
+        </span>
 
-    <!-- Stat row -->
-    <div class="stat-row">
-      <div class="stat-card">
-        <span class="stat-label">{{ t[lang.current()].statChildren }}</span>
-        <span class="stat-value">{{ children().length }}</span>
+        @if (firstName) {
+          <p class="hero__welcome">{{ t[lang.current()].greeting }}, {{ firstName }}</p>
+        }
+
+        <h1 class="hero__headline">{{ t[lang.current()].heroHeadline }}</h1>
+        <p class="hero__sub">{{ t[lang.current()].heroSub }}</p>
+
+        <div class="hero__actions">
+          <a routerLink="/assessment" class="btn btn--primary">
+            {{ t[lang.current()].ctaStartAssessment }}
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a routerLink="/activities" class="btn btn--ghost">{{ t[lang.current()].ctaExploreActivities }}</a>
+        </div>
       </div>
 
-      <div class="stat-card">
-        <span class="stat-label">{{ t[lang.current()].statCheckins }}</span>
-        <span class="stat-value">{{ assessments().length }}</span>
-      </div>
+      <div class="hero__art">
+        <div class="hero__photo">
+          <img src="assets/images/logo-family.png" alt="A parent and child spending time together">
+        </div>
 
-      <div class="stat-card stat-card--wide">
-        <span class="stat-label">{{ t[lang.current()].statLatest }}</span>
-        @if (latestAssessment(); as latest) {
-          <span class="stat-risk" [class]="riskClass(latest.riskLevel)">
-            {{ riskLabel(latest.riskLevel) }}
+        <div class="floating-card floating-card--1">
+          <span class="floating-card__icon floating-card__icon--blue">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.6 1 1.3 1 2.1V17h6v-1.4c0-.8.4-1.5 1-2.1A6 6 0 0 0 12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </span>
-          <span class="stat-meta">{{ latest.suggestedCondition }} · {{ latest.createdAt | slice:0:10 }}</span>
-        } @else {
-          <span class="stat-risk risk-none">{{ t[lang.current()].noAssessment }}</span>
+          <div>
+            <h3>{{ t[lang.current()].heroCardAi }}</h3>
+            <p>{{ t[lang.current()].heroCardAiDesc }}</p>
+          </div>
+        </div>
+
+        <div class="floating-card floating-card--2">
+          <span class="floating-card__icon floating-card__icon--coral">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19V10M11 19V5M18 19v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div>
+            <h3>{{ t[lang.current()].heroCardProgress }}</h3>
+            <p>{{ t[lang.current()].heroCardProgressDesc }}</p>
+          </div>
+        </div>
+
+        <div class="floating-card floating-card--3">
+          <span class="floating-card__icon floating-card__icon--green">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div>
+            <h3>{{ t[lang.current()].heroCardSecure }}</h3>
+            <p>{{ t[lang.current()].heroCardSecureDesc }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WELCOME CARD ============ -->
+    <section class="welcome-card">
+      <div class="welcome-card__text">
+        <h2>{{ t[lang.current()].greeting }}</h2>
+        <p>{{ t[lang.current()].welcomeCardText }}</p>
+      </div>
+      <div class="welcome-card__actions">
+        <a routerLink="/select-child" class="btn btn--outline">{{ t[lang.current()].addChild }}</a>
+        @if (hasChildren()) {
+          <a [routerLink]="continueLink()" class="btn btn--primary">{{ t[lang.current()].ctaContinueJourney }}</a>
         }
       </div>
-    </div>
+    </section>
 
-    <!-- Quick actions -->
-    <h2 class="section-title">{{ t[lang.current()].quickTitle }}</h2>
-    <div class="action-grid">
-      <a routerLink="/assessment" class="action-card">
-        <div class="action-icon action-icon--primary">✦</div>
-        <div>
-          <h3>{{ t[lang.current()].quickCheckin }}</h3>
-          <p>{{ t[lang.current()].quickCheckinText }}</p>
+    @if (hasChildren()) {
+
+      <!-- ============ DASHBOARD OVERVIEW ============ -->
+      <h2 class="section-title">{{ t[lang.current()].quickTitle }}</h2>
+      <div class="action-grid">
+        <a routerLink="/select-child" class="action-card">
+          <span class="action-icon action-icon--primary">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M5 19c1.4-3.2 4-4.8 7-4.8s5.6 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div>
+            <h3>{{ t[lang.current()].overviewChildren }}</h3>
+            <p>{{ children().length }} · {{ t[lang.current()].overviewChildrenDesc }}</p>
+          </div>
+        </a>
+
+        <a routerLink="/assessment" class="action-card">
+          <span class="action-icon action-icon--teal">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19V10M11 19V5M18 19v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div>
+            <h3>{{ t[lang.current()].overviewHistory }}</h3>
+            <p>{{ assessments().length }} · {{ t[lang.current()].overviewHistoryDesc }}</p>
+          </div>
+        </a>
+
+        <a routerLink="/activities" class="action-card">
+          <span class="action-icon action-icon--amber">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 21s-7-4.4-9.5-8.7C.7 8.6 2.4 5 6 5c2 0 3.3 1 4.9 2.8L12 9l1.1-1.2C14.7 6 16 5 18 5c3.6 0 5.3 3.6 3.5 7.3C19 16.6 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div>
+            <h3>{{ t[lang.current()].quickActivities }}</h3>
+            <p>{{ t[lang.current()].quickActivitiesText }}</p>
+          </div>
+        </a>
+
+        <a [routerLink]="vaultLink()" class="action-card">
+          <span class="action-icon action-icon--slate">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div>
+            <h3>{{ t[lang.current()].quickReports }}</h3>
+            <p>{{ t[lang.current()].quickReportsText }}</p>
+          </div>
+        </a>
+      </div>
+    }
+
+    <!-- ============ AI CHAT SECTION ============ -->
+    <section class="ai-section">
+      <div class="ai-section__art">
+        <div class="chat-mock">
+          <div class="chat-bubble chat-bubble--user">{{ t[lang.current()].chatBubbleParent }}</div>
+          <div class="chat-bubble chat-bubble--ai">
+            <span class="chat-bubble__label">
+              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 2.5l1.9 4.4 4.6.4-3.5 3.1 1.1 4.5L10 12.6l-4.1 2.3 1.1-4.5-3.5-3.1 4.6-.4L10 2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+              </svg>
+              {{ tSidebar[lang.current()].brandName }} AI
+            </span>
+            {{ t[lang.current()].chatBubbleAi }}
+          </div>
         </div>
-      </a>
+      </div>
 
-      <a routerLink="/activities" class="action-card">
-        <div class="action-icon action-icon--teal">◆</div>
-        <div>
-          <h3>{{ t[lang.current()].quickActivities }}</h3>
-          <p>{{ t[lang.current()].quickActivitiesText }}</p>
+      <div class="ai-section__text">
+        <span class="badge badge--light">{{ t[lang.current()].aiBadge }}</span>
+        <h2>{{ t[lang.current()].aiHeading }}</h2>
+        <p>{{ t[lang.current()].aiText }}</p>
+        <p class="ai-disclaimer">{{ t[lang.current()].aiDisclaimer }}</p>
+        <div class="hero__actions">
+          <a routerLink="/assistant" class="btn btn--primary">{{ t[lang.current()].ctaStartChat }}</a>
+          <a routerLink="/assistant/about" class="btn btn--ghost">{{ t[lang.current()].ctaLearnMore }}</a>
         </div>
-      </a>
+      </div>
+    </section>
 
-      <a routerLink="/centers" class="action-card">
-        <div class="action-icon action-icon--amber">◉</div>
-        <div>
-          <h3>{{ t[lang.current()].quickCenters }}</h3>
-          <p>{{ t[lang.current()].quickCentersText }}</p>
-        </div>
-      </a>
-
-      <a [routerLink]="vaultLink()" class="action-card">
-        <div class="action-icon action-icon--slate">▤</div>
-        <div>
-          <h3>{{ t[lang.current()].quickReports }}</h3>
-          <p>{{ t[lang.current()].quickReportsText }}</p>
-        </div>
-      </a>
-    </div>
-
-    <!-- Recent check-ins -->
+    <!-- ============ RECENT CHECK-INS ============ -->
     @if (assessments().length > 0) {
       <h2 class="section-title">{{ t[lang.current()].historyTitle }}</h2>
       <div class="history-list">

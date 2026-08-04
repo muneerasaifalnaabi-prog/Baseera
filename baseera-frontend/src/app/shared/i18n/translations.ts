@@ -1,4 +1,3 @@
-
 export const translations = {
   sidebar: {
     en: {
@@ -11,7 +10,12 @@ export const translations = {
       admin: 'Admin dashboard',
       logout: 'Log out',
       menu: 'Menu',
-      adminSection: 'Admin'
+      adminSection: 'Admin',
+
+      // added for the navbar redesign
+      brandName: 'Baseera',
+      langSwitch: 'Switch language',
+      guest: 'Guest'
     },
     ar: {
       dashboard: 'لوحة التحكم',
@@ -23,7 +27,12 @@ export const translations = {
       admin: 'لوحة تحكم الأدمن',
       logout: 'تسجيل الخروج',
       menu: 'القائمة',
-      adminSection: 'الإدارة'
+      adminSection: 'الإدارة',
+
+      // added for the navbar redesign
+      brandName: 'بصيرة',
+      langSwitch: 'تغيير اللغة',
+      guest: 'زائر'
     }
   },
 
@@ -162,7 +171,40 @@ export const translations = {
       quickReports: 'Reports',
       quickReportsText: 'Upload and review documents',
       historyTitle: 'Recent check-ins',
-      loadError: 'Could not load your dashboard.'
+      loadError: 'Could not load your dashboard.',
+
+      // added for the home redesign — hero
+      heroBadge: 'AI-Powered Family Support',
+      heroHeadline: 'Every small step deserves understanding.',
+      heroSub: 'Baseera helps families understand their child\'s development through AI-powered assessments, personalized activities, trusted healthcare guidance, and secure medical records.',
+      ctaStartAssessment: 'Start Assessment',
+      ctaExploreActivities: 'Explore Activities',
+      heroCardAi: 'AI Guidance',
+      heroCardAiDesc: 'Personalized developmental insights',
+      heroCardProgress: 'Progress Tracking',
+      heroCardProgressDesc: 'Celebrate every milestone',
+      heroCardSecure: 'Secure Records',
+      heroCardSecureDesc: 'Protected and organized',
+
+      // added — welcome card
+      welcomeCardText: 'Every child develops differently, and every journey is unique. Baseera is here to help you understand, support, and celebrate every milestone with confidence.',
+      ctaContinueJourney: 'Continue Journey',
+
+      // added — overview cards without an existing equivalent
+      overviewChildren: 'Children',
+      overviewChildrenDesc: 'Manage profiles',
+      overviewHistory: 'Assessment History',
+      overviewHistoryDesc: 'Past check-ins',
+
+      // added — AI assistant section
+      aiBadge: 'AI Assistant',
+      aiHeading: 'Ask Baseera AI anytime.',
+      aiText: 'Have questions about developmental milestones, therapeutic activities, or understanding your child\'s progress? Baseera AI is available to provide supportive guidance, explain reports in simple language, and help you understand your next steps.',
+      aiDisclaimer: 'Baseera AI offers supportive, educational guidance — not a medical diagnosis.',
+      ctaStartChat: 'Start Chat',
+      ctaLearnMore: 'Learn More',
+      chatBubbleParent: 'My child avoids eye contact during play.',
+      chatBubbleAi: 'That\'s a helpful observation. Here\'s what it may mean, and when a specialist visit could help.'
     },
     ar: {
       greeting: 'مرحباً بعودتك',
@@ -187,7 +229,40 @@ export const translations = {
       quickReports: 'التقارير',
       quickReportsText: 'ارفع وراجع المستندات',
       historyTitle: 'التسجيلات الأخيرة',
-      loadError: 'تعذّر تحميل لوحة التحكم.'
+      loadError: 'تعذّر تحميل لوحة التحكم.',
+
+      // added for the home redesign — hero
+      heroBadge: 'دعم عائلي مدعوم بالذكاء الاصطناعي',
+      heroHeadline: 'كل خطوة صغيرة تستحق أن تُفهم.',
+      heroSub: 'تساعد بصيرة العائلات على فهم تطور أطفالهم من خلال تقييمات مدعومة بالذكاء الاصطناعي، وأنشطة مخصصة، وإرشاد صحي موثوق، وسجلات طبية آمنة.',
+      ctaStartAssessment: 'ابدأ التقييم',
+      ctaExploreActivities: 'استكشف الأنشطة',
+      heroCardAi: 'إرشاد ذكي',
+      heroCardAiDesc: 'رؤى تطويرية مخصصة',
+      heroCardProgress: 'تتبع التقدم',
+      heroCardProgressDesc: 'احتفل بكل إنجاز',
+      heroCardSecure: 'سجلات آمنة',
+      heroCardSecureDesc: 'محمية ومنظمة',
+
+      // added — welcome card
+      welcomeCardText: 'كل طفل يتطور بطريقته الخاصة، وكل رحلة فريدة من نوعها. بصيرة هنا لمساعدتك على الفهم والدعم، والاحتفال بكل إنجاز بثقة.',
+      ctaContinueJourney: 'تابع الرحلة',
+
+      // added — overview cards without an existing equivalent
+      overviewChildren: 'الأطفال',
+      overviewChildrenDesc: 'إدارة الملفات',
+      overviewHistory: 'سجل التقييمات',
+      overviewHistoryDesc: 'المتابعات السابقة',
+
+      // added — AI assistant section
+      aiBadge: 'المساعد الذكي',
+      aiHeading: 'اسأل بصيرة الذكي في أي وقت.',
+      aiText: 'هل لديك أسئلة حول مراحل النمو، أو الأنشطة العلاجية، أو فهم تقدم طفلك؟ بصيرة الذكي متاح لتقديم إرشاد داعم، وشرح التقارير بلغة بسيطة، ومساعدتك على فهم خطواتك التالية.',
+      aiDisclaimer: 'يقدّم بصيرة الذكي إرشادًا داعمًا وتثقيفيًا — وليس تشخيصًا طبيًا.',
+      ctaStartChat: 'ابدأ المحادثة',
+      ctaLearnMore: 'اعرف المزيد',
+      chatBubbleParent: 'طفلي يتجنب التواصل البصري أثناء اللعب.',
+      chatBubbleAi: 'ملاحظة مفيدة. إليك ما قد تعنيه، ومتى قد تفيد زيارة أخصائي.'
     }
   }
 };

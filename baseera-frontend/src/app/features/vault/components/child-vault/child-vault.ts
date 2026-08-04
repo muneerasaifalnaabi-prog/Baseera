@@ -1,4 +1,9 @@
 import {
+  Child,
+  ChildItem
+} from '../../../../shared/services/child';
+
+import {
   Component,
   OnInit,
   inject
@@ -51,12 +56,16 @@ export class ChildVaultComponent
   private readonly attachmentService =
     inject(AttachmentService);
 
+  private readonly childService =
+    inject(Child);
 
 // =========================
 // CHILD
 // =========================
 
   childId!: number;
+  childName = '';
+  childGender = '';
 
 
 // =========================
@@ -166,6 +175,8 @@ export class ChildVaultComponent
         this.childId =
           Number(id);
 
+        this.loadChildName();
+
         this.loadAttachments();
 
       }
@@ -176,6 +187,44 @@ export class ChildVaultComponent
 // =========================
 // LOAD
 // =========================
+
+  loadChildName(): void {
+
+    this.childService
+      .getMyChildren()
+      .subscribe({
+
+        next: (children: ChildItem[]) => {
+
+          const child =
+            children.find(
+              child => child.id === this.childId
+            );
+
+          if (child) {
+
+            this.childName =
+              child.fullName;
+
+            this.childGender =
+              child.gender;
+
+          }
+
+        },
+
+        error: error => {
+
+          console.error(
+            'Failed to load child:',
+            error
+          );
+
+        }
+
+      });
+  }
+
 
   loadAttachments(): void {
 

@@ -3,23 +3,95 @@
   <!-- Header -->
   <header class="vault-header">
 
-    <div>
-      <div class="eyebrow">
-        Child Care
+    <div class="child-info">
+
+      <!-- Child Medical Icon -->
+      <div class="child-avatar">
+
+        @if (childGender === 'FEMALE') {
+
+        <svg
+          class="child-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="12"
+            cy="8"
+            r="4"
+            stroke="currentColor"
+            stroke-width="1.8"
+          />
+
+          <path
+            d="M5 21C5.5 16.5 8 14 12 14C16 14 18.5 16.5 19 21"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M8 5.5C8.8 3.8 10.2 3 12 3C13.8 3 15.2 3.8 16 5.5"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        } @else {
+
+        <svg
+          class="child-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="12"
+            cy="8"
+            r="4"
+            stroke="currentColor"
+            stroke-width="1.8"
+          />
+
+          <path
+            d="M5 21C5.5 16.5 8 14 12 14C16 14 18.5 16.5 19 21"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        }
+
       </div>
 
-      <h1>
-        Child Vault
-      </h1>
 
-      <p>
-        Securely store and manage your child's documents.
-      </p>
+      <!-- Child Details -->
+      <div class="child-details">
+
+        <h1>
+          {{ childName }}
+        </h1>
+
+        <p>
+          Securely store and manage your child's documents.
+        </p>
+
+      </div>
+
     </div>
 
-    <div class="header-icon">
+
+    <!-- Information -->
+    <button
+      type="button"
+      class="header-info-button"
+      title="Information"
+    >
       ⓘ
-    </div>
+    </button>
 
   </header>
 
@@ -234,7 +306,6 @@
       </button>
 
     </div>
-
 
 
     <!-- Loading -->

@@ -264,5 +264,51 @@ export const translations = {
       chatBubbleParent: 'طفلي يتجنب التواصل البصري أثناء اللعب.',
       chatBubbleAi: 'ملاحظة مفيدة. إليك ما قد تعنيه، ومتى قد تفيد زيارة أخصائي.'
     }
+  },
+  footer: {
+    en: {
+      tagline: 'Guiding every child\'s journey, one step at a time.',
+      quickLinksTitle: 'Quick Links',
+      home: 'Home',
+      activities: 'Activities',
+      centers: 'Centers',
+      assessment: 'Check-in',
+      supportTitle: 'Support',
+      about: 'About Baseera',
+      contact: 'Contact us',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service',
+      followTitle: 'Follow us',
+      newsletterTitle: 'Stay updated',
+      newsletterText: 'Occasional updates, no spam, unsubscribe anytime.',
+      emailPlaceholder: 'Your email',
+      subscribe: 'Subscribe',
+      subscribed: 'Subscribed ✓',
+      copyright: 'All rights reserved.',
+      madeWith: 'Built with care for families in Oman.',
+      backToTop: 'Back to top'
+    },
+    ar: {
+      tagline: 'ندعم رحلة كل طفل، خطوة بخطوة.',
+      quickLinksTitle: 'روابط سريعة',
+      home: 'الرئيسية',
+      activities: 'الأنشطة',
+      centers: 'المراكز',
+      assessment: 'تسجيل حالة',
+      supportTitle: 'الدعم',
+      about: 'عن بصيرة',
+      contact: 'تواصل معنا',
+      privacy: 'سياسة الخصوصية',
+      terms: 'شروط الخدمة',
+      followTitle: 'تابعنا',
+      newsletterTitle: 'ابق على اطلاع',
+      newsletterText: 'تحديثات نادرة، بدون إزعاج، يمكنك إلغاء الاشتراك في أي وقت.',
+      emailPlaceholder: 'بريدك الإلكتروني',
+      subscribe: 'اشتراك',
+      subscribed: 'تم الاشتراك ✓',
+      copyright: 'جميع الحقوق محفوظة.',
+      madeWith: 'صُنع برعاية للعائلات في عُمان.',
+      backToTop: 'العودة للأعلى'
+    }
   }
 };

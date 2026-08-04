@@ -1,165 +1,194 @@
-﻿
-/* ===========================
+﻿/* ===========================
    General
 =========================== */
-
+ 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
-
+ 
 body{
     background:#f5f7fb;
 }
-
+ 
 /* ===========================
    Layout
 =========================== */
-
+ 
 .page{
     display:flex;
     height:100vh;
 }
-
+ 
 /* ===========================
    Main
 =========================== */
-
+ 
 .content{
     flex:1;
     display:flex;
     flex-direction:column;
     padding:35px;
 }
-
+ 
 .header{
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
-
-.header h2{
+ 
+.title{
     font-size:38px;
-    color:#222;
     font-weight:700;
+    color:#0D2040;
+    margin-bottom:8px;
 }
-
+ 
+.subtitle{
+    font-size:16px;
+    color:#627792;
+    line-height:1.5;
+}
+ 
 /* ===========================
    Search
 =========================== */
-
-.search-box{
-    margin-bottom:25px;
-}
-
-.search-box input{
-    width:100%;
-    height:58px;
-    border:none;
-    border-radius:30px;
-    padding:0 25px;
-    background:white;
-    box-shadow:0 4px 12px rgba(0,0,0,.05);
-    font-size:16px;
-    outline:none;
-}
-
+ 
 /* ===========================
-   Filters
+   Filter Bar
 =========================== */
-
-.filters{
+ 
+.filter-bar{
     display:flex;
-    gap:12px;
-    margin-bottom:25px;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:14px;
+    margin-bottom:30px;
+    padding:16px 20px;
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
-
-.filters button{
-
-    border:none;
-
-    padding:12px 24px;
-
-    border-radius:30px;
-
-    cursor:pointer;
-
-    background:#eef2ff;
-
-    color:#444;
-
+ 
+.search-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    flex:1;
+    min-width:250px;
+}
+ 
+.search-wrap svg{
+    position:absolute;
+    left:16px;
+    color:#627792;
+}
+ 
+.search-wrap input{
+    width:100%;
+    height:48px;
+    padding:0 18px 0 46px;
+    border-radius:999px;
+    border:1px solid #d9e8f5;
+    background:#f2f7fc;
+    font-size:15px;
+    outline:none;
     transition:.3s;
-
+}
+ 
+.search-wrap input:focus{
+    border-color:#18639E;
+    background:#fff;
+}
+ 
+.chip-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+ 
+.chip{
+    border:none;
+    background:#f2f7fc;
+    color:#2D4362;
+    border-radius:999px;
+    padding:10px 20px;
     font-weight:600;
-
+    cursor:pointer;
+    transition:.3s;
 }
-
-.filters button:hover{
-
-    background:#2563eb;
-
-    color:white;
-
+ 
+.chip:hover{
+    background:#d9e8f5;
 }
-
-.filters .active{
-
-    background:#2563eb;
-
-    color:white;
-
+ 
+.chip-active{
+    background:#18639E;
+    color:#fff;
 }
-
+ 
+.clear-button{
+    margin-left:auto;
+    border:none;
+    background:transparent;
+    color:#627792;
+    font-weight:600;
+    cursor:pointer;
+    padding:10px 16px;
+}
+ 
+.clear-button:hover{
+    color:#18639E;
+}
+ 
 /* ===========================
    Body
 =========================== */
-
+ 
 .body{
-
+ 
     display:grid;
-
+ 
     grid-template-columns:55% 45%;
-
+ 
     gap:30px;
-
+ 
     flex:1;
-
+ 
 }
-
+ 
 /* ===========================
    Cards
 =========================== */
-
+ 
 /* ===========================
    Cards
 =========================== */
-
+ 
 .cards{
     overflow-y:auto;
     padding-right:12px;
     height:calc(100vh - 220px);
 }
-
 .card{
     display:flex;
     align-items:center;
     gap:20px;
-
     background:#fff;
-    border-radius:22px;
+    border-radius:24px;
     padding:18px;
-
     margin-bottom:22px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    border:1px solid #e6edf5;
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
     transition:.3s;
     cursor:pointer;
 }
-
+ 
 .card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 15px 35px rgba(37,99,235,.15);
+    transform:translateY(-6px);
+    box-shadow:0 16px 36px rgba(24,99,158,.15);
 }
-
+ 
+ 
 .card img{
     width:220px;
     min-width:220px;
@@ -168,99 +197,98 @@ body{
     border-radius:18px;
     display:block;
 }
-
+ 
 .info{
     flex:1;
     display:flex;
     flex-direction:column;
 }
-
+ 
 .top{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:14px;
 }
-
+ 
 .top h3{
     font-size:22px;
     font-weight:700;
     color:#1f2937;
 }
-
+ 
 .badge{
-    background:#2563eb;
-    color:white;
-    padding:8px 16px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+    background:#d9e8f5;
+    color:#18639E;
+    padding:7px 15px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
 }
-
 .info p{
     margin:8px 0;
     color:#6b7280;
     font-size:16px;
 }
-
+ 
 /* ===========================
    Buttons
 =========================== */
-
+ 
 .buttons{
     display:flex;
     gap:14px;
     margin-top:18px;
 }
-
+ 
 .buttons button{
     flex:1;
     border:none;
     border-radius:12px;
     padding:13px;
-
+ 
     font-size:14px;
     font-weight:600;
     cursor:pointer;
     transition:.3s;
 }
-
+ 
 .view{
     background:#eef4ff;
     color:#2563eb;
 }
-
+ 
 .view:hover{
     background:#dbe8ff;
 }
-
+ 
 .direction{
     background:#2563eb;
     color:#fff;
 }
-
+ 
 .direction:hover{
     background:#1d4ed8;
 }
-
+ 
 /* ===========================
    Map
 =========================== */
-
+ 
 .map{
     position:sticky;
     top:20px;
-
+ 
     background:#fff;
     border-radius:22px;
-
+ 
     box-shadow:0 8px 25px rgba(0,0,0,.08);
-
+ 
     overflow:hidden;
-
+ 
     height:calc(100vh - 220px);
 }
-
+ 
 #map{
     width:100%;
     height:100%;

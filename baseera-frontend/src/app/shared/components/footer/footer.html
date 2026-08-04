@@ -1,0 +1,121 @@
+<footer
+  class="footer"
+  [class.lang-ar]="lang.current() === 'ar'"
+  [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'"
+>
+  <div class="footer__inner">
+    <!-- ===== GRID ===== -->
+    <div class="footer__grid">
+      <!-- Brand Column -->
+      <div class="footer__col footer__col--brand">
+        <a routerLink="/home" class="footer__brand">
+          <span class="footer__logo-mark">☺</span>
+          <span class="footer__logo-text">Baseera</span>
+        </a>
+        <p class="footer__tagline">{{ t[lang.current()].tagline }}</p>
+
+        <div class="footer__social">
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener"
+            class="social-icon"
+            aria-label="Twitter"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 4.5c-.8.4-1.7.6-2.6.8.9-.6 1.6-1.5 2-2.6-.9.5-1.9.9-2.9 1.1-.8-.9-2-1.5-3.3-1.5-2.5 0-4.5 2-4.5 4.5 0 .4 0 .7.1 1-3.7-.2-7-2-9.2-4.6-.4.7-.6 1.5-.6 2.3 0 1.6.8 3 2 3.8-.7 0-1.4-.2-2-.6v.1c0 2.2 1.6 4 3.6 4.5-.4.1-.8.1-1.2.1-.3 0-.6 0-.8-.1.6 1.8 2.3 3.1 4.2 3.2-1.5 1.2-3.5 1.9-5.6 1.9-.4 0-.7 0-1.1-.1C2.2 20.3 4.6 21 7.2 21c8.6 0 13.4-7.2 13.4-13.4v-.6c.9-.7 1.7-1.5 2.4-2.5Z" />
+            </svg>
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener"
+            class="social-icon"
+            aria-label="Instagram"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" />
+            </svg>
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener"
+            class="social-icon"
+            aria-label="Facebook"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 8h3V4h-3c-2.2 0-4 1.8-4 4v2H7v4h3v8h4v-8h3l1-4h-4V8c0-.6.4-1 1-1Z" />
+            </svg>
+          </a>
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noopener"
+            class="social-icon"
+            aria-label="LinkedIn"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4.98 3.5C4.98 4.9 3.9 6 2.5 6S0 4.9 0 3.5 1.1 1 2.5 1s2.48 1.1 2.48 2.5ZM.2 8.3H4.8V23H.2V8.3ZM8.3 8.3h4.4v2h.06c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.4 3 5.4 6.9V23h-4.6v-6.9c0-1.6 0-3.7-2.3-3.7-2.3 0-2.7 1.8-2.7 3.6V23H8.3V8.3Z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="footer__col">
+        <h3 class="footer__col-title">{{ t[lang.current()].quickLinksTitle }}</h3>
+        <a routerLink="/home" class="footer__link">{{ t[lang.current()].home }}</a>
+        <a routerLink="/activities" class="footer__link">{{ t[lang.current()].activities }}</a>
+        <a routerLink="/centers" class="footer__link">{{ t[lang.current()].centers }}</a>
+        <a routerLink="/assessment" class="footer__link">{{ t[lang.current()].assessment }}</a>
+      </div>
+
+      <!-- Support Column -->
+      <div class="footer__col">
+        <h3 class="footer__col-title">{{ t[lang.current()].supportTitle }}</h3>
+        <a routerLink="/about" class="footer__link">{{ t[lang.current()].about }}</a>
+        <a routerLink="/contact" class="footer__link">{{ t[lang.current()].contact }}</a>
+        <a routerLink="/privacy" class="footer__link">{{ t[lang.current()].privacy }}</a>
+        <a routerLink="/terms" class="footer__link">{{ t[lang.current()].terms }}</a>
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="footer__col footer__col--newsletter">
+        <h3 class="footer__col-title">{{ t[lang.current()].newsletterTitle }}</h3>
+        <p class="footer__newsletter-text">{{ t[lang.current()].newsletterText }}</p>
+
+        @if (!subscribed()) {
+          <form class="footer__newsletter-form" (ngSubmit)="subscribe()">
+            <input
+              type="email"
+              [(ngModel)]="email"
+              name="footerEmail"
+              [placeholder]="t[lang.current()].emailPlaceholder"
+              required
+            />
+            <button type="submit">{{ t[lang.current()].subscribe }}</button>
+          </form>
+        } @else {
+          <p class="footer__subscribed">{{ t[lang.current()].subscribed }}</p>
+        }
+      </div>
+    </div>
+
+    <!-- ===== BOTTOM ===== -->
+    <div class="footer__bottom">
+      <p class="footer__copyright">
+        © {{ currentYear }} Baseera. {{ t[lang.current()].copyright }}
+      </p>
+      <p class="footer__made-with">{{ t[lang.current()].madeWith }}</p>
+      <button type="button" class="footer__to-top" (click)="scrollToTop()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        {{ t[lang.current()].backToTop }}
+      </button>
+    </div>
+  </div>
+</footer>

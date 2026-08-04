@@ -29,4 +29,12 @@ export class Progress {
   getActivitiesForChild(childId: number): Observable<ProgressItem[]> {
     return this.http.get<ProgressItem[]>(`${this.baseUrl}/${childId}/activities`);
   }
+
+  updateStatus(childId: number, activityId: number, status: ProgressStatus, notes?: string): Observable<ProgressItem> {
+    return this.http.put<ProgressItem>(`${this.baseUrl}/${childId}/activities/${activityId}`, { status, notes });
+  }
+
+  removeActivity(childId: number, activityId: number): Observable<string> {
+    return this.http.delete(`${this.baseUrl}/${childId}/activities/${activityId}`, { responseType: 'text' });
+  }
 }

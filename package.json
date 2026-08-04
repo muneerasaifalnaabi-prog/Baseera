@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@angular/google-maps": "^22.1.0"
+  }
+}

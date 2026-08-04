@@ -1,0 +1,114 @@
+<div class="page">
+
+  <!-- Main Content -->
+  <main class="content">
+
+    <div class="header">
+      <h2>Specialized Centers</h2>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+
+      <input
+        type="text"
+        placeholder="Search by center name or city..."
+        [(ngModel)]="searchText"
+        (input)="filterCenters()">
+
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+
+      <button
+        [class.active]="selectedSpecialty=='ALL'"
+        (click)="selectedSpecialty='ALL'; filterCenters()">
+        All
+      </button>
+
+      <button
+        [class.active]="selectedSpecialty=='ASD'"
+        (click)="selectedSpecialty='ASD'; filterCenters()">
+        ASD
+      </button>
+
+      <button
+        [class.active]="selectedSpecialty=='ADHD'"
+        (click)="selectedSpecialty='ADHD'; filterCenters()">
+        ADHD
+      </button>
+
+      <button
+        [class.active]="selectedSpecialty=='BOTH'"
+        (click)="selectedSpecialty='BOTH'; filterCenters()">
+        BOTH
+      </button>
+
+    </div>
+
+    <!-- Main Body -->
+    <div class="body">
+
+      <!-- Cards -->
+      <section class="cards">
+
+        <div
+          class="card"
+          *ngFor="let center of filteredCenters"
+          (click)="selectCenter(center)">
+
+          <!-- Center Image -->
+          <img
+            [src]="getImage(center)"
+            [alt]="center.name">
+
+          <div class="info">
+
+            <div class="top">
+              <h3>{{ center.name }}</h3>
+
+              <span class="badge">
+                {{ center.specialty }}
+              </span>
+            </div>
+
+            <p>📍 {{ center.city }}</p>
+
+            <p>📞 {{ center.phone }}</p>
+            <p>📏 {{ center.distance }} km away</p>
+
+            <div class="buttons">
+
+              <button
+                class="view"
+                (click)="selectCenter(center); $event.stopPropagation()">
+                View on Map
+              </button>
+
+              <button
+                class="direction"
+                (click)="openDirections(center); $event.stopPropagation()">
+                Get Directions
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Map -->
+      <section class="map">
+
+        <div id="map"></div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>

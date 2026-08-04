@@ -1,0 +1,46 @@
+<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">B</div>
+      <span class="brand-name">Baseera</span>
+    </div>
+    <button type="button" class="lang-toggle" (click)="lang.toggle()">
+      {{ lang.current() === 'en' ? 'العربية' : 'English' }}
+    </button>
+  </header>
+
+  <section class="hero">
+    <span class="badge">{{ t[lang.current()].badge }}</span>
+    <h1 class="headline">
+      {{ t[lang.current()].headline }}<br />
+      <span class="headline-accent">{{ t[lang.current()].headlineAccent }}</span>
+    </h1>
+    <p class="intro">{{ t[lang.current()].intro }}</p>
+
+    <div class="cta-row">
+      <a routerLink="/register" class="cta-primary">{{ t[lang.current()].ctaPrimary }}</a>
+      <a routerLink="/login" class="cta-secondary">{{ t[lang.current()].ctaSecondary }}</a>
+    </div>
+  </section>
+
+  <section class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>{{ t[lang.current()].step1Title }}</h3>
+      <p>{{ t[lang.current()].step1Text }}</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>{{ t[lang.current()].step2Title }}</h3>
+      <p>{{ t[lang.current()].step2Text }}</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>{{ t[lang.current()].step3Title }}</h3>
+      <p>{{ t[lang.current()].step3Text }}</p>
+    </div>
+  </section>
+
+  <p class="reassurance">{{ t[lang.current()].reassurance }}</p>
+</div>

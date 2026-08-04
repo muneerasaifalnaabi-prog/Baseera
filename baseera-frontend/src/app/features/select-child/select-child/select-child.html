@@ -1,0 +1,75 @@
+<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+  <div class="card">
+    <h1 class="title">
+      @if (children().length > 0 && !showAddForm()) {
+        {{ t[lang.current()].selectTitle }}
+      } @else {
+        {{ t[lang.current()].addTitle }}
+      }
+    </h1>
+    <p class="subtitle">
+      @if (children().length > 0 && !showAddForm()) {
+        {{ t[lang.current()].selectSubtitle }}
+      } @else {
+        {{ t[lang.current()].addSubtitle }}
+      }
+    </p>
+
+    @if (errorMessage()) {
+      <div class="error-banner">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+      <div class="skeleton-list">
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+      </div>
+    }
+
+    @if (!loading() && children().length > 0 && !showAddForm()) {
+      <div class="child-list">
+        @for (child of children(); track child.id) {
+          <button type="button" class="child-row" (click)="selectChild(child.id)">
+            <div class="avatar">{{ child.fullName.charAt(0) }}</div>
+            <div class="child-info">
+              <span class="child-name">{{ child.fullName }}</span>
+              <span class="child-age">{{ child.age }} {{ t[lang.current()].yearsOld }}</span>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        }
+      </div>
+
+      <button type="button" class="secondary-button" (click)="showAddForm.set(true)">
+        {{ t[lang.current()].addAnother }}
+      </button>
+    }
+
+    @if (!loading() && showAddForm()) {
+      <div class="add-form">
+        <label>{{ t[lang.current()].fullName }}</label>
+        <input type="text" [(ngModel)]="form.fullName" placeholder="Yusuf Al Balushi" />
+
+        <label>{{ t[lang.current()].dateOfBirth }}</label>
+        <input type="date" [(ngModel)]="form.dateOfBirth" [max]="today" />
+
+        <label>{{ t[lang.current()].gender }}</label>
+        <select [(ngModel)]="form.gender">
+          <option value="MALE">{{ t[lang.current()].male }}</option>
+          <option value="FEMALE">{{ t[lang.current()].female }}</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="button" class="primary-button" [disabled]="saving()" (click)="saveNewChild()">
+            {{ saving() ? t[lang.current()].saving : t[lang.current()].continue }}
+          </button>
+          @if (children().length > 0) {
+            <button type="button" class="text-button" (click)="cancelAdd()">{{ t[lang.current()].cancel }}</button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

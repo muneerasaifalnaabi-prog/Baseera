@@ -1,0 +1,45 @@
+:host { display: block; font-family: var(--font-body, 'Nunito Sans', sans-serif); }
+
+.sidebar {
+  width: 220px;
+  min-height: calc(100vh - 58px);
+  background: #ffffff;
+  border-inline-end: 1px solid rgba(22, 33, 62, 0.06);
+  padding: 20px 16px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 58px;
+}
+
+.nav { display: flex; flex-direction: column; gap: 3px; }
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9CA3AF;
+  margin: 14px 10px 4px;
+}
+.nav-label:first-child { margin-top: 0; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--color-text-muted, #64708A);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-item:hover { background: #F3F6FC; color: var(--color-primary, #3562E9); }
+.nav-active { background: rgba(53, 98, 233, 0.09); color: var(--color-primary, #3562E9); }
+
+.sidebar.lang-ar,
+.sidebar.lang-ar * {
+  font-family: var(--font-arabic, 'Tajawal', sans-serif) !important;
+}

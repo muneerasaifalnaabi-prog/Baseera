@@ -1,4 +1,4 @@
-
+﻿
 /* ===========================
    General
 =========================== */
@@ -7,7 +7,6 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
 }
 
 body{
@@ -21,51 +20,6 @@ body{
 .page{
     display:flex;
     height:100vh;
-}
-
-/* ===========================
-   Sidebar
-=========================== */
-
-.sidebar{
-    width:260px;
-    background:#ffffff;
-    border-right:1px solid #e8e8e8;
-    padding:30px 20px;
-    display:flex;
-    flex-direction:column;
-}
-
-.logo{
-    color:#2563eb;
-    font-size:34px;
-    font-weight:700;
-    margin-bottom:50px;
-}
-
-.sidebar nav{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
-.sidebar a{
-    text-decoration:none;
-    color:#555;
-    padding:14px 18px;
-    border-radius:12px;
-    transition:.3s;
-    font-size:17px;
-}
-
-.sidebar a:hover{
-    background:#edf4ff;
-    color:#2563eb;
-}
-
-.sidebar .active{
-    background:#2563eb;
-    color:white;
 }
 
 /* ===========================
@@ -175,92 +129,78 @@ body{
    Cards
 =========================== */
 
+/* ===========================
+   Cards
+=========================== */
+
 .cards{
     overflow-y:auto;
-    padding-right:10px;
+    padding-right:12px;
     height:calc(100vh - 220px);
 }
 
 .card{
+    display:flex;
+    align-items:center;
+    gap:20px;
 
-    background:white;
+    background:#fff;
+    border-radius:22px;
+    padding:18px;
 
-    border-radius:24px;
-
-    overflow:hidden;
-
-    margin-bottom:28px;
+    margin-bottom:22px;
 
     box-shadow:0 8px 25px rgba(0,0,0,.08);
-
     transition:.3s;
-
     cursor:pointer;
-
 }
 
 .card:hover{
-
-    transform:translateY(-6px);
-
+    transform:translateY(-5px);
     box-shadow:0 15px 35px rgba(37,99,235,.15);
-
 }
 
 .card img{
-    width:100%;
-    height:230px;
+    width:220px;
+    min-width:220px;
+    height:170px;
     object-fit:cover;
+    border-radius:18px;
+    display:block;
 }
 
 .info{
-
-    padding:22px;
-
+    flex:1;
+    display:flex;
+    flex-direction:column;
 }
 
 .top{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:15px;
-
+    margin-bottom:14px;
 }
 
 .top h3{
-
-    font-size:24px;
-
-    color:#222;
-
+    font-size:22px;
+    font-weight:700;
+    color:#1f2937;
 }
 
 .badge{
-
     background:#2563eb;
-
     color:white;
-
     padding:8px 16px;
-
     border-radius:20px;
-
     font-size:13px;
-
+    font-weight:600;
 }
 
 .info p{
-
-    margin-top:12px;
-
-    color:#666;
-
+    margin:8px 0;
+    color:#6b7280;
     font-size:16px;
-
 }
 
 /* ===========================
@@ -268,83 +208,61 @@ body{
 =========================== */
 
 .buttons{
-
-    margin-top:22px;
-
     display:flex;
-
-    gap:15px;
-
+    gap:14px;
+    margin-top:18px;
 }
 
 .buttons button{
-
     flex:1;
-
     border:none;
-
-    padding:14px;
-
     border-radius:12px;
+    padding:13px;
 
-    cursor:pointer;
-
-    font-size:15px;
-
+    font-size:14px;
     font-weight:600;
-
+    cursor:pointer;
     transition:.3s;
-
 }
 
 .view{
-
     background:#eef4ff;
-
     color:#2563eb;
-
 }
 
 .view:hover{
-
-    background:#2563eb;
-
-    color:white;
-
+    background:#dbe8ff;
 }
 
 .direction{
-
     background:#2563eb;
-
-    color:white;
-
+    color:#fff;
 }
 
 .direction:hover{
-
-    background:#1e4fc6;
-
+    background:#1d4ed8;
 }
 
-/* ===========================
-   Map
-=========================== */
 /* ===========================
    Map
 =========================== */
 
 .map{
-     position:sticky;
-    top: 20px;
-    background:white;
-    border-radius:24px;
+    position:sticky;
+    top:20px;
+
+    background:#fff;
+    border-radius:22px;
+
     box-shadow:0 8px 25px rgba(0,0,0,.08);
+
     overflow:hidden;
-    height:100%;
+
+    height:calc(100vh - 220px);
 }
 
 #map{
     width:100%;
     height:100%;
+    min-height:650px;
 }

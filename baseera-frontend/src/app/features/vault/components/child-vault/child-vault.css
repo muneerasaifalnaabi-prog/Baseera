@@ -15,54 +15,191 @@
 
 
 /* =========================
-HEADER
+CHILD HEADER
 ========================= */
 
 .vault-header {
-  max-width: 1200px;
-  margin: 0 auto 30px;
+
+  width: 100%;
+
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  padding: 22px 30px;
+
+  margin-bottom: 32px;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e8f0;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 14px rgba(30, 60, 100, 0.06);
 }
 
-.eyebrow {
-  color: #4169e1;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 7px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+
+/* =========================
+CHILD INFO
+========================= */
+
+.child-info {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 22px;
 }
 
-.vault-header h1 {
-  margin: 0;
-  font-size: 34px;
-  font-weight: 750;
-  color: #172554;
-}
 
-.vault-header p {
-  margin: 8px 0 0;
-  color: #6b7280;
-  font-size: 15px;
-}
+/* =========================
+CHILD AVATAR
+========================= */
 
-.header-icon {
-  width: 45px;
-  height: 45px;
+.child-avatar {
+
+  width: 76px;
+  height: 76px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
   border-radius: 50%;
+
+  background: #eef4ff;
+
+  color: #2458b8;
+
+  border: 1px solid #dbe6f7;
+}
+
+
+.child-avatar {
+  width: 64px;
+  height: 64px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: white;
-  border: 1px solid #e5e7eb;
+  border-radius: 50%;
 
-  color: #4169e1;
-  font-size: 20px;
+  background: #eef4ff;
+
+  border: 1px solid #d8e4f7;
+
+  color: #2463d4;
+}
+
+.child-icon {
+  width: 34px;
+  height: 34px;
+}
+
+
+/* =========================
+CHILD DETAILS
+========================= */
+
+.child-details {
+
+  padding-left: 22px;
+
+  border-left: 1px solid #dce3ed;
+}
+
+
+/* Child Name */
+
+.child-details h1 {
+
+  margin: 0;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  font-size: 38px;
+
+  font-weight: 600;
+
+  line-height: 1.15;
+
+  letter-spacing: 0.2px;
+
+  color: #142f63;
+}
+
+
+/* Description */
+
+.child-details p {
+
+  margin: 7px 0 0;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.5;
+
+  color: #64748b;
+}
+
+
+/* =========================
+INFO BUTTON
+========================= */
+
+.header-info-button {
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border: 1px solid #dce3ed;
+
+  background: #ffffff;
+
+  color: #2463d4;
+
+  font-size: 21px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.header-info-button:hover {
+
+  background: #f4f7fc;
+
+  transform: scale(1.04);
 }
 
 
@@ -791,6 +928,8 @@ MODAL
 
   line-height: 1.5;
 }
+
+
 
 
 /* =========================

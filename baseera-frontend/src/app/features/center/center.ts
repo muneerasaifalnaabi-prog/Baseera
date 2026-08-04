@@ -5,7 +5,19 @@ import { FormsModule } from '@angular/forms';
 
 import { CenterService } from './services/center.service';
 import { Center } from './models/center.model';
+import { Sidebar } from '../../shared/components/sidebar/sidebar';
+// ==========================================
+// Fix Leaflet default marker icons
+// Leaflet cannot locate marker images automatically
+// in Angular, so we set the correct paths manually.
+// ==========================================
+delete (L.Icon.Default.prototype as any)._getIconUrl;
 
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+  iconUrl: 'assets/leaflet/marker-icon.png',
+  shadowUrl: 'assets/leaflet/marker-shadow.png'
+});
 // ==========================================
 // Component
 // ==========================================
@@ -15,12 +27,12 @@ import { Center } from './models/center.model';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    Sidebar
   ],
   templateUrl: './center.html',
   styleUrl: './center.css'
 })
-
 export class CenterComponent implements OnInit, AfterViewInit {
 
   // ==========================================
@@ -92,17 +104,23 @@ export class CenterComponent implements OnInit, AfterViewInit {
 
     this.map = L.map('map').setView([20.5,57.5],6);
 
+    // L.tileLayer(
+
+    //   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+    //   {
+
+    //     attribution:'© OpenStreetMap Contributors'
+
+    //   }
+
+    // ).addTo(this.map);
     L.tileLayer(
-
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-
-      {
-
-        attribution:'© OpenStreetMap Contributors'
-
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    {
+      attribution: '&copy; OpenStreetMap &copy; CARTO'
       }
-
-    ).addTo(this.map);
+      ).addTo(this.map);
 
   }
 
@@ -211,30 +229,23 @@ export class CenterComponent implements OnInit, AfterViewInit {
         });
 
         this.markers = [];
-
-        // Add new markers
-
         this.centers.forEach(center => {
 
-          const marker = L.marker(
+  const marker = L.marker([center.latitude, center.longitude])
+    .addTo(this.map)
+    .bindPopup(`
+      <b>${center.name}</b><br>
+      📍 ${center.city}<br>
+      🧩 ${center.specialty}
+    `);
 
-            [center.latitude, center.longitude])
+  this.markers.push(marker);
 
-          .addTo(this.map)
+});
 
-          .bindPopup(`
-
-            <b>${center.name}</b><br>
-
-            📍 ${center.city}<br>
-
-            🧩 ${center.specialty}
-
-          `);
-
-          this.markers.push(marker);
-
-        });
+setTimeout(() => {
+  this.map.invalidateSize();
+}, 100);
 
         if (this.userLat) {
 

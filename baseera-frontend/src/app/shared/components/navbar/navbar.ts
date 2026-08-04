@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Language } from '../../services/language';
 import { translations } from '../../i18n/translations';
 
@@ -12,48 +12,23 @@ import { translations } from '../../i18n/translations';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  // Reuses the existing sidebar copy (dashboard/activities/centers/
-  // logout are already there) plus a few additions — see
-  // translations-additions.ts.
+  @Input() showSidebarToggle = false;
+  @Output() sidebarToggled = new EventEmitter<void>();
   t = translations.sidebar;
+  menuOpen = signal(false);
 
-  menuOpen = false;
-
-  constructor(public lang: Language, private router: Router) {}
-
-  get fullName(): string {
-    return localStorage.getItem('fullName') ?? '';
-  }
-
-  get initials(): string {
-    const name = this.fullName.trim();
-    if (!name) return '?';
-    const parts = name.split(/\s+/);
-    return parts.length > 1
-      ? (parts[0][0] + parts[1][0]).toUpperCase()
-      : name.slice(0, 2).toUpperCase();
-  }
+  constructor(public lang: Language) {}
 
   toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
+    this.menuOpen.set(!this.menuOpen());
   }
 
   closeMenu(): void {
-    this.menuOpen = false;
+    this.menuOpen.set(false);
   }
 
-  // NOTE: adjust to match the real Language service API — assuming a
-  // `set(lang)` method exists alongside the existing `current()`.
-  switchLanguage(): void {
-    const next = this.lang.current() === 'en' ? 'ar' : 'en';
-    (this.lang as any).set ? (this.lang as any).set(next) : null;
-  }
-
-  // NOTE: wire to the real auth service when available. Placeholder
-  // clears local session state and returns to login.
-  logout(): void {
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('selectedChildId');
-    this.router.navigateByUrl('/login');
+  vaultLink(): string[] {
+    const childId = localStorage.getItem('selectedChildId');
+    return childId ? ['/children', childId, 'vault'] : ['/select-child'];
   }
 }

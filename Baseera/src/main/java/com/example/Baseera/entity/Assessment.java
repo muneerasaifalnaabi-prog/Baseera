@@ -17,7 +17,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Assessment extends BaseEntity{
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "child_id", nullable = false)
     private Child child;
 

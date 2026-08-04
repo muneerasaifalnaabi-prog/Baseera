@@ -1,0 +1,96 @@
+<div class="page">
+  <div class="header">
+    <h1 class="title">Admin Dashboard</h1>
+    <p class="subtitle">Manage catalogs and accounts — visible only to admin logins.</p>
+  </div>
+
+  <div class="tab-bar">
+    <button type="button" class="tab" [class.tab-active]="activeTab() === 'activities'" (click)="switchTab('activities')">Activities</button>
+    <button type="button" class="tab" [class.tab-active]="activeTab() === 'centers'" (click)="switchTab('centers')">Centers</button>
+    <button type="button" class="tab" [class.tab-active]="activeTab() === 'accounts'" (click)="switchTab('accounts')">Accounts</button>
+  </div>
+
+  @if (errorMessage()) { <p class="error-text">{{ errorMessage() }}</p> }
+
+  @if (activeTab() !== 'accounts' && !showForm()) {
+    <button type="button" class="add-button" (click)="startCreate()">+ Add new</button>
+  }
+
+  @if (showForm() && activeTab() === 'activities') {
+    <div class="form-card">
+      <h3>{{ editingId() ? 'Edit activity' : 'New activity' }}</h3>
+      <input placeholder="Name" [(ngModel)]="activityForm.name" />
+      <textarea placeholder="Description" [(ngModel)]="activityForm.description" rows="3"></textarea>
+      <div class="row">
+        <input type="number" placeholder="Min age" [(ngModel)]="activityForm.minAge" />
+        <input type="number" placeholder="Max age" [(ngModel)]="activityForm.maxAge" />
+        <select [(ngModel)]="activityForm.targetCondition">
+          <option value="ASD">ASD</option><option value="ADHD">ADHD</option><option value="BOTH">Both</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="save-button" (click)="saveActivity()">Save</button>
+        <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
+      </div>
+    </div>
+  }
+
+  @if (showForm() && activeTab() === 'centers') {
+    <div class="form-card">
+      <h3>{{ editingId() ? 'Edit center' : 'New center' }}</h3>
+      <input placeholder="Name" [(ngModel)]="centerForm.name" />
+      <input placeholder="City" [(ngModel)]="centerForm.city" />
+      <input placeholder="Phone" [(ngModel)]="centerForm.phone" />
+      <div class="row">
+        <select [(ngModel)]="centerForm.specialty">
+          <option value="ASD">ASD</option><option value="ADHD">ADHD</option><option value="BOTH">Both</option>
+        </select>
+        <input type="number" placeholder="Latitude" [(ngModel)]="centerForm.latitude" />
+        <input type="number" placeholder="Longitude" [(ngModel)]="centerForm.longitude" />
+      </div>
+      <div class="form-actions">
+        <button type="button" class="save-button" (click)="saveCenter()">Save</button>
+        <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
+      </div>
+    </div>
+  }
+
+  @if (activeTab() === 'activities') {
+    <div class="list">
+      @for (a of activities(); track a.id) {
+        <div class="row-card">
+          <div><span class="badge">{{ a.targetCondition }}</span><h4>{{ a.name }}</h4><p>{{ a.description }}</p></div>
+          <div class="actions">
+            <button type="button" (click)="startEditActivity(a)">Edit</button>
+            <button type="button" class="delete" (click)="deleteActivity(a.id)">Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (activeTab() === 'centers') {
+    <div class="list">
+      @for (c of centers(); track c.id) {
+        <div class="row-card">
+          <div><span class="badge">{{ c.specialty }}</span><h4>{{ c.name }}</h4><p>{{ c.city }} · {{ c.phone }}</p></div>
+          <div class="actions">
+            <button type="button" (click)="startEditCenter(c)">Edit</button>
+            <button type="button" class="delete" (click)="deleteCenter(c.id)">Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (activeTab() === 'accounts') {
+    <div class="list">
+      @for (acc of accounts(); track acc.id) {
+        <div class="row-card">
+          <div><span class="badge">{{ acc.role }}</span><h4>{{ acc.fullName }}</h4><p>{{ acc.email }}</p></div>
+          <div class="actions"><button type="button" class="delete" (click)="toggleAccount(acc)">Deactivate</button></div>
+        </div>
+      }
+    </div>
+  }
+</div>

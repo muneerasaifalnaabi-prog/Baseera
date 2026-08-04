@@ -6,18 +6,15 @@ import { Home } from './features/home/home/home';
 import { Activities } from './features/activities/activities/activities';
 import { CenterComponent } from './features/center/center';
 import { SelectChild } from './features/select-child/select-child/select-child';
+import { AssessmentPage } from './features/assessment/assessment/assessment';
 import { Layout } from './shared/components/layout/layout';
 import { authGuard } from './shared/guards/auth-guard';
 
 export const routes: Routes = [
-  // Public — no sidebar, no login required
   { path: 'register', component: Register },
   { path: 'login', component: Login },
   { path: 'oauth-callback', component: OauthCallback },
 
-  // Authenticated section — Layout wraps every child route with the
-  // sidebar automatically. authGuard on the PARENT route protects the
-  // whole section in one place, not repeated on every individual page.
   {
     path: '',
     component: Layout,
@@ -26,6 +23,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: Home },
       { path: 'select-child', component: SelectChild },
+      { path: 'assessment', component: AssessmentPage },
       { path: 'activities', component: Activities },
       { path: 'centers', component: CenterComponent },
       {

@@ -102,4 +102,22 @@ export class Home implements OnInit {
   continueLink(): string[] {
     return this.hasChildren() ? this.vaultLink() : ['/select-child'];
   }
+
+  // Real, continuous mouse-tracked tilt on the hero photo — the CSS
+  // reads these two custom properties to rotate the image based on
+  // exactly where the cursor is, not just a fixed hover angle.
+  onHeroMouseMove(event: MouseEvent): void {
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    target.style.setProperty('--tilt-x', `${y * -8}deg`);
+    target.style.setProperty('--tilt-y', `${x * 8}deg`);
+  }
+
+  onHeroMouseLeave(event: MouseEvent): void {
+    const target = event.currentTarget as HTMLElement;
+    target.style.setProperty('--tilt-x', '0deg');
+    target.style.setProperty('--tilt-y', '0deg');
+  }
 }

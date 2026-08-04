@@ -46,7 +46,7 @@
       </div>
 
       <div class="hero__art">
-        <div class="hero__photo">
+        <div class="hero__photo" (mousemove)="onHeroMouseMove($event)" (mouseleave)="onHeroMouseLeave($event)">
           <img src="assets/images/logo-family.png" alt="A parent and child spending time together">
         </div>
 

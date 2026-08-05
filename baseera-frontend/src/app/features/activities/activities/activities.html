@@ -1,97 +1,76 @@
 <div class="page" [class.lang-ar]="lang() === 'ar'" [attr.dir]="lang() === 'ar' ? 'rtl' : 'ltr'">
-
-  <!-- ===== HEADER ===== -->
-  <header class="page-header">
-    <div class="header-content">
-      <h1 class="page-title">{{ t[lang()].title }}</h1>
-      <p class="page-subtitle">{{ t[lang()].subtitle }}</p>
+  <div class="header">
+    <div>
+      <h1 class="title">{{ t[lang()].title }}</h1>
+      <p class="subtitle">{{ t[lang()].subtitle }}</p>
     </div>
-    <button type="button" class="lang-toggle" (click)="toggleLang()">
-      {{ t[lang()].langLabel }}
-    </button>
-  </header>
+    <button type="button" class="lang-toggle" (click)="toggleLang()">{{ t[lang()].langLabel }}</button>
+  </div>
 
-  <!-- ===== FILTER BAR ===== -->
+  @if (isLoggedIn() && children().length > 0) {
+    <div class="child-picker">
+      <select (change)="onChildDropdownChange($any($event.target).value)">
+        @for (child of children(); track child.id) {
+          <option [value]="child.id" [selected]="child.id === selectedChildId()">{{ child.fullName }}</option>
+        }
+      </select>
+    </div>
+  }
+
   <div class="filter-bar">
     <div class="search-wrap">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"/>
         <path d="m21 21-4.3-4.3" stroke-linecap="round"/>
       </svg>
-      <input
-        type="text"
-        [(ngModel)]="nameFilter"
-        [placeholder]="t[lang()].searchPlaceholder"
-        (keyup.enter)="applyFilters()"
-        aria-label="Search activities"
-      />
+      <input type="text" [(ngModel)]="nameFilter" [placeholder]="t[lang()].searchPlaceholder" (keyup.enter)="applyFilters()" />
     </div>
 
-    <div class="chip-group">
-      <button type="button" class="chip" [class.chip-active]="conditionFilter() === ''" (click)="selectCondition('')">
-        {{ t[lang()].all }}
-      </button>
-      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'ASD'" (click)="selectCondition('ASD')">
-        {{ conditionLabel('ASD') }}
-      </button>
-      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'ADHD'" (click)="selectCondition('ADHD')">
-        {{ conditionLabel('ADHD') }}
-      </button>
-      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'BOTH'" (click)="selectCondition('BOTH')">
-        {{ conditionLabel('BOTH') }}
-      </button>
+    <div class="chip-row">
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === ''" (click)="selectCondition('')">{{ t[lang()].all }}</button>
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'ASD'" (click)="selectCondition('ASD')">{{ conditionLabel('ASD') }}</button>
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'ADHD'" (click)="selectCondition('ADHD')">{{ conditionLabel('ADHD') }}</button>
+      <button type="button" class="chip" [class.chip-active]="conditionFilter() === 'BOTH'" (click)="selectCondition('BOTH')">{{ conditionLabel('BOTH') }}</button>
     </div>
 
-    <div class="filter-actions">
-      <input
-        type="number"
-        class="age-input"
-        [(ngModel)]="ageFilter"
-        [placeholder]="t[lang()].agePlaceholder"
-        min="0" max="18"
-        (change)="applyFilters()"
-        aria-label="Filter by age"
-      />
-      <button type="button" class="clear-button" (click)="clearFilters()">
-        {{ t[lang()].clear }}
-      </button>
-    </div>
+    <input type="number" class="age-input" [(ngModel)]="ageFilter" [placeholder]="t[lang()].agePlaceholder" min="0" max="18" (change)="applyFilters()" />
+
+    <button type="button" class="clear-button" (click)="clearFilters()">{{ t[lang()].clear }}</button>
   </div>
 
-  <!-- ===== LOADING STATE ===== -->
   @if (loading()) {
-    <div class="skeleton-grid" aria-hidden="true">
-      @for (i of [1,2,3,4,5,6]; track i) {
-        <div class="skeleton-card"></div>
-      }
+    <div class="skeleton-grid">
+      @for (i of [1,2,3,4,5,6]; track i) { <div class="skeleton-card"></div> }
     </div>
   }
 
-  <!-- ===== ERROR STATE ===== -->
-  @if (errorMessage()) {
-    <div class="error-state">
-      <p class="error-text">{{ errorMessage() }}</p>
-    </div>
-  }
+  @if (errorMessage()) { <p class="error-text">{{ errorMessage() }}</p> }
 
-  <!-- ===== ACTIVITIES GRID ===== -->
   @if (!loading() && !errorMessage()) {
     @if (activities().length > 0) {
-      <div class="activity-grid">
+      <div class="grid">
         @for (activity of activities(); track activity.id) {
-          <article class="activity-card">
-            <div class="card-image-wrapper">
-              <img class="card-image" [src]="getActivityImage(activity)" alt="" loading="lazy" />
+          <div class="card">
+            <div class="card-media-wrapper">
+              <img class="card-image" [src]="getActivityImage(activity)" [attr.alt]="activity.name" />
             </div>
             <div class="card-body">
-              <span class="activity-badge">{{ conditionLabel(activity.targetCondition) }}</span>
-              <h3 class="activity-title">{{ activity.name }}</h3>
-              <p class="activity-description">{{ activity.description }}</p>
-              <span class="activity-age">
-                {{ t[lang()].agesLabel }} {{ activity.minAge }}–{{ activity.maxAge }}
-              </span>
+              <span class="badge">{{ conditionLabel(activity.targetCondition) }}</span>
+              <h3>{{ activity.name }}</h3>
+              <p>{{ activity.description }}</p>
+              <span class="ages">{{ t[lang()].agesLabel }} {{ activity.minAge }}–{{ activity.maxAge }}</span>
+
+              @if (isLoggedIn() && selectedChildId()) {
+                @if (isAdded(activity.id)) {
+                  <button type="button" class="add-button add-button--done" disabled>✓ {{ t[lang()].added }}</button>
+                } @else {
+                  <button type="button" class="add-button" [disabled]="addingId() === activity.id" (click)="addToChild(activity.id)">
+                    {{ addingId() === activity.id ? t[lang()].adding : t[lang()].addFor }}
+                  </button>
+                }
+              }
             </div>
-          </article>
+          </div>
         }
       </div>
     } @else {
@@ -101,5 +80,4 @@
       </div>
     }
   }
-
 </div>

@@ -1,350 +1,371 @@
-
-/* ===========================
+﻿/* ===========================
    General
 =========================== */
-
+ 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
 }
-
+ 
 body{
     background:#f5f7fb;
 }
-
+ 
 /* ===========================
    Layout
 =========================== */
-
+ 
 .page{
     display:flex;
     height:100vh;
 }
-
-/* ===========================
-   Sidebar
-=========================== */
-
-.sidebar{
-    width:260px;
-    background:#ffffff;
-    border-right:1px solid #e8e8e8;
-    padding:30px 20px;
-    display:flex;
-    flex-direction:column;
-}
-
-.logo{
-    color:#2563eb;
-    font-size:34px;
-    font-weight:700;
-    margin-bottom:50px;
-}
-
-.sidebar nav{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
-.sidebar a{
-    text-decoration:none;
-    color:#555;
-    padding:14px 18px;
-    border-radius:12px;
-    transition:.3s;
-    font-size:17px;
-}
-
-.sidebar a:hover{
-    background:#edf4ff;
-    color:#2563eb;
-}
-
-.sidebar .active{
-    background:#2563eb;
-    color:white;
-}
-
+ 
 /* ===========================
    Main
 =========================== */
-
+ 
 .content{
     flex:1;
     display:flex;
     flex-direction:column;
     padding:35px;
 }
-
+ 
 .header{
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
+<<<<<<< HEAD
+ 
+=======
 
-.header h2{
+>>>>>>> 3c52725f (Upadted files)
+.title{
     font-size:38px;
-    color:#222;
     font-weight:700;
+    color:#0D2040;
+    margin-bottom:8px;
+<<<<<<< HEAD
+=======
 }
 
+.subtitle{
+    font-size:16px;
+    color:#627792;
+    line-height:1.5;
+>>>>>>> 3c52725f (Upadted files)
+}
+ 
+.subtitle{
+    font-size:16px;
+    color:#627792;
+    line-height:1.5;
+}
+ 
 /* ===========================
    Search
 =========================== */
-
-.search-box{
-    margin-bottom:25px;
-}
-
-.search-box input{
-    width:100%;
-    height:58px;
-    border:none;
-    border-radius:30px;
-    padding:0 25px;
-    background:white;
-    box-shadow:0 4px 12px rgba(0,0,0,.05);
-    font-size:16px;
-    outline:none;
-}
+<<<<<<< HEAD
+ 
+/* ===========================
+   Filter Bar
+=========================== */
+ 
+=======
 
 /* ===========================
-   Filters
+   Filter Bar
 =========================== */
 
-.filters{
+>>>>>>> 3c52725f (Upadted files)
+.filter-bar{
     display:flex;
-    gap:12px;
-    margin-bottom:25px;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:14px;
+    margin-bottom:30px;
+    padding:16px 20px;
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
+<<<<<<< HEAD
+ 
+=======
 
-.filters button{
+>>>>>>> 3c52725f (Upadted files)
+.search-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    flex:1;
+    min-width:250px;
+}
+<<<<<<< HEAD
+ 
+=======
 
-    border:none;
+>>>>>>> 3c52725f (Upadted files)
+.search-wrap svg{
+    position:absolute;
+    left:16px;
+    color:#627792;
+}
+<<<<<<< HEAD
+ 
+=======
 
-    padding:12px 24px;
-
-    border-radius:30px;
-
-    cursor:pointer;
-
-    background:#eef2ff;
-
-    color:#444;
-
+>>>>>>> 3c52725f (Upadted files)
+.search-wrap input{
+    width:100%;
+    height:48px;
+    padding:0 18px 0 46px;
+    border-radius:999px;
+    border:1px solid #d9e8f5;
+    background:#f2f7fc;
+    font-size:15px;
+    outline:none;
     transition:.3s;
+}
+<<<<<<< HEAD
+ 
+=======
 
+>>>>>>> 3c52725f (Upadted files)
+.search-wrap input:focus{
+    border-color:#18639E;
+    background:#fff;
+}
+<<<<<<< HEAD
+ 
+=======
+
+>>>>>>> 3c52725f (Upadted files)
+.chip-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+<<<<<<< HEAD
+ 
+=======
+
+>>>>>>> 3c52725f (Upadted files)
+.chip{
+    border:none;
+    background:#f2f7fc;
+    color:#2D4362;
+    border-radius:999px;
+    padding:10px 20px;
     font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+<<<<<<< HEAD
+ 
+.chip:hover{
+    background:#d9e8f5;
+}
+ 
+.chip-active{
+    background:#18639E;
+    color:#fff;
+=======
 
+.chip:hover{
+    background:#d9e8f5;
 }
 
-.filters button:hover{
-
-    background:#2563eb;
-
-    color:white;
-
+.chip-active{
+    background:#18639E;
+    color:#fff;
 }
 
-.filters .active{
-
-    background:#2563eb;
-
-    color:white;
-
+.clear-button{
+    margin-left:auto;
+    border:none;
+    background:transparent;
+    color:#627792;
+    font-weight:600;
+    cursor:pointer;
+    padding:10px 16px;
 }
 
+.clear-button:hover{
+    color:#18639E;
+>>>>>>> 3c52725f (Upadted files)
+}
+ 
+.clear-button{
+    margin-left:auto;
+    border:none;
+    background:transparent;
+    color:#627792;
+    font-weight:600;
+    cursor:pointer;
+    padding:10px 16px;
+}
+ 
+.clear-button:hover{
+    color:#18639E;
+}
+ 
 /* ===========================
    Body
 =========================== */
-
+ 
 .body{
-
+ 
     display:grid;
-
+ 
     grid-template-columns:55% 45%;
-
+ 
     gap:30px;
-
+ 
     flex:1;
-
+ 
 }
-
+ 
 /* ===========================
    Cards
 =========================== */
-
+ 
+/* ===========================
+   Cards
+=========================== */
+ 
 .cards{
     overflow-y:auto;
-    padding-right:10px;
+    padding-right:12px;
     height:calc(100vh - 220px);
 }
-
 .card{
-
-    background:white;
-
-    border-radius:24px;
-
-    overflow:hidden;
-
-    margin-bottom:28px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-    transition:.3s;
-
-    cursor:pointer;
-
-}
-
-.card:hover{
-
-    transform:translateY(-6px);
-
-    box-shadow:0 15px 35px rgba(37,99,235,.15);
-
-}
-
-.card img{
-    width:100%;
-    height:230px;
-    object-fit:cover;
-}
-
-.info{
-
-    padding:22px;
-
-}
-
-.top{
-
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:15px;
-
+    gap:20px;
+    background:#fff;
+    border-radius:24px;
+    padding:18px;
+    margin-bottom:22px;
+    border:1px solid #e6edf5;
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
+    transition:.3s;
+    cursor:pointer;
 }
+ 
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 16px 36px rgba(24,99,158,.15);
+}
+<<<<<<< HEAD
+ 
+ 
+=======
 
+
+>>>>>>> 3c52725f (Upadted files)
+.card img{
+    width:220px;
+    min-width:220px;
+    height:170px;
+    object-fit:cover;
+    border-radius:18px;
+    display:block;
+}
+ 
+.info{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+ 
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+ 
 .top h3{
-
-    font-size:24px;
-
-    color:#222;
-
+    font-size:22px;
+    font-weight:700;
+    color:#1f2937;
 }
-
+ 
 .badge{
-
-    background:#2563eb;
-
-    color:white;
-
-    padding:8px 16px;
-
-    border-radius:20px;
-
-    font-size:13px;
-
+    background:#d9e8f5;
+    color:#18639E;
+    padding:7px 15px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
 }
-
 .info p{
-
-    margin-top:12px;
-
-    color:#666;
-
+    margin:8px 0;
+    color:#6b7280;
     font-size:16px;
-
 }
-
+ 
 /* ===========================
    Buttons
 =========================== */
-
+ 
 .buttons{
-
-    margin-top:22px;
-
     display:flex;
-
-    gap:15px;
-
+    gap:14px;
+    margin-top:18px;
 }
-
+ 
 .buttons button{
-
     flex:1;
-
     border:none;
-
-    padding:14px;
-
     border-radius:12px;
-
-    cursor:pointer;
-
-    font-size:15px;
-
+    padding:13px;
+ 
+    font-size:14px;
     font-weight:600;
-
+    cursor:pointer;
     transition:.3s;
-
 }
-
+ 
 .view{
-
     background:#eef4ff;
-
     color:#2563eb;
-
 }
-
+ 
 .view:hover{
-
-    background:#2563eb;
-
-    color:white;
-
+    background:#dbe8ff;
 }
-
+ 
 .direction{
-
     background:#2563eb;
-
-    color:white;
-
+    color:#fff;
 }
-
+ 
 .direction:hover{
-
-    background:#1e4fc6;
-
+    background:#1d4ed8;
 }
-
+ 
 /* ===========================
    Map
 =========================== */
-/* ===========================
-   Map
-=========================== */
-
+ 
 .map{
-     position:sticky;
-    top: 20px;
-    background:white;
-    border-radius:24px;
+    position:sticky;
+    top:20px;
+ 
+    background:#fff;
+    border-radius:22px;
+ 
     box-shadow:0 8px 25px rgba(0,0,0,.08);
+ 
     overflow:hidden;
-    height:100%;
+ 
+    height:calc(100vh - 220px);
 }
-
+ 
 #map{
     width:100%;
     height:100%;
+    min-height:650px;
 }

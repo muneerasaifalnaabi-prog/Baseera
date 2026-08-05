@@ -1,0 +1,4 @@
+:host { display: block; }
+.shell { display: flex; flex-direction: column; min-height: 100vh; background: #F8FAFC; }
+.body { display: flex; flex: 1; }
+.content { flex: 1; min-width: 0; overflow-x: hidden; }

@@ -1,0 +1,40 @@
+<header class="navbar">
+  <div class="navbar__inner">
+    @if (showSidebarToggle) {
+      <button type="button" class="navbar__sidebar-toggle" (click)="sidebarToggled.emit()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+        </svg>
+      </button>
+    }
+
+    <a routerLink="/home" class="navbar__brand">
+      <span class="navbar__logo-mark">☺</span>
+      <span class="navbar__logo-text">Baseera</span>
+    </a>
+
+    <button type="button" class="navbar__burger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        @if (!menuOpen()) {
+          <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+        } @else {
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
+        }
+      </svg>
+    </button>
+
+    <nav class="navbar__links" [class.navbar__links--open]="menuOpen()">
+      <a routerLink="/home" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Home</a>
+      <a routerLink="/activities" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Activities</a>
+      <a routerLink="/centers" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Centers</a>
+      <a [routerLink]="vaultLink()" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Reports</a>
+    </nav>
+
+    <div class="navbar__actions">
+      <button type="button" class="navbar__lang" (click)="lang.toggle()">
+        {{ lang.current() === 'en' ? 'العربية' : 'English' }}
+      </button>
+      <div class="navbar__avatar">AA</div>
+    </div>
+  </div>
+</header>

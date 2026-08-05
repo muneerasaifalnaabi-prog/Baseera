@@ -3,7 +3,6 @@ package com.example.Baseera.service;
 import com.example.Baseera.dto.request.RegisterRequestDTO;
 import com.example.Baseera.dto.response.AccountResponseDTO;
 import com.example.Baseera.dto.response.AuthResponseDTO;
-import com.example.Baseera.dto.response.DailyRegistrationDTO;
 import com.example.Baseera.entity.Account;
 import com.example.Baseera.exception.DuplicateResourceException;
 import com.example.Baseera.exception.ResourceNotFoundException;
@@ -38,11 +37,8 @@ public class AccountService {
         return AuthResponseDTO.fromEntity(saved, token);
     }
 
-    //****========
-    // admin: EVERY account, active and deactivated alike — findAll(),
-    // not the isActive-filtered query used elsewhere in the app. Admin
-    // needs to see the whole picture, including who's been suspended.
-    //==========****
+    // findAll(), not findByIsActiveTrue() — admin needs to see deactivated
+    // accounts too, not just active ones.
     public List<AccountResponseDTO> getAllAccounts() {
         return AccountResponseDTO.fromEntity(accountRepository.findAll());
     }
@@ -63,12 +59,6 @@ public class AccountService {
         return "REACTIVATED";
     }
 
-    //****========
-    // admin: dashboard stats — real counts and a real trend, nothing
-    // fabricated. No login-activity tracking exists in this schema, so
-    // "active throughout the day" isn't something this can honestly show;
-    // registrations per day IS real data, since createdAt exists on every account.
-    //==========****
     public long getActiveCount() {
         return accountRepository.countByIsActiveTrue();
     }
@@ -77,7 +67,9 @@ public class AccountService {
         return accountRepository.countByIsActiveFalse();
     }
 
-    public List<DailyRegistrationDTO> getRegistrationTrend() {
-        return accountRepository.findDailyRegistrationCounts();
+    // Raw rows, no DTO — each row is [date, count]. Jackson serializes
+    // Object[] as a plain JSON array automatically.
+    public List<Object[]> getRegistrationTrend() {
+        return accountRepository.findDailyRegistrationCountsRaw();
     }
 }

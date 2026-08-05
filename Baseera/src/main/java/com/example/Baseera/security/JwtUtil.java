@@ -16,6 +16,9 @@ public class JwtUtil {
 
     @Value("${jwt.expiration}")
     private long expiration;
+    
+    @Value("${jwt.refresh-expiration}")
+    private long refreshExpiration;
 
     // Turn our text secret into a proper cryptographic key
     private SecretKey getSigningKey() {
@@ -52,6 +55,20 @@ public class JwtUtil {
         } catch (Exception e) {
             return false; // any error means invalid (bad signature, etc.)
         }
+    }
+    public String generateRefreshToken(String username) {
+
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(
+                        new Date(
+                                System.currentTimeMillis()
+                                        + refreshExpiration
+                        )
+                )
+                .signWith(getSigningKey())
+                .compact();
     }
 
     // Helper: open the token and read all its claims (data)

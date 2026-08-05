@@ -2,15 +2,22 @@
  
   <!-- Main Content -->
   <main class="content">
+<<<<<<< HEAD
  
   <div class="header">
  
+=======
+
+  <div class="header">
+
+>>>>>>> 3c52725f (Upadted files)
   <div>
     <h1 class="title">Specialized Centers</h1>
     <p class="subtitle">
       Find autism and ADHD centers near you.
     </p>
   </div>
+<<<<<<< HEAD
  
 </div>
  
@@ -19,11 +26,22 @@
  
   <div class="search-wrap">
  
+=======
+
+</div>
+
+    <!-- Search -->
+  <div class="filter-bar">
+
+  <div class="search-wrap">
+
+>>>>>>> 3c52725f (Upadted files)
     <svg width="18" height="18"
          viewBox="0 0 24 24"
          fill="none"
          stroke="currentColor"
          stroke-width="2">
+<<<<<<< HEAD
  
       <circle cx="11" cy="11" r="8"/>
       <path d="m21 21-4.3-4.3"
@@ -31,47 +49,89 @@
  
     </svg>
  
+=======
+
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.3-4.3"
+            stroke-linecap="round"/>
+
+    </svg>
+
+>>>>>>> 3c52725f (Upadted files)
     <input
       type="text"
       placeholder="Search by center name or city..."
       [(ngModel)]="searchText"
       (input)="filterCenters()">
+<<<<<<< HEAD
  
   </div>
  
   <div class="chip-row">
  
+=======
+
+  </div>
+
+  <div class="chip-row">
+
+>>>>>>> 3c52725f (Upadted files)
     <button
       class="chip"
       [class.chip-active]="selectedSpecialty=='ALL'"
       (click)="selectedSpecialty='ALL'; filterCenters()">
+<<<<<<< HEAD
  
       All
  
     </button>
  
+=======
+
+      All
+
+    </button>
+
+>>>>>>> 3c52725f (Upadted files)
     <button
       class="chip"
       [class.chip-active]="selectedSpecialty=='ASD'"
       (click)="selectedSpecialty='ASD'; filterCenters()">
+<<<<<<< HEAD
  
       ASD
  
     </button>
  
+=======
+
+      ASD
+
+    </button>
+
+>>>>>>> 3c52725f (Upadted files)
     <button
       class="chip"
       [class.chip-active]="selectedSpecialty=='ADHD'"
       (click)="selectedSpecialty='ADHD'; filterCenters()">
+<<<<<<< HEAD
  
       ADHD
  
     </button>
  
+=======
+
+      ADHD
+
+    </button>
+
+>>>>>>> 3c52725f (Upadted files)
     <button
       class="chip"
       [class.chip-active]="selectedSpecialty=='BOTH'"
       (click)="selectedSpecialty='BOTH'; filterCenters()">
+<<<<<<< HEAD
  
       BOTH
  
@@ -89,6 +149,25 @@
  
 </div>
  
+=======
+
+      BOTH
+
+    </button>
+
+  </div>
+
+  <button
+      class="clear-button"
+      (click)="searchText='';selectedSpecialty='ALL';filterCenters()">
+
+      Clear
+
+  </button>
+
+</div>
+
+>>>>>>> 3c52725f (Upadted files)
     <!-- Main Body -->
     <div class="body">
  

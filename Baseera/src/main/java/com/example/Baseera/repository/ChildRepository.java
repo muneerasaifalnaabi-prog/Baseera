@@ -17,6 +17,15 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
     @Query("SELECT c FROM Child c WHERE c.isActive = true AND c.id = :id AND c.parent.id = :parentId")
     Optional<Child> findChildByIdAndParentId(@Param("id") Long id, @Param("parentId") Long parentId);
 
+
     @Query("SELECT c FROM Child c WHERE c.isActive = true AND c.parent.id = :parentId")
     List<Child> findAllByParentId(@Param("parentId") Long parentId);
+
+    // admin: every active child across every parent, for the admin view-only screen
+    @Query("SELECT c FROM Child c WHERE c.isActive = true")
+    List<Child> findAllActive();
+    long countByIsActiveTrue();
+
+    @Query("SELECT c FROM Child c WHERE c.isActive = true AND c.parent.email = :email")
+    List<Child> findAllByParentEmail(@Param("email") String email);
 }

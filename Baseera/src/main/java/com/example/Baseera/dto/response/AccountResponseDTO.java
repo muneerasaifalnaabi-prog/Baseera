@@ -14,6 +14,7 @@ public class AccountResponseDTO {
     private String email;
     private String fullName;
     private Role role;
+    private Boolean isActive;
 
     public static AccountResponseDTO fromEntity(Account entity) {
 
@@ -23,6 +24,7 @@ public class AccountResponseDTO {
         dto.setEmail(entity.getEmail());
         dto.setFullName(entity.getFullName());
         dto.setRole(entity.getRole());
+        dto.setIsActive(entity.getIsActive());
 
         return dto;
     }

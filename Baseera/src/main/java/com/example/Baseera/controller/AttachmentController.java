@@ -71,4 +71,13 @@ public class AttachmentController {
         Long parentId = securityUtils.getCurrentAccountId();
         return ResponseEntity.ok(attachmentAnalysisService.getCurrentPlanForChild(childId, parentId));
     }
+
+    // parent: view analysis for a specific attachment
+    @GetMapping("/api/attachments/{id}/analysis")
+    public ResponseEntity<AttachmentAnalysisResponseDTO> getAnalysis(@PathVariable Long id) {
+        Long parentId = securityUtils.getCurrentAccountId();
+        return ResponseEntity.ok(
+                attachmentAnalysisService.getAnalysis(id, parentId)
+        );
+    }
 }

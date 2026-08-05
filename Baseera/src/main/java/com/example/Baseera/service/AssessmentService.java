@@ -74,7 +74,7 @@ public class AssessmentService {
                 Respond ONLY with JSON in this exact shape:
                 {
                   "riskLevel": "LOW" | "MEDIUM" | "HIGH",
-                  "suggestedCondition": "ASD" | "ADHD"
+                  "suggestedCondition": "ASD" | "ADHD" |"BOTH"
                 }
 
                 Behavior description:
@@ -88,7 +88,8 @@ public class AssessmentService {
                     .entity(AiAssessmentResult.class);
         } catch (Exception e) {
             // Graceful fallback rather than a crash — surfaced to the client as 503.
-            throw new AiServiceException("Assessment analysis is temporarily unavailable, please try again shortly");
+           throw new AiServiceException("Assessment analysis is temporarily unavailable, please try again shortly");
+
         }
     }
 

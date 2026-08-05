@@ -38,8 +38,6 @@ export class SelectChild implements OnInit {
       next: (data) => {
         this.children.set(data);
         this.loading.set(false);
-        // No children yet — skip straight to the add form, no reason to
-        // show an empty list with nothing to pick.
         if (data.length === 0) {
           this.showAddForm.set(true);
         }
@@ -52,10 +50,27 @@ export class SelectChild implements OnInit {
   }
 
   selectChild(childId: number): void {
-    // Remembered so every other page (assessment, vault, activities)
-    // knows which child is active without re-asking.
     localStorage.setItem('selectedChildId', String(childId));
     this.router.navigate(['/home']);
+  }
+
+  deleteChild(event: Event, childId: number): void {
+    event.stopPropagation();
+
+    if (!confirm('Are you sure you want to remove this child profile?')) return;
+
+    this.childService.deleteChild(childId).subscribe({
+      next: () => {
+        this.children.update((list) => list.filter((c) => c.id !== childId));
+
+        if (this.children().length === 0) {
+          this.showAddForm.set(true);
+        }
+      },
+      error: () => {
+        this.errorMessage.set('Could not delete child. Please try again.');
+      }
+    });
   }
 
   saveNewChild(): void {

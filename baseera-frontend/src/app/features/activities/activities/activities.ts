@@ -425,13 +425,13 @@ export class Activities implements OnInit {
       .conditionLabels[condition];
 
   }
-    // ============================
-  // Activity Images
-  // ============================
+   // ============================
+// Activity Images
+// ============================
+
 getActivityImage(activity: ActivityItem): string {
 
-  const name = activity.name.toLowerCase();
-
+  const name = (activity.name || '').toLowerCase().trim();
 
   const keywordMap = [
 
@@ -442,9 +442,8 @@ getActivityImage(activity: ActivityItem): string {
         'sorting puzzle',
         'فرز الأشكال'
       ],
-      url: '/assets/images/activities/shape-sorting.webp'
+      url: 'assets/activities/shape-sorting.webp'
     },
-
 
     {
       keywords: [
@@ -452,9 +451,8 @@ getActivityImage(activity: ActivityItem): string {
         'following directions',
         'اتبع'
       ],
-      url: '/assets/images/activities/simon-says.webp'
+      url: 'assets/activities/simon-says.webp'
     },
-
 
     {
       keywords: [
@@ -462,9 +460,8 @@ getActivityImage(activity: ActivityItem): string {
         'sensory exploration',
         'حسي'
       ],
-      url: '/assets/images/activities/sensory-bin.webp'
+      url: 'assets/activities/sensory-bin.webp'
     },
-
 
     {
       keywords: [
@@ -472,9 +469,8 @@ getActivityImage(activity: ActivityItem): string {
         'schedule building',
         'جدول بصري'
       ],
-      url: '/assets/images/activities/visual-schedule.webp'
+      url: 'assets/activities/visual-schedule.webp'
     },
-
 
     {
       keywords: [
@@ -482,24 +478,21 @@ getActivityImage(activity: ActivityItem): string {
         'timer challenge',
         'مسار'
       ],
-      url: '/assets/images/activities/obstacle-course.webp'
+      url: 'assets/activities/obstacle-course.webp'
     }
 
   ];
 
-
   const match = keywordMap.find(item =>
     item.keywords.some(keyword =>
-      name.includes(keyword)
+      name.includes(keyword.toLowerCase())
     )
   );
 
-
   return match
     ? match.url
-    : '/assets/images/activities/sensory-bin.webp';
+    : 'assets/activities/sensory-bin.webp';
 }
-
 
 
 

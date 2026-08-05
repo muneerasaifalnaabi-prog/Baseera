@@ -25,16 +25,35 @@
 
     <nav class="navbar__links" [class.navbar__links--open]="menuOpen()">
       <a routerLink="/home" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Home</a>
+      <a routerLink="/select-child" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Switch child</a>
       <a routerLink="/activities" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Activities</a>
       <a routerLink="/centers" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Centers</a>
       <a [routerLink]="vaultLink()" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link">Reports</a>
+      @if (isAdmin()) {
+        <a routerLink="/admin" routerLinkActive="navbar__link--active" (click)="closeMenu()" class="navbar__link navbar__link--admin">Admin</a>
+      }
     </nav>
 
     <div class="navbar__actions">
       <button type="button" class="navbar__lang" (click)="lang.toggle()">
         {{ lang.current() === 'en' ? 'العربية' : 'English' }}
       </button>
-      <div class="navbar__avatar">AA</div>
+
+      <div class="navbar__account">
+        <button type="button" class="navbar__avatar" (click)="toggleAccountMenu()" [attr.aria-expanded]="accountMenuOpen()">AA</button>
+
+        @if (accountMenuOpen()) {
+          <div class="navbar__account-menu">
+            <button type="button" class="navbar__account-menu-item navbar__account-menu-item--danger" (click)="logout()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Log out
+            </button>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </header>

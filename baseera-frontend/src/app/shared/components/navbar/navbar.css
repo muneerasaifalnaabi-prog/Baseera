@@ -138,6 +138,10 @@
   transform: translateY(-1px);
 }
 
+.navbar__account {
+  position: relative;
+}
+
 .navbar__avatar {
   width: 36px;
   height: 36px;
@@ -152,11 +156,60 @@
   cursor: pointer;
   box-shadow: 0 0 0 3px rgba(53, 98, 233, 0.1);
   transition: box-shadow 0.2s, transform 0.2s;
+  border: none;
 }
 
 .navbar__avatar:hover {
   box-shadow: 0 0 0 4px rgba(53, 98, 233, 0.2);
   transform: translateY(-1px);
+}
+
+.navbar__account-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  inset-inline-end: 0;
+  min-width: 160px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(22, 33, 62, 0.14);
+  border: 1px solid rgba(22, 33, 62, 0.06);
+  padding: 6px;
+  z-index: 60;
+  animation: dropdown-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.navbar__account-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: none;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text, #16213E);
+  cursor: pointer;
+  text-align: start;
+  transition: background 0.15s;
+}
+
+.navbar__account-menu-item:hover {
+  background: rgba(22, 33, 62, 0.04);
+}
+
+.navbar__account-menu-item--danger {
+  color: #B91C1C;
+}
+
+.navbar__account-menu-item--danger:hover {
+  background: #FEE2E2;
 }
 
 @media (max-width: 860px) {
@@ -192,4 +245,11 @@
     text-align: start;
     padding: 10px 16px;
   }
+}
+.navbar__link--admin {
+  color: var(--color-primary, #3562E9);
+}
+
+.navbar__link--admin:hover {
+  background: rgba(53, 98, 233, 0.08);
 }

@@ -16,9 +16,13 @@ export class OauthCallback implements OnInit {
 
   ngOnInit(): void {
     const token = this.route.snapshot.queryParamMap.get('token');
+    const refreshToken = this.route.snapshot.queryParamMap.get('refreshToken');
 
     if (token) {
       localStorage.setItem('token', token);
+      if (refreshToken) {
+        localStorage.setItem('refreshToken', refreshToken);
+      }
       this.router.navigate(['/home']);
     } else {
       this.router.navigate(['/login']);

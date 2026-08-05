@@ -79,6 +79,7 @@ export class CenterComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
  
     // Load centers from backend
+<<<<<<< HEAD
  
     // this.loadCenters();
  
@@ -93,6 +94,22 @@ export class CenterComponent implements OnInit, AfterViewInit {
  
 }
  
+=======
+
+    // this.loadCenters();
+
+  }
+  ngAfterViewInit(): void {
+
+  this.initMap();
+
+  this.loadCenters();
+
+  this.getUserLocation();
+
+}
+
+>>>>>>> 3c52725f (Upadted files)
   // ==========================================
   // Map Functions
   // ==========================================
@@ -214,9 +231,15 @@ export class CenterComponent implements OnInit, AfterViewInit {
       next: (data) => {
  
         this.centers = data;
+<<<<<<< HEAD
  
         this.filterCenters();
  
+=======
+
+        this.filterCenters();
+
+>>>>>>> 3c52725f (Upadted files)
         // Remove old markers
  
         this.markers.forEach(marker => {
@@ -324,6 +347,7 @@ setTimeout(() => {
      
  
     );
+<<<<<<< HEAD
  
  
 // Update filtered list after sorting
@@ -331,6 +355,15 @@ setTimeout(() => {
 this.filterCenters();
  
  
+=======
+
+
+// Update filtered list after sorting
+
+this.filterCenters();
+
+
+>>>>>>> 3c52725f (Upadted files)
   }
  
   //////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 package com.example.Baseera.service;
 
 import com.example.Baseera.dto.request.ChildRequestDTO;
+import com.example.Baseera.dto.response.ChildAdminResponseDTO;
 import com.example.Baseera.dto.response.ChildResponseDTO;
 import com.example.Baseera.entity.Account;
 import com.example.Baseera.entity.Child;
@@ -82,7 +83,25 @@ public class ChildService {
     public int calculateAgeInYears(LocalDate dateOfBirth) {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
-}
+
+        public List<ChildAdminResponseDTO> getAllChildrenForAdmin() {
+            return ChildAdminResponseDTO.fromEntity(childRepository.findAllActive());
+        }
+    public long getTotalActiveChildrenCount() {
+        return childRepository.countByIsActiveTrue();
+    }
+
+    //****========
+    // admin: targeted lookup for a real support case — searches by the
+    // PARENT's email, returns only that parent's children, never a
+    // general browse of everyone.
+    //==========****
+    public List<ChildAdminResponseDTO> searchChildrenByParentEmail(String parentEmail) {
+        List<Child> children = childRepository.findAllByParentEmail(parentEmail);
+        return ChildAdminResponseDTO.fromEntity(children);
+    }
+    }
+
 
 
 

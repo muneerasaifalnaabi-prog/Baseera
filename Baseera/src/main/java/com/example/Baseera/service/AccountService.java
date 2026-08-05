@@ -37,8 +37,10 @@ public class AccountService {
         return AuthResponseDTO.fromEntity(saved, token);
     }
 
+    // findAll(), not findByIsActiveTrue() — admin needs to see deactivated
+    // accounts too, not just active ones.
     public List<AccountResponseDTO> getAllAccounts() {
-        return AccountResponseDTO.fromEntity(accountRepository.findByIsActiveTrue());
+        return AccountResponseDTO.fromEntity(accountRepository.findAll());
     }
 
     public String deactivateAccount(Long accountId) {
@@ -55,5 +57,20 @@ public class AccountService {
         account.setIsActive(true);
         accountRepository.save(account);
         return "REACTIVATED";
+    }
+
+    public long getActiveCount() {
+        return accountRepository.countByIsActiveTrue();
+    }
+
+    public long getDeactivatedCount() {
+        return accountRepository.countByIsActiveFalse();
+    }
+
+    // Raw rows, no DTO — each row is [date, count]. Jackson (Spring's
+    // built-in JSON library) serializes Object[] as a plain JSON array
+    // automatically, no extra class needed for something this small.
+    public List<Object[]> getRegistrationTrend() {
+        return accountRepository.findDailyRegistrationCountsRaw();
     }
 }

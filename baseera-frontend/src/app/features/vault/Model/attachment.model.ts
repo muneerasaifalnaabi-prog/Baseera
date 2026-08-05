@@ -15,6 +15,7 @@ export interface Attachment {
   documentType: DocumentType;
 
   createdAt: string;
+  hasAnalysis :boolean;
 }
 
 

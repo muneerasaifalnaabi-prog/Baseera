@@ -45,6 +45,12 @@ export const routes: Routes = [
           import('./features/vault/components/child-vault/child-vault')
             .then(m => m.ChildVaultComponent)
       },
+      {
+        path: 'children/:childId/analysis',
+        loadComponent: () =>
+          import('./features/vault/components/analysis/analysis')
+            .then(m => m.Analysis)
+      },
       { path: 'admin', component: AdminDashboard, canActivate: [adminGuard] }
     ]
   }

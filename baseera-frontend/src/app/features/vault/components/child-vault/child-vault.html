@@ -405,18 +405,25 @@
           <button
             type="button"
             class="action-button"
-            title="Analyze with AI"
+            [title]="attachment.hasAnalysis ? 'View Analysis' : 'Analyze with AI'"
             [disabled]="analyzingId === attachment.id"
-            (click)="analyzeAttachment(attachment)"
+            (click)="attachment.hasAnalysis
+      ? viewAnalysis(attachment)
+      : analyzeAttachment(attachment)"
           >
 
             @if (analyzingId === attachment.id) {
+
             ...
+
             } @else {
-            ✨
+
+            {{ attachment.hasAnalysis ? '👁' : '✨' }}
+
             }
 
           </button>
+
 
 
           <button

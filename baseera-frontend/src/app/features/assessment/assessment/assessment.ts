@@ -4,13 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { Assessment as AssessmentService, AssessmentItem } from '../../../shared/services/assessment';
 import { Language } from '../../../shared/services/language';
 import { translations } from '../../../shared/i18n/translations';
+import { CenterService } from '../../center/services/center.service';
+import { Center } from '../../center/models/center.model';;
+import { RouterModule } from '@angular/router';
 
 type Stage = 'form' | 'thinking' | 'result';
 
 @Component({
   selector: 'app-assessment',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './assessment.html',
   styleUrl: './assessment.css'
 })
@@ -23,10 +26,11 @@ export class AssessmentPage implements OnInit {
 
   history = signal<AssessmentItem[]>([]);
   latestResult = signal<AssessmentItem | null>(null);
+  recommendedCenters = signal<Center[]>([]);
 
   childId: number | null = null;
 
-  constructor(private assessmentService: AssessmentService, public lang: Language) {}
+  constructor(private assessmentService: AssessmentService, private centerService:CenterService,public lang: Language) {}
 
   ngOnInit(): void {
     const stored = localStorage.getItem('selectedChildId');
@@ -61,11 +65,35 @@ export class AssessmentPage implements OnInit {
     // built for the assessment flow from the very start of this project.
     this.assessmentService.submit(this.childId, this.description).subscribe({
       next: (result) => {
+
         setTimeout(() => {
+
           this.latestResult.set(result);
+
           this.stage.set('result');
+
           this.loadHistory();
+
+          if (this.childId) {
+
+            this.centerService
+              .getRecommendedCenters(this.childId)
+              .subscribe({
+
+                next: centers => {
+
+                  this.recommendedCenters.set(
+                    centers.slice(0, 3)
+                  );
+
+                }
+
+              });
+
+          }
+
         }, 1800);
+
       },
       error: () => {
         this.stage.set('form');
@@ -84,4 +112,25 @@ export class AssessmentPage implements OnInit {
     const map = { LOW: 'riskLow', MEDIUM: 'riskMedium', HIGH: 'riskHigh' } as const;
     return this.t[this.lang.current()][map[risk]];
   }
+
+  openHistory(item: AssessmentItem): void {
+
+    this.latestResult.set(item);
+
+    this.stage.set('result');
+
+    if (!this.childId) return;
+
+    this.centerService
+      .getRecommendedCenters(this.childId)
+      .subscribe({
+        next: centers => {
+          this.recommendedCenters.set(
+            centers.slice(0, 3)
+          );
+        }
+      });
+
+  }
+
 }

@@ -16,4 +16,14 @@ export class CenterService {
     return this.http.get<Center[]>(this.apiUrl);
   }
 
+  getRecommendedCenters(
+    childId: number
+  ): Observable<Center[]> {
+
+    return this.http.get<Center[]>(
+      `http://localhost:8080/api/children/${childId}/centers/recommended`
+    );
+
+  }
+
 }

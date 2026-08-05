@@ -1,0 +1,114 @@
+<div class="analysis-page">
+
+  <!-- Header -->
+  <div class="analysis-header">
+
+    <button class="back-btn" routerLink="../vault">
+      ← Back
+    </button>
+
+    <div class="header-content">
+
+      <div class="ai-icon">
+        ✨
+      </div>
+
+      <div>
+        <h1>AI Report Analysis</h1>
+        <p>
+          Review the AI-generated summary and suggested goals based on the uploaded specialist report.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- File Card -->
+
+  <div class="file-card">
+
+    <div class="pdf-icon">
+      PDF
+    </div>
+
+    <div class="file-info">
+
+      <h2>
+        {{ attachment.originalFileName }}
+      </h2>
+
+      <span>
+        Analysis completed successfully
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- Progress Summary -->
+
+  <section class="analysis-card">
+
+    <h3>
+      📄 Progress Summary
+    </h3>
+
+    <p>
+      {{ analysis.progressSummary }}
+    </p>
+
+  </section>
+
+
+  <!-- Improvement -->
+
+  <section class="analysis-card">
+
+    <h3>
+      🌱 Improvement Signs
+    </h3>
+
+    <p>
+      {{ analysis.improvementSigns }}
+    </p>
+
+  </section>
+
+
+  <!-- Goals -->
+
+  <section class="analysis-card">
+
+    <h3>
+      🎯 Suggested Goals
+    </h3>
+
+    <div class="goal-list">
+
+      @for (goal of analysis.suggestedGoalTags; track goal) {
+
+      <div class="goal-chip">
+
+        {{ goal }}
+
+      </div>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- Footer -->
+
+  <div class="disclaimer">
+
+    ⚠ This analysis is AI-generated and should not replace professional medical advice.
+
+  </div>
+
+</div>

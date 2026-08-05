@@ -90,6 +90,15 @@ export class AttachmentService {
     );
   }
 
+  getAnalysis(
+    id: number
+  ): Observable<AttachmentAnalysis> {
+
+    return this.http.get<AttachmentAnalysis>(
+      `${this.API_URL}/attachments/${id}/analysis`
+    );
+  }
+
 
   /**
    * Get the child's latest/current plan
@@ -102,4 +111,18 @@ export class AttachmentService {
       `${this.API_URL}/children/${childId}/current-plan`
     );
   }
+
+  /**
+   * Get recommended centers based on the child's latest assessment
+   */
+  getRecommendedCenters(
+    childId: number
+  ): Observable<any[]> {
+
+    return this.http.get<any[]>(
+      `${this.API_URL}/children/${childId}/centers/recommended`
+    );
+
+  }
+
 }

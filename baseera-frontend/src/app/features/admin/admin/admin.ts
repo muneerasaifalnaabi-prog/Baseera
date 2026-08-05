@@ -1,10 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Activity, ActivityItem } from '../../../shared/services/activity';
-import { Admin as AdminService, CenterItem, AccountItem, ActivityPayload, CenterPayload } from '../../../shared/services/admin';
+import { Admin as AdminService, CenterItem, AccountItem, AdminStats, ActivityPayload, CenterPayload } from '../../../shared/services/admin';
 
-type Tab = 'activities' | 'centers' | 'accounts';
+type Tab = 'overview' | 'activities' | 'centers' | 'accounts';
 
 @Component({
   selector: 'app-admin',
@@ -14,11 +14,13 @@ type Tab = 'activities' | 'centers' | 'accounts';
   styleUrl: './admin.css'
 })
 export class AdminDashboard implements OnInit {
-  activeTab = signal<Tab>('activities');
+  activeTab = signal<Tab>('overview');
 
   activities = signal<ActivityItem[]>([]);
   centers = signal<CenterItem[]>([]);
   accounts = signal<AccountItem[]>([]);
+  stats = signal<AdminStats | null>(null);
+  statsLoading = signal(true);
   errorMessage = signal('');
 
   showForm = signal(false);
@@ -27,9 +29,17 @@ export class AdminDashboard implements OnInit {
   activityForm: ActivityPayload = { name: '', description: '', minAge: 0, maxAge: 18, targetCondition: 'ASD' };
   centerForm: CenterPayload = { name: '', city: '', specialty: 'ASD', phone: '', latitude: 0, longitude: 0 };
 
+  // The tallest bar in the chart, used to scale every other bar's
+  // height proportionally — recalculates automatically if stats change.
+  maxTrendCount = computed(() => {
+    const trend = this.stats()?.registrationTrend ?? [];
+    return Math.max(1, ...trend.map(([, count]) => count));
+  });
+
   constructor(private activityService: Activity, private adminService: AdminService) {}
 
   ngOnInit(): void {
+    this.loadStats();
     this.loadActivities();
     this.loadCenters();
     this.loadAccounts();
@@ -39,6 +49,14 @@ export class AdminDashboard implements OnInit {
     this.activeTab.set(tab);
     this.showForm.set(false);
     this.editingId.set(null);
+  }
+
+  loadStats(): void {
+    this.statsLoading.set(true);
+    this.adminService.getStats().subscribe({
+      next: (data) => { this.stats.set(data); this.statsLoading.set(false); },
+      error: () => { this.errorMessage.set('Could not load dashboard stats.'); this.statsLoading.set(false); }
+    });
   }
 
   loadActivities(): void {
@@ -109,15 +127,27 @@ export class AdminDashboard implements OnInit {
     this.adminService.deleteCenter(id).subscribe({ next: () => this.loadCenters() });
   }
 
+  // Now correctly calls deactivate OR reactivate based on the account's
+  // REAL current status, not always deactivate like before.
   toggleAccount(account: AccountItem): void {
-    // We don't track a live "active" flag on AccountItem, so this always
-    // calls deactivate — safe to re-click, since deactivating an already
-    // -inactive account is a harmless no-op on the backend.
-    this.adminService.deactivateAccount(account.id).subscribe({ next: () => this.loadAccounts() });
+    const request$ = account.isActive
+      ? this.adminService.deactivateAccount(account.id)
+      : this.adminService.reactivateAccount(account.id);
+
+    request$.subscribe({
+      next: () => { this.loadAccounts(); this.loadStats(); },
+      error: () => this.errorMessage.set('Could not update account status.')
+    });
   }
 
   cancelForm(): void {
     this.showForm.set(false);
     this.editingId.set(null);
+  }
+
+  // Formats "2026-08-04" into a short weekday label for the chart's x-axis
+  formatChartDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
   }
 }

@@ -4,6 +4,7 @@ import com.example.Baseera.dto.request.RegisterRequestDTO;
 import com.example.Baseera.dto.response.AccountResponseDTO;
 import com.example.Baseera.dto.response.AuthResponseDTO;
 import com.example.Baseera.entity.Account;
+import com.example.Baseera.entity.RefreshToken;
 import com.example.Baseera.exception.DuplicateResourceException;
 import com.example.Baseera.exception.ResourceNotFoundException;
 import com.example.Baseera.repository.AccountRepository;
@@ -26,15 +27,22 @@ public class AccountService {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
     public AuthResponseDTO register(RegisterRequestDTO dto) {
         if (accountRepository.existsByEmail(dto.getEmail())) {
             throw new DuplicateResourceException("An account with this email already exists");
         }
+
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         Account account = dto.toEntity(encodedPassword);
         Account saved = accountRepository.save(account);
-        String token = jwtUtil.generateToken(saved.getEmail(), saved.getRole().name());
-        return AuthResponseDTO.fromEntity(saved, token);
+
+        String accessToken = jwtUtil.generateToken(saved.getEmail(), saved.getRole().name());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(saved);
+
+        return AuthResponseDTO.fromEntity(saved, accessToken, refreshToken.getToken());
     }
 
     // findAll(), not findByIsActiveTrue() — admin needs to see deactivated

@@ -1,23 +1,18 @@
 package com.example.Baseera.service;
 
-
 import com.example.Baseera.entity.Account;
 import com.example.Baseera.entity.RefreshToken;
 import com.example.Baseera.repository.RefreshTokenRepository;
-
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.UUID;
 
-
 @Service
 public class RefreshTokenService {
 
-    ;
     private final RefreshTokenRepository refreshTokenRepository;
-
 
     public RefreshTokenService(
             RefreshTokenRepository refreshTokenRepository
@@ -25,25 +20,19 @@ public class RefreshTokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
+    @Transactional
+    public RefreshToken createRefreshToken(Account account) {
 
-    // Create refresh token
-    public RefreshToken createRefreshToken(
-            Account account
-    ) {
-
-
-        RefreshToken refreshToken = new RefreshToken();
-
+        RefreshToken refreshToken = refreshTokenRepository
+                .findByAccount(account)
+                .orElse(new RefreshToken());
 
         refreshToken.setAccount(account);
-
 
         refreshToken.setToken(
                 UUID.randomUUID().toString()
         );
 
-
-        // 7 days expiration
         refreshToken.setExpiryDate(
                 new Date(
                         System.currentTimeMillis()
@@ -51,57 +40,37 @@ public class RefreshTokenService {
                 )
         );
 
-
         return refreshTokenRepository.save(refreshToken);
     }
 
-
-    // Find refresh token
-    public RefreshToken findByToken(
-            String token
-    ) {
-
+    public RefreshToken findByToken(String token) {
 
         return refreshTokenRepository
                 .findByToken(token)
                 .orElseThrow(() ->
-                        new RuntimeException(
-                                "Refresh token not found"
-                        )
+                        new RuntimeException("Refresh token not found")
                 );
     }
-     @Transactional
+
+    @Transactional
     public void deleteByToken(String token) {
 
         refreshTokenRepository.deleteByToken(token);
-
     }
 
-
-    // Check expiration
     public RefreshToken verifyExpiration(
             RefreshToken refreshToken
     ) {
 
+        if (refreshToken.getExpiryDate().before(new Date())) {
 
-        if (refreshToken.getExpiryDate()
-                .before(new Date())) {
-
-
-            refreshTokenRepository.delete(
-                    refreshToken
-            );
-
+            refreshTokenRepository.delete(refreshToken);
 
             throw new RuntimeException(
                     "Refresh token expired"
             );
         }
 
-
         return refreshToken;
     }
-
-
-
 }

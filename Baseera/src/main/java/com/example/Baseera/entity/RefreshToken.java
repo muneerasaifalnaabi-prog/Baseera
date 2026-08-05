@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.util.Date;
 
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -13,11 +12,9 @@ import java.util.Date;
 @Builder
 public class RefreshToken {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column(nullable = false, unique = true)
     private String token;
@@ -26,6 +23,6 @@ public class RefreshToken {
     private Date expiryDate;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
     private Account account;
 }

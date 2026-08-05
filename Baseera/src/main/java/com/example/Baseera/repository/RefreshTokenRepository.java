@@ -1,5 +1,6 @@
 package com.example.Baseera.repository;
 
+import com.example.Baseera.entity.Account;
 import com.example.Baseera.entity.RefreshToken;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,13 +8,16 @@ import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.Optional;
 
-
 public interface RefreshTokenRepository
         extends JpaRepository<RefreshToken, Long> {
 
-
     Optional<RefreshToken> findByToken(String token);
 
+    Optional<RefreshToken> findByAccount(Account account);
+
+    @Modifying
+    @Transactional
+    void deleteByAccount(Account account);
 
     @Modifying
     @Transactional

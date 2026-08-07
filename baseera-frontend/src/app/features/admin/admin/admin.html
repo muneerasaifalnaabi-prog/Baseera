@@ -1,7 +1,15 @@
 <div class="page">
   <div class="header">
-    <h1 class="title">Admin Dashboard</h1>
-    <p class="subtitle">Manage catalogs, accounts, and view platform activity.</p>
+    <div class="title-row">
+      <h1 class="title">Admin Dashboard</h1>
+      <span class="live-pulse" [class.live-pulse--busy]="refreshing()" title="Live — updates automatically">
+        <span class="live-pulse__dot"></span> Live
+      </span>
+      @if (lastUpdated()) {
+        <span class="last-updated">Updated {{ lastUpdated() | date:'shortTime' }}</span>
+      }
+    </div>
+    <p class="subtitle">Manage catalogs, accounts, and platform activity.</p>
   </div>
 
   <div class="tab-bar">
@@ -13,172 +21,220 @@
 
   @if (errorMessage()) { <p class="error-text">{{ errorMessage() }}</p> }
 
-  <!-- ============ OVERVIEW ============ -->
-  @if (activeTab() === 'overview') {
-    @if (statsLoading()) {
-      <div class="stat-row">
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-      </div>
-    } @else if (stats(); as s) {
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <div class="kpi-icon kpi-icon--blue">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-linecap="round"/>
-              <path d="M17 11a4 4 0 0 0 0-8"/>
-              <path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
-            </svg>
-          </div>
-          <span class="kpi-label">Active accounts</span>
-          <span class="kpi-value">{{ s.activeAccounts }}</span>
-        </div>
+  <div class="content">
 
-        <div class="kpi-card">
-          <div class="kpi-icon kpi-icon--red">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/>
-            </svg>
+    @if (activeTab() === 'overview') {
+      <div class="overview-panel">
+        @if (statsLoading()) {
+          <div class="stat-row">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
           </div>
-          <span class="kpi-label">Deactivated</span>
-          <span class="kpi-value">{{ s.deactivatedAccounts }}</span>
-        </div>
+          <div class="skeleton-chart"></div>
+        } @else if (stats(); as s) {
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-icon--blue">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-linecap="round"/>
+                  <path d="M17 11a4 4 0 0 0 0-8"/>
+                  <path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+                </svg>
+              </div>
+              <div class="kpi-text">
+                <span class="kpi-label">Active accounts</span>
+                <span class="kpi-value">{{ s.activeAccounts }}</span>
+              </div>
+            </div>
 
-        <div class="kpi-card">
-          <div class="kpi-icon kpi-icon--teal">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 3v18h18" stroke-linecap="round"/>
-              <path d="M7 14l4-4 3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <span class="kpi-label">Total accounts</span>
-          <span class="kpi-value">{{ s.activeAccounts + s.deactivatedAccounts }}</span>
-        </div>
-      </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-icon--coral">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="kpi-text">
+                <span class="kpi-label">Deactivated</span>
+                <span class="kpi-value">{{ s.deactivatedAccounts }}</span>
+              </div>
+            </div>
 
-      <div class="chart-grid">
-        <div class="chart-card chart-card--wide">
-          <h3 class="chart-title">New registrations — last 7 days</h3>
-          <div class="chart-canvas-wrap">
-            <canvas #trendCanvas></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <h3 class="chart-title">Account status</h3>
-          <div class="chart-canvas-wrap chart-canvas-wrap--donut">
-            <canvas #ratioCanvas></canvas>
-            <div class="donut-center">
-              <span class="donut-center__value">{{ s.activeAccounts }}</span>
-              <span class="donut-center__label">active</span>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-icon--teal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 3v18h18" stroke-linecap="round"/>
+                  <path d="M7 14l4-4 3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="kpi-text">
+                <span class="kpi-label">Total accounts</span>
+                <span class="kpi-value">{{ totalAccounts() }}</span>
+              </div>
             </div>
           </div>
-          <div class="legend-row">
-            <span class="legend-dot legend-dot--active"></span> Active
-            <span class="legend-dot legend-dot--inactive"></span> Deactivated
+
+          <div class="chart-grid">
+            <div class="chart-card chart-card--wide">
+              <h3 class="chart-title">New registrations — last 7 days</h3>
+              <div class="chart-canvas-wrap">
+                <canvas #trendCanvas></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <h3 class="chart-title">Account status</h3>
+              <div class="chart-canvas-wrap chart-canvas-wrap--donut">
+                <canvas #ratioCanvas></canvas>
+                <div class="donut-center">
+                  <span class="donut-center__value">{{ donutHover() ? donutHover()!.value : s.activeAccounts }}</span>
+                  <span class="donut-center__label">{{ donutHover() ? donutHover()!.label : 'active' }}</span>
+                </div>
+              </div>
+              <div class="legend-row">
+                <button
+                  type="button"
+                  class="legend-item"
+                  [class.legend-item--muted]="!legendVisible()[0]"
+                  (click)="toggleSegment(0)"
+                >
+                  <span class="legend-dot legend-dot--active"></span>Active
+                </button>
+                <button
+                  type="button"
+                  class="legend-item"
+                  [class.legend-item--muted]="!legendVisible()[1]"
+                  (click)="toggleSegment(1)"
+                >
+                  <span class="legend-dot legend-dot--inactive"></span>Deactivated
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    }
-  }
-
-  <!-- ============ ACTIVITIES ============ -->
-  @if (activeTab() === 'activities') {
-    @if (!showForm()) { <button type="button" class="add-button" (click)="startCreate()">+ Add new</button> }
-
-    @if (showForm()) {
-      <div class="form-card">
-        <h3>{{ editingId() ? 'Edit activity' : 'New activity' }}</h3>
-        <input placeholder="Name" [(ngModel)]="activityForm.name" />
-        <textarea placeholder="Description" [(ngModel)]="activityForm.description" rows="3"></textarea>
-        <div class="row">
-          <input type="number" placeholder="Min age" [(ngModel)]="activityForm.minAge" />
-          <input type="number" placeholder="Max age" [(ngModel)]="activityForm.maxAge" />
-          <select [(ngModel)]="activityForm.targetCondition">
-            <option value="ASD">ASD</option><option value="ADHD">ADHD</option><option value="BOTH">Both</option>
-          </select>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="save-button" (click)="saveActivity()">Save</button>
-          <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
-        </div>
-      </div>
-    }
-
-    <div class="list">
-      @for (a of activities(); track a.id) {
-        <div class="row-card">
-          <div><span class="badge">{{ a.targetCondition }}</span><h4>{{ a.name }}</h4><p>{{ a.description }}</p></div>
-          <div class="actions">
-            <button type="button" (click)="startEditActivity(a)">Edit</button>
-            <button type="button" class="delete" (click)="deleteActivity(a.id)">Delete</button>
-          </div>
-        </div>
-      }
-    </div>
-  }
-
-  <!-- ============ CENTERS ============ -->
-  @if (activeTab() === 'centers') {
-    @if (!showForm()) { <button type="button" class="add-button" (click)="startCreate()">+ Add new</button> }
-
-    @if (showForm()) {
-      <div class="form-card">
-        <h3>{{ editingId() ? 'Edit center' : 'New center' }}</h3>
-        <input placeholder="Name" [(ngModel)]="centerForm.name" />
-        <input placeholder="City" [(ngModel)]="centerForm.city" />
-        <input placeholder="Phone" [(ngModel)]="centerForm.phone" />
-        <div class="row">
-          <select [(ngModel)]="centerForm.specialty">
-            <option value="ASD">ASD</option><option value="ADHD">ADHD</option><option value="BOTH">Both</option>
-          </select>
-          <input type="number" placeholder="Latitude" [(ngModel)]="centerForm.latitude" />
-          <input type="number" placeholder="Longitude" [(ngModel)]="centerForm.longitude" />
-        </div>
-        <div class="form-actions">
-          <button type="button" class="save-button" (click)="saveCenter()">Save</button>
-          <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
-        </div>
+        }
       </div>
     }
 
-    <div class="list">
-      @for (c of centers(); track c.id) {
-        <div class="row-card">
-          <div><span class="badge">{{ c.specialty }}</span><h4>{{ c.name }}</h4><p>{{ c.city }} · {{ c.phone }}</p></div>
-          <div class="actions">
-            <button type="button" (click)="startEditCenter(c)">Edit</button>
-            <button type="button" class="delete" (click)="deleteCenter(c.id)">Delete</button>
-          </div>
+    @if (activeTab() === 'activities') {
+      <div class="list-panel">
+        <div class="panel-toolbar">
+          <span class="panel-count">{{ activities().length }} total</span>
+          @if (!showForm()) { <button type="button" class="add-button" (click)="startCreate()">+ Add new</button> }
         </div>
-      }
-    </div>
-  }
 
-  <!-- ============ ACCOUNTS ============ -->
-  @if (activeTab() === 'accounts') {
-    <div class="list">
-      @for (acc of accounts(); track acc.id) {
-        <div class="row-card">
-          <div>
-            <span class="badge">{{ acc.role }}</span>
-            <span class="status-dot" [class.status-dot--active]="acc.isActive" [class.status-dot--inactive]="!acc.isActive"></span>
-            <span class="status-text">{{ acc.isActive ? 'Active' : 'Deactivated' }}</span>
-            <h4>{{ acc.fullName }}</h4>
-            <p>{{ acc.email }}</p>
+        @if (showForm()) {
+          <div class="form-card">
+            <h3>{{ editingId() ? 'Edit activity' : 'New activity' }}</h3>
+            <input placeholder="Name" [(ngModel)]="activityForm.name" />
+            <textarea placeholder="Description" [(ngModel)]="activityForm.description" rows="2"></textarea>
+            <div class="row">
+              <input type="number" placeholder="Min age" [(ngModel)]="activityForm.minAge" />
+              <input type="number" placeholder="Max age" [(ngModel)]="activityForm.maxAge" />
+              <select [(ngModel)]="activityForm.targetCondition">
+                <option value="ASD">ASD</option><option value="ADHD">ADHD</option><option value="BOTH">Both</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="save-button" (click)="saveActivity()">Save</button>
+              <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
+            </div>
           </div>
-          <div class="actions">
-            @if (acc.isActive) {
-              <button type="button" class="delete" (click)="toggleAccount(acc)">Deactivate</button>
-            } @else {
-              <button type="button" class="activate" (click)="toggleAccount(acc)">Activate</button>
-            }
-          </div>
+        }
+
+        <div class="list">
+          @for (a of activities(); track a.id) {
+            <div class="row-card">
+              <div class="row-card__main">
+                <span class="badge">{{ a.targetCondition }}</span>
+                <h4>{{ a.name }}</h4>
+                <p>{{ a.description }}</p>
+              </div>
+              <div class="actions">
+                <button type="button" (click)="startEditActivity(a)">Edit</button>
+                <button type="button" class="delete" (click)="deleteActivity(a.id)">Delete</button>
+              </div>
+            </div>
+          }
         </div>
-      }
-    </div>
-  }
+      </div>
+    }
+
+    @if (activeTab() === 'centers') {
+      <div class="list-panel">
+        <div class="panel-toolbar">
+          <span class="panel-count">{{ centers().length }} total</span>
+          @if (!showForm()) { <button type="button" class="add-button" (click)="startCreate()">+ Add new</button> }
+        </div>
+
+        @if (showForm()) {
+          <div class="form-card">
+            <h3>{{ editingId() ? 'Edit center' : 'New center' }}</h3>
+            <input placeholder="Name" [(ngModel)]="centerForm.name" />
+            <input placeholder="City" [(ngModel)]="centerForm.city" />
+            <input placeholder="Phone" [(ngModel)]="centerForm.phone" />
+            <div class="row">
+              <select [(ngModel)]="centerForm.specialty">
+                <option value="ASD">ASD</option><option value="ADHD">ADHD</option><option value="BOTH">Both</option>
+              </select>
+              <input type="number" placeholder="Latitude" [(ngModel)]="centerForm.latitude" />
+              <input type="number" placeholder="Longitude" [(ngModel)]="centerForm.longitude" />
+            </div>
+            <div class="form-actions">
+              <button type="button" class="save-button" (click)="saveCenter()">Save</button>
+              <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
+            </div>
+          </div>
+        }
+
+        <div class="list">
+          @for (c of centers(); track c.id) {
+            <div class="row-card">
+              <div class="row-card__main">
+                <span class="badge">{{ c.specialty }}</span>
+                <h4>{{ c.name }}</h4>
+                <p>{{ c.city }} · {{ c.phone }}</p>
+              </div>
+              <div class="actions">
+                <button type="button" (click)="startEditCenter(c)">Edit</button>
+                <button type="button" class="delete" (click)="deleteCenter(c.id)">Delete</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (activeTab() === 'accounts') {
+      <div class="list-panel">
+        <div class="panel-toolbar">
+          <span class="panel-count">{{ accounts().length }} total</span>
+        </div>
+
+        <div class="list">
+          @for (acc of accounts(); track acc.id) {
+            <div class="row-card">
+              <div class="row-card__main">
+                <span class="badge">{{ acc.role }}</span>
+                <span class="status-pill" [class.status-pill--active]="acc.isActive" [class.status-pill--inactive]="!acc.isActive">
+                  <span class="status-dot"></span>{{ acc.isActive ? 'Active' : 'Deactivated' }}
+                </span>
+                <h4>{{ acc.fullName }}</h4>
+                <p>{{ acc.email }}</p>
+              </div>
+              <div class="actions">
+                @if (acc.isActive) {
+                  <button type="button" class="delete" (click)="toggleAccount(acc)">Deactivate</button>
+                } @else {
+                  <button type="button" class="activate" (click)="toggleAccount(acc)">Activate</button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
 </div>

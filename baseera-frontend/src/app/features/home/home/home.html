@@ -1,5 +1,3 @@
-
-
 <div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
 
   @if (errorMessage()) {
@@ -31,7 +29,7 @@
           <p class="hero__welcome">{{ t[lang.current()].greeting }}, {{ firstName }}</p>
         }
 
-        <h1 class="hero__headline">{{ t[lang.current()].heroHeadline }}</h1>
+        <h1 class="hero__headline">{{ t[lang.current()].heroHeadlinePre }}<span class="hero__headline-accent">{{ t[lang.current()].heroHeadlineHighlight }}</span>{{ t[lang.current()].heroHeadlinePost }}</h1>
         <p class="hero__sub">{{ t[lang.current()].heroSub }}</p>
 
         <div class="hero__actions">

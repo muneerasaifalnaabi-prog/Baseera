@@ -216,7 +216,9 @@ export const translations = {
 
       // added for the home redesign — hero
       heroBadge: 'AI-Powered Family Support',
-      heroHeadline: 'Every small step deserves understanding.',
+      heroHeadlinePre: 'Every small step ',
+      heroHeadlineHighlight: 'deserves',
+      heroHeadlinePost: ' understanding.',
       heroSub: 'Baseera helps families understand their child\'s development through AI-powered assessments, personalized activities, trusted healthcare guidance, and secure medical records.',
       ctaStartAssessment: 'Start Assessment',
       ctaExploreActivities: 'Explore Activities',
@@ -274,7 +276,9 @@ export const translations = {
 
       // added for the home redesign — hero
       heroBadge: 'دعم عائلي مدعوم بالذكاء الاصطناعي',
-      heroHeadline: 'كل خطوة صغيرة تستحق أن تُفهم.',
+      heroHeadlinePre: 'كل خطوة صغيرة ',
+      heroHeadlineHighlight: 'تستحق',
+      heroHeadlinePost: ' أن تُفهم.',
       heroSub: 'تساعد بصيرة العائلات على فهم تطور أطفالهم من خلال تقييمات مدعومة بالذكاء الاصطناعي، وأنشطة مخصصة، وإرشاد صحي موثوق، وسجلات طبية آمنة.',
       ctaStartAssessment: 'ابدأ التقييم',
       ctaExploreActivities: 'استكشف الأنشطة',

@@ -38,7 +38,7 @@ build/
 
 uploads/
 **/uploads/
-
+/uploads
 
 node_modules/
 dist/

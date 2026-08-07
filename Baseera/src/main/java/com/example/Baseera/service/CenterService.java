@@ -71,7 +71,6 @@ public class CenterService {
     }
 
     // parent: automatic recommendation once the child has a suggestedCondition.
-    // No manual filtering needed — pulls centers matching ASD/ADHD/BOTH,
     // sorted nearest-first if the child's centers have coordinates.
     public List<CenterResponseDTO> recommendForChild(Long childId, Long parentId) {
         Child child = childService.getChildOwnedByParent(childId, parentId);
@@ -81,11 +80,6 @@ public class CenterService {
                         "No assessment yet for this child — submit one to get a recommendation"));
 
         List<Center> matches = centerRepository.findBySpecialtyMatching(latest.getSuggestedCondition());
-
-        // NOTE: nearest-first sorting needs a reference point (e.g. the parent's
-        // own location) which Baseera doesn't collect yet — Child has no
-        // coordinates. Once that exists, compute a haversine distance here per
-        // center and sort by it; for now, matches are returned unsorted.
         return CenterResponseDTO.fromEntity(matches);
     }
 }

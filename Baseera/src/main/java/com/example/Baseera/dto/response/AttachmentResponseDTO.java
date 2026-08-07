@@ -19,6 +19,7 @@ public class AttachmentResponseDTO  {
     private String originalFileName;
     private DocumentType documentType;
     private LocalDateTime createdAt;
+    private boolean hasAnalysis;
 
     public static AttachmentResponseDTO fromEntity(Attachment entity) {
 

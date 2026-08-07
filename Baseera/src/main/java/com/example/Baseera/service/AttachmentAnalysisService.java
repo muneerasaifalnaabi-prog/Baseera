@@ -104,7 +104,7 @@ public class AttachmentAnalysisService {
                   "progressSummary": "...",
                   "suggestedGoalTags": ["tag1", "tag2"]
                 }
-
+                
                 Report text:
                 %s
                 """.formatted(extractedText);
@@ -124,5 +124,19 @@ public class AttachmentAnalysisService {
             String progressSummary,
             List<String> suggestedGoalTags
     ) {
+    }
+
+    // parent: view the saved analysis for a specific uploaded report
+    public AttachmentAnalysisResponseDTO getAnalysis(Long attachmentId, Long parentId) {
+
+       // Verify the attachment belongs to the current parent
+        attachmentService.getAttachmentOwnedByParent(attachmentId, parentId);
+
+        AttachmentAnalysis analysis = analysisRepository
+                .findByAttachmentId(attachmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "This report has not been analyzed yet"));
+
+        return AttachmentAnalysisResponseDTO.fromEntity(analysis);
     }
 }

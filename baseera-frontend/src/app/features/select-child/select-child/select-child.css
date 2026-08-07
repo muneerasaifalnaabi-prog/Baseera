@@ -72,7 +72,6 @@
 
 .child-row:hover { border-color: var(--color-primary, #4F46E5); background: #F8FAFC; }
 .child-row:active { transform: scale(0.99); }
-.child-row svg { margin-inline-start: auto; color: #9CA3AF; }
 
 .avatar {
   width: 40px;
@@ -92,6 +91,35 @@
 .child-info { display: flex; flex-direction: column; }
 .child-name { font-size: 14px; font-weight: 700; color: var(--color-text, #1E1B4B); }
 .child-age { font-size: 12px; color: var(--color-text-muted, #6B7280); }
+
+.child-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  border-radius: 8px;
+  color: #9CA3AF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.remove-btn:hover {
+  color: #EF4444;
+  background-color: #FEE2E2;
+}
+
+.child-row .chevron {
+  color: #9CA3AF;
+}
 
 .secondary-button {
   width: 100%;

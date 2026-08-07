@@ -5,12 +5,14 @@ import com.example.Baseera.dto.response.AttachmentResponseDTO;
 import com.example.Baseera.entity.Attachment;
 import com.example.Baseera.entity.Child;
 import com.example.Baseera.exception.ResourceNotFoundException;
+import com.example.Baseera.repository.AttachmentAnalysisRepository;
 import com.example.Baseera.repository.AttachmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +27,8 @@ public class AttachmentService {
 
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private AttachmentAnalysisRepository analysisRepository;
 
     //****========
     // parent: upload the specialist's report as a file, tagged with a DocumentType.
@@ -47,9 +51,29 @@ public class AttachmentService {
     // parent: list all reports uploaded for a child
     //==========****
     public List<AttachmentResponseDTO> getAttachmentsForChild(Long childId, Long parentId) {
-        childService.getChildOwnedByParent(childId, parentId);
-        List<Attachment> attachments = attachmentRepository.findAllByChildId(childId);
-        return AttachmentResponseDTO.fromEntity(attachments);
+
+childService.getChildOwnedByParent(childId, parentId);
+
+List<Attachment> attachments =
+attachmentRepository.findAllByChildId(childId);
+
+List<AttachmentResponseDTO> result = new ArrayList<>();
+
+for (Attachment attachment : attachments) {
+
+AttachmentResponseDTO dto =
+AttachmentResponseDTO.fromEntity(attachment);
+
+dto.setHasAnalysis(
+                  analysisRepository
+                    .findByAttachmentId(attachment.getId())
+.isPresent()
+);
+
+result.add(dto);
+}
+
+return result;
     }
 
     //****========

@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 .env
 baseera-frontend/.angular/
+*.class
 ### STS ###
 .apt_generated
 .classpath
@@ -32,3 +33,13 @@ build/
 
 ### VS Code ###
 .vscode/
+**/.angular/
+
+
+uploads/
+**/uploads/
+
+
+node_modules/
+dist/
+

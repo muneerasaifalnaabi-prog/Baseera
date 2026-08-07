@@ -18,7 +18,7 @@ import {
 } from '@angular/forms';
 
 import {
-  ActivatedRoute
+  ActivatedRoute,Router
 } from '@angular/router';
 
 import {
@@ -52,6 +52,9 @@ export class ChildVaultComponent
 
   private readonly route =
     inject(ActivatedRoute);
+
+  private readonly router =
+    inject(Router);
 
   private readonly attachmentService =
     inject(AttachmentService);
@@ -638,11 +641,17 @@ export class ChildVaultComponent
 
         next: analysis => {
 
-          this.analyzingId =
-            null;
+          this.analyzingId = null;
 
-          this.selectedAnalysis =
-            analysis;
+          this.router.navigate(
+            [`/children/${this.childId}/analysis`],
+            {
+              state: {
+                analysis: analysis,
+                attachment: attachment
+              }
+            }
+          );
 
         },
 
@@ -664,6 +673,47 @@ export class ChildVaultComponent
       });
   }
 
+  viewAnalysis(
+    attachment: Attachment
+  ): void {
+
+    this.analyzingId = attachment.id;
+
+    this.errorMessage = '';
+
+    this.attachmentService
+      .getAnalysis(attachment.id)
+      .subscribe({
+
+        next: analysis => {
+
+          this.analyzingId = null;
+
+          this.router.navigate(
+            [`/children/${this.childId}/analysis`],
+            {
+              state: {
+                analysis: analysis,
+                attachment: attachment
+              }
+            }
+          );
+
+        },
+
+        error: error => {
+
+          console.error(error);
+
+          this.analyzingId = null;
+
+          this.errorMessage =
+            'Unable to load saved analysis.';
+        }
+
+      });
+
+  }
 
 // =========================
 // CLOSE AI MODAL

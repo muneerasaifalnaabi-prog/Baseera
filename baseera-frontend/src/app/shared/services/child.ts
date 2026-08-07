@@ -31,4 +31,8 @@ export class Child {
   createChild(payload: ChildPayload): Observable<ChildItem> {
     return this.http.post<ChildItem>(this.baseUrl, payload);
   }
+
+  deleteChild(childId: number): Observable<string> {
+    return this.http.delete(`${this.baseUrl}/${childId}`, { responseType: 'text' });
+  }
 }

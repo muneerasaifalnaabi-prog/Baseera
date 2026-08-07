@@ -8,6 +8,7 @@ import { CenterComponent } from './features/center/center';
 import { SelectChild } from './features/select-child/select-child/select-child';
 import { AssessmentPage } from './features/assessment/assessment/assessment';
 import { AdminDashboard } from './features/admin/admin/admin';
+import { AssistantChat } from './features/assistant/assistant/assistant';
 import { Layout } from './shared/components/layout/layout';
 import { LayoutWithSidebar } from './shared/components/layout-with-sidebar/layout-with-sidebar';
 import { authGuard } from './shared/guards/auth-guard';
@@ -45,7 +46,9 @@ export const routes: Routes = [
           import('./features/vault/components/child-vault/child-vault')
             .then(m => m.ChildVaultComponent)
       },
-      { path: 'admin', component: AdminDashboard, canActivate: [adminGuard] }
+      { path: 'admin', component: AdminDashboard, canActivate: [adminGuard] },
+      { path: 'assistant', component: AssistantChat },
+      { path: 'assistant/about', redirectTo: 'assistant' }
     ]
   }
 ];

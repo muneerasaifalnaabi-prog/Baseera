@@ -1,0 +1,120 @@
+:host { display: block; height: 100%; font-family: var(--font-body); }
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 64px);
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 24px 16px;
+  box-sizing: border-box;
+}
+
+.chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-shrink: 0; }
+
+.chat-header__avatar {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-primary), #6C8CF5);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.chat-header__avatar svg { width: 18px; height: 18px; }
+
+.chat-header h1 { font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: var(--color-text); margin: 0; }
+.chat-header p { font-size: 12.5px; color: var(--color-text-muted); margin: 2px 0 0; }
+
+.error-banner {
+  background: var(--color-danger-bg); color: var(--color-danger);
+  padding: 10px 14px; border-radius: var(--radius); font-size: 12.5px; margin-bottom: 12px; flex-shrink: 0;
+}
+
+.chat-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 4px 12px;
+}
+.chat-scroll::-webkit-scrollbar { width: 6px; }
+.chat-scroll::-webkit-scrollbar-thumb { background: rgba(22,33,62,0.12); border-radius: 9999px; }
+
+.bubble-row { display: flex; }
+.bubble-row--user { justify-content: flex-end; }
+
+.chat-bubble {
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  max-width: 78%;
+  animation: fadeInUp 0.3s var(--ease) both;
+  white-space: pre-wrap;
+}
+
+.chat-bubble--user {
+  background: linear-gradient(135deg, var(--color-primary), #6C8CF5);
+  color: #fff;
+  border-end-end-radius: 6px;
+}
+
+.chat-bubble--ai {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-end-start-radius: 6px;
+}
+
+.chat-bubble--typing { display: flex; align-items: center; gap: 4px; padding: 14px 16px; }
+.typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-text-muted); animation: typingBounce 1.1s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.disclaimer {
+  font-size: 11px; color: var(--color-text-muted); text-align: center;
+  margin: 8px 0; flex-shrink: 0;
+}
+
+.composer {
+  display: flex; align-items: flex-end; gap: 10px;
+  padding: 10px; background: var(--color-card);
+  border: 1.5px solid var(--color-border); border-radius: 24px;
+  flex-shrink: 0;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.composer:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(53,98,233,0.12); }
+
+.composer textarea {
+  flex: 1; border: none; outline: none; resize: none;
+  font-family: var(--font-body); font-size: 13.5px; color: var(--color-text);
+  max-height: 120px; padding: 6px 4px; background: transparent;
+}
+.composer textarea::placeholder { color: #9AA5B8; }
+
+.send-button {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: var(--color-primary); color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.send-button:hover:not(:disabled) { background: var(--color-primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.send-button:active:not(:disabled) { transform: scale(0.92); }
+.send-button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.page.lang-ar, .page.lang-ar * { font-family: var(--font-arabic) !important; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 14px 16px 10px; }
+}

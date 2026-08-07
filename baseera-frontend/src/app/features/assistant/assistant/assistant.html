@@ -1,0 +1,55 @@
+<div class="page" [class.lang-ar]="lang.current() === 'ar'" [attr.dir]="lang.current() === 'ar' ? 'rtl' : 'ltr'">
+
+  <div class="chat-header">
+    <div class="chat-header__avatar">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 2.5l1.9 4.4 4.6.4-3.5 3.1 1.1 4.5L10 12.6l-4.1 2.3 1.1-4.5-3.5-3.1 4.6-.4L10 2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>{{ t[lang.current()].pageTitle }}</h1>
+      <p>{{ t[lang.current()].pageSubtitle }}</p>
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+
+  <div class="chat-scroll">
+    @for (m of messages(); track $index) {
+      <div class="bubble-row" [class.bubble-row--user]="m.role === 'user'">
+        <div class="chat-bubble" [class.chat-bubble--user]="m.role === 'user'" [class.chat-bubble--ai]="m.role === 'ai'">
+          {{ m.text }}
+        </div>
+      </div>
+    }
+
+    @if (sending()) {
+      <div class="bubble-row">
+        <div class="chat-bubble chat-bubble--ai chat-bubble--typing">
+          <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+        </div>
+      </div>
+    }
+
+    <div #scrollAnchor></div>
+  </div>
+
+  <p class="disclaimer">{{ t[lang.current()].disclaimer }}</p>
+
+  <form class="composer" (ngSubmit)="send()">
+    <textarea
+      [(ngModel)]="draft"
+      name="draft"
+      rows="1"
+      [placeholder]="t[lang.current()].placeholder"
+      (keydown)="onEnter($event)"
+    ></textarea>
+    <button type="submit" class="send-button" [disabled]="!draft.trim() || sending()" [attr.aria-label]="t[lang.current()].send">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </form>
+</div>

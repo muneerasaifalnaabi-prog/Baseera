@@ -1,4 +1,25 @@
 export const translations = {
+  assistant: {
+    en: {
+      pageTitle: 'Baseera AI',
+      pageSubtitle: 'Ask about your child\'s development, in your own words.',
+      greeting: 'Hi, I\'m Baseera. How can I help you today?',
+      placeholder: 'Type your question...',
+      send: 'Send',
+      disclaimer: 'Baseera AI offers supportive, educational guidance about child development — not a medical diagnosis.',
+      errorMessage: 'Something went wrong. Please try again.'
+    },
+    ar: {
+      pageTitle: 'بصيرة الذكي',
+      pageSubtitle: 'اسأل عن تطور طفلك، بكلماتك الخاصة.',
+      greeting: 'مرحباً، أنا بصيرة. كيف يمكنني مساعدتك اليوم؟',
+      placeholder: 'اكتب سؤالك...',
+      send: 'إرسال',
+      disclaimer: 'يقدّم بصيرة الذكي إرشادًا داعمًا وتثقيفيًا حول تطور الطفل — وليس تشخيصًا طبيًا.',
+      errorMessage: 'حدث خطأ ما. يرجى المحاولة مرة أخرى.'
+    }
+  },
+
   login: {
     en: {
       title: 'Welcome back',

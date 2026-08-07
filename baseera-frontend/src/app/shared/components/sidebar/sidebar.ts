@@ -1,9 +1,14 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Language } from '../../services/language';
 import { translations } from '../../i18n/translations';
 
+/**
+ * Off-canvas navigation drawer. Hidden by default on every page — it only
+ * appears when the burger button in the navbar is pressed, and closes again
+ * on: backdrop click, Escape, or picking a destination from inside it.
+ */
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -12,6 +17,9 @@ import { translations } from '../../i18n/translations';
   styleUrl: './sidebar.css'
 })
 export class Sidebar implements OnInit {
+  @Input() open = false;
+  @Output() closeRequested = new EventEmitter<void>();
+
   t = translations.sidebar;
   isAdmin = signal(false);
   selectedChildId = signal<string | null>(null);
@@ -29,5 +37,15 @@ export class Sidebar implements OnInit {
   vaultLink(): string[] {
     const id = this.selectedChildId();
     return id ? ['/children', id, 'vault'] : ['/select-child'];
+  }
+
+  onNavClick(): void {
+    // Picking a destination closes the drawer — it should never stay
+    // parked open over the page you just navigated to.
+    this.closeRequested.emit();
+  }
+
+  onBackdropClick(): void {
+    this.closeRequested.emit();
   }
 }

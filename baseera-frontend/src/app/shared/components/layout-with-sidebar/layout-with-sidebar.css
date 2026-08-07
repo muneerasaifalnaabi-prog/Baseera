@@ -1,4 +1,17 @@
 :host { display: block; }
-.shell { display: flex; flex-direction: column; min-height: 100vh; background: #F8FAFC; }
-.body { display: flex; flex: 1; }
-.content { flex: 1; min-width: 0; overflow-x: hidden; }
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-bg, #F8FAFC);
+}
+
+/* The sidebar is now an off-canvas overlay (fixed position, see sidebar.css)
+   rather than a flex column, so content always spans the full width — it
+   never gets pushed or squeezed when the drawer opens. */
+.content {
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+}

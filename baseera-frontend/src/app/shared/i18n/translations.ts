@@ -1,4 +1,45 @@
 export const translations = {
+  login: {
+    en: {
+      title: 'Welcome back',
+      subtitle: 'Log in to continue your child\'s journey.',
+      tagline: 'Welcome back.',
+      taglineSub: 'Pick up right where you left off, your child\'s progress is waiting for you.',
+      joined: 'Your journey, continued',
+      email: 'Email address',
+      emailPlaceholder: 'name@example.com',
+      password: 'Password',
+      keepSignedIn: 'Keep me signed in',
+      forgot: 'Forgot password?',
+      signIn: 'Sign in',
+      or: 'or continue with',
+      google: 'Continue with Google',
+      noAccount: 'Don\'t have an account?',
+      signup: 'Sign up',
+      langLabel: 'العربية',
+      invalidCreds: 'Invalid email or password.'
+    },
+    ar: {
+      title: 'مرحباً بعودتك',
+      subtitle: 'سجّل الدخول لمتابعة رحلة طفلك.',
+      tagline: 'مرحباً بعودتك.',
+      taglineSub: 'تابع من حيث توقفت، تقدّم طفلك بانتظارك.',
+      joined: 'رحلتك مستمرة',
+      email: 'البريد الإلكتروني',
+      emailPlaceholder: 'name@example.com',
+      password: 'كلمة المرور',
+      keepSignedIn: 'إبقني مسجلاً للدخول',
+      forgot: 'نسيت كلمة المرور؟',
+      signIn: 'تسجيل الدخول',
+      or: 'أو تابع باستخدام',
+      google: 'المتابعة باستخدام Google',
+      noAccount: 'ليس لديك حساب؟',
+      signup: 'إنشاء حساب',
+      langLabel: 'English',
+      invalidCreds: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.'
+    }
+  },
+
   sidebar: {
     en: {
       dashboard: 'Dashboard',

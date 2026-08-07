@@ -253,3 +253,23 @@
 .navbar__link--admin:hover {
   background: rgba(53, 98, 233, 0.08);
 }
+.navbar__sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--color-text, #16213E);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+.navbar__sidebar-toggle:hover {
+  background: rgba(53, 98, 233, 0.08);
+  color: var(--color-primary, #3562E9);
+}
+
+.navbar__sidebar-toggle:active {
+  transform: scale(0.9);
+}

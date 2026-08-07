@@ -1,4 +1,43 @@
 export const translations = {
+  activities: {
+    en: {
+      title: 'Activities',
+      subtitle: 'Matched to your child\'s age and needs.',
+      searchPlaceholder: 'Search by name',
+      agePlaceholder: 'Age',
+      all: 'All',
+      clear: 'Clear',
+      agesLabel: 'Ages',
+      langLabel: 'العربية',
+      emptyTitle: 'No activities match your search',
+      emptyText: 'Try adjusting the filters above.',
+      loadError: 'Could not load activities. Please try again.',
+      addFor: '+ Add for my child',
+      added: 'Added',
+      adding: '...',
+      forLabel: 'Activities for',
+      conditionLabels: { ASD: 'ASD', ADHD: 'ADHD', BOTH: 'Both' }
+    },
+    ar: {
+      title: 'الأنشطة',
+      subtitle: 'مطابقة لعمر طفلك واحتياجاته.',
+      searchPlaceholder: 'ابحث بالاسم',
+      agePlaceholder: 'العمر',
+      all: 'الكل',
+      clear: 'مسح',
+      agesLabel: 'الأعمار',
+      langLabel: 'English',
+      emptyTitle: 'لا توجد أنشطة تطابق بحثك',
+      emptyText: 'حاول تعديل عوامل التصفية أعلاه.',
+      loadError: 'تعذّر تحميل الأنشطة. يرجى المحاولة مرة أخرى.',
+      addFor: '+ إضافة لطفلي',
+      added: 'تمت الإضافة',
+      adding: '...',
+      forLabel: 'أنشطة',
+      conditionLabels: { ASD: 'توحد', ADHD: 'فرط حركة', BOTH: 'كلاهما' }
+    }
+  },
+
   assistant: {
     en: {
       pageTitle: 'Baseera AI',
